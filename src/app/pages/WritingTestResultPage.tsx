@@ -6,38 +6,92 @@ import svgPaths from '../../imports/svg-kef88hpn4e';
 
 // بيانات تجريبية للرسم البياني
 const progressData = [
-  { id: 'progress-1', attempt: 'Attempt 1', score: 6.0 },
-  { id: 'progress-2', attempt: 'Attempt 2', score: 6.5 },
-  { id: 'progress-3', attempt: 'Attempt 3', score: 7.0 },
+  { id: 'progress-1', attempt: 'Attempt 1', score: 3.5 },
+  { id: 'progress-2', attempt: 'Attempt 2', score: 4.0 },
+  { id: 'progress-3', attempt: 'Attempt 3', score: 4.5 },
 ];
 
 // بيانات رادار للمعايير الأربعة
 const criteriaRadarData = [
-  { id: 'criteria-1', criteria: 'Task Achievement', score: 7.5, fullMark: 9 },
-  { id: 'criteria-2', criteria: 'Coherence', score: 7.0, fullMark: 9 },
-  { id: 'criteria-3', criteria: 'Lexical Resource', score: 7.0, fullMark: 9 },
-  { id: 'criteria-4', criteria: 'Grammar', score: 7.5, fullMark: 9 },
+  { id: 'criteria-1', criteria: 'Task Achievement', score: 4.0, fullMark: 9 },
+  { id: 'criteria-2', criteria: 'Coherence', score: 4.5, fullMark: 9 },
+  { id: 'criteria-3', criteria: 'Lexical Resource', score: 5.0, fullMark: 9 },
+  { id: 'criteria-4', criteria: 'Grammar', score: 4.5, fullMark: 9 },
 ];
 
 // بيانات الأخطاء
 const errorExamples = [
   {
     type: 'grammar',
-    original: 'I thinks that swimming is a good sport',
-    corrected: 'I think that swimming is a good sport',
-    explanation: 'خطأ في تصريف الفعل - الفاعل المفرد يتطلب فعل مفرد بدون s'
+    original: 'Many people is using social media',
+    corrected: 'Many people are using social media',
+    explanation: 'خطأ في تطابق الفعل مع الفاعل - "people" جمع يتطلب "are"'
+  },
+  {
+    type: 'grammar',
+    original: 'She don\'t like to play sports',
+    corrected: 'She doesn\'t like to play sports',
+    explanation: 'استخدام خاطئ للنفي مع الضمير المفرد'
   },
   {
     type: 'vocabulary',
-    original: 'The sport is very good for health',
-    corrected: 'The sport is highly beneficial for health',
-    explanation: 'استخدم مفردات أكثر دقة وأكاديمية'
+    original: 'I very like this sport',
+    corrected: 'I really like this sport',
+    explanation: 'ترتيب خاطئ للكلمات - "very" لا تأتي قبل الفعل مباشرة'
+  },
+  {
+    type: 'vocabulary',
+    original: 'The price is so much expensive',
+    corrected: 'The price is very expensive',
+    explanation: 'استخدام خاطئ - "much" لا تستخدم مع الصفات العادية'
+  },
+  {
+    type: 'spelling',
+    original: 'I want to imporve my english',
+    corrected: 'I want to improve my English',
+    explanation: 'خطأ إملائي في "improve" و"English" يجب أن تبدأ بحرف كبير'
   },
   {
     type: 'coherence',
-    original: 'Swimming is good. It is healthy.',
-    corrected: 'Swimming is an excellent choice because it provides numerous health benefits.',
-    explanation: 'دمج الجمل القصيرة باستخدام روابط مناسبة'
+    original: 'I like swimming. Swimming good. I swim every day.',
+    corrected: 'I like swimming because it is beneficial. I swim every day to stay healthy.',
+    explanation: 'جمل متقطعة بدون روابط - تحتاج لتماسك أفضل'
+  },
+  {
+    type: 'grammar',
+    original: 'If I will have time, I will go',
+    corrected: 'If I have time, I will go',
+    explanation: 'خطأ في الجملة الشرطية - لا نستخدم "will" بعد "if"'
+  },
+  {
+    type: 'grammar',
+    original: 'I have study English for 3 years',
+    corrected: 'I have studied English for 3 years',
+    explanation: 'استخدام خاطئ للمضارع التام - يجب استخدام التصريف الثالث'
+  },
+  {
+    type: 'vocabulary',
+    original: 'The weather is very hot in my country in summer time',
+    corrected: 'The weather is extremely hot in my country during summer',
+    explanation: 'استخدام كلمات بسيطة ومكررة - يمكن استخدام مفردات أقوى'
+  },
+  {
+    type: 'punctuation',
+    original: 'I like to read books play football and watch movies',
+    corrected: 'I like to read books, play football, and watch movies',
+    explanation: 'نقص الفواصل في القائمة'
+  },
+  {
+    type: 'coherence',
+    original: 'First benefit health. Second benefit money save.',
+    corrected: 'The first benefit is improved health. The second benefit is saving money.',
+    explanation: 'جمل غير مكتملة - تحتاج لأفعال وتركيب صحيح'
+  },
+  {
+    type: 'grammar',
+    original: 'There is many problems in the city',
+    corrected: 'There are many problems in the city',
+    explanation: 'خطأ في استخدام "there is/are" - مع الجمع نستخدم "are"'
   }
 ];
 
@@ -47,115 +101,120 @@ const detailedCriteria = [
     id: 'task-achievement',
     name: 'Task Achievement',
     nameAr: 'إنجاز المهمة',
-    score: 7.5,
-    color: '#E0F2FE',
-    borderColor: '#0EA5E9',
+    score: 4.0,
+    color: '#FEF2F2',
+    borderColor: '#EF4444',
     strengths: [
-      { text: 'تناولت جميع أجزاء السؤال بشكل كامل', example: 'ذكرت الرياضة المقترحة، كيفية التعلم، والاقتراح بالتعلم معاً' },
-      { text: 'قدمت أفكار واضحة ومتطورة', example: 'شرحت فوائد السباحة بالتفصيل مع أمثلة محددة' }
+      { text: 'حاولت الإجابة على السؤال', example: 'ذكرت بعض المعلومات المطلوبة' }
     ],
     improvements: [
-      { text: 'يمكن تطوير الأمثلة الداعمة أكثر', tip: 'أضف تفاصيل محددة عن النادي أو التكلفة المتوقعة' }
+      { text: 'لم تتناول جميع أجزاء المهمة بشكل كامل', tip: 'Task 1 يتطلب وصف البيانات بشكل دقيق مع مقارنات' },
+      { text: 'عدد الكلمات أقل من المطلوب', tip: 'Task 1 يحتاج 150 كلمة على الأقل، Task 2 يحتاج 250 كلمة' },
+      { text: 'الأفكار غير متطورة بشكل كافٍ', tip: 'اشرح كل فكرة بتفصيل أكثر مع أمثلة داعمة' }
     ],
     currentBand: {
-      level: '7.0-7.5',
-      description: 'يعالج جميع أجزاء المهمة، يقدم موقفاً واضحاً، يطور الأفكار الرئيسية بشكل جيد'
+      level: '4.0',
+      description: 'يحاول معالجة المهمة لكن لا يغطي جميع المتطلبات، الأفكار محدودة ومكررة'
     },
     nextBand: {
-      level: '8.0',
-      description: 'يعالج جميع أجزاء المهمة بشكل كافٍ ومناسب، يطور الأفكار بعمق مع دعم قوي',
-      howToReach: 'قدم تفاصيل أكثر تحديداً ودعم أقوى لكل نقطة'
+      level: '5.0',
+      description: 'يعالج المهمة جزئياً، التنسيق قد يكون غير مناسب في بعض الأماكن',
+      howToReach: 'اكتب عدد الكلمات المطلوب، تناول جميع أجزاء السؤال، طور أفكارك بشكل أفضل'
     },
     examples: [
-      { text: 'I would highly recommend learning to swim', highlight: 'استخدام "highly recommend" يظهر قوة الموقف' },
-      { text: 'Swimming is suitable for all fitness levels', highlight: 'ذكر سبب ملاءمة الرياضة للصديق' }
+      { text: 'The chart show information', highlight: 'خطأ نحوي - يجب "shows" وتحتاج لمزيد من التفاصيل' },
+      { text: 'I think this is good', highlight: 'فكرة عامة جداً وغير مدعومة بأمثلة' }
     ]
   },
   {
     id: 'coherence-cohesion',
     name: 'Coherence & Cohesion',
     nameAr: 'التماسك والترابط',
-    score: 7.0,
-    color: '#D1FAE5',
-    borderColor: '#10B981',
+    score: 4.5,
+    color: '#FEF3C7',
+    borderColor: '#F59E0B',
     strengths: [
-      { text: 'تنظيم الفقرات واضح ومنطقي', example: 'كل فقرة تتناول نقطة واحدة من المطلوب' },
-      { text: 'استخدام دقيق للمصطلحات', example: 'استخدمت الضمائر بشكل صحيح للإشارة للصديق' }
+      { text: 'حاولت تنظيم الأفكار في فقرات', example: 'قسمت الإجابة لأكثر من فقرة' }
     ],
     improvements: [
-      { text: 'استخدام المزيد من الروابط المتقدمة', tip: 'استخدم "Furthermore, Moreover, In addition to this" بدلاً من "Also, And"' },
-      { text: 'تحسين التدفق بين الأفكار', tip: 'أضف جمل انتقالية بين الفقرات' }
+      { text: 'الفقرات غير منظمة بشكل منطقي', tip: 'كل فقرة يجب أن تتناول فكرة واحدة واضحة' },
+      { text: 'قلة استخدام أدوات الربط', tip: 'استخدم روابط مثل: However, Moreover, Furthermore, In addition' },
+      { text: 'الأفكار متقطعة وغير مترابطة', tip: 'اربط الجمل ببعضها باستخدام ضمائر الإشارة وأدوات الربط' },
+      { text: 'التكرار الواضح للكلمات', tip: 'استخدم ضمائر الإشارة (this, that, these) لتجنب التكرار' }
     ],
     currentBand: {
-      level: '7.0',
-      description: 'ينظم المعلومات والأفكار بشكل منطقي، يستخدم مجموعة من أدوات الربط بشكل مناسب'
+      level: '4.5',
+      description: 'يقدم معلومات وأفكار لكنها غير منظمة بشكل منطقي، استخدام محدود وغير دقيق لأدوات الربط'
     },
     nextBand: {
-      level: '8.0',
-      description: 'يرتب المعلومات والأفكار بشكل منطقي، يدير التماسك بشكل جيد',
-      howToReach: 'استخدم روابط أكثر تطوراً وتنوعاً، وتأكد من التدفق السلس بين الجمل'
+      level: '5.0',
+      description: 'يقدم معلومات بتماسك واضح ولكن قد يكون هناك تكرار',
+      howToReach: 'استخدم روابط مناسبة بين الجمل، نظم كل فقرة حول فكرة مركزية واحدة، تجنب التكرار'
     },
     examples: [
-      { text: 'Additionally, on top of that', highlight: 'روابط بسيطة - يمكن استخدام "Furthermore" أو "Moreover"' },
-      { text: 'I was delighted to hear...', highlight: 'جملة افتتاحية ممتازة تربط بالسياق' }
+      { text: 'I like sport. Sport is good. I play sport.', highlight: 'تكرار واضح - استخدم ضمائر: I like sports because they are good for health' },
+      { text: 'First point. Second point. Third point.', highlight: 'روابط ضعيفة - استخدم: Firstly, Secondly, Finally' }
     ]
   },
   {
     id: 'lexical-resource',
     name: 'Lexical Resource',
     nameAr: 'الثروة اللغوية',
-    score: 7.0,
-    color: '#FEF3C7',
-    borderColor: '#F59E0B',
+    score: 5.0,
+    color: '#DBEAFE',
+    borderColor: '#3B82F6',
     strengths: [
-      { text: 'استخدمت مجموعة متنوعة من المفردات', example: 'delighted, beneficial, suitable, opportunity' },
-      { text: 'استخدام دقيق للمصطلحات', example: 'fitness levels, beginner-friendly, indoor pool' }
+      { text: 'استخدمت كلمات أساسية صحيحة', example: 'good, bad, people, important' }
     ],
     improvements: [
-      { text: 'تجنب تكرار نفس الكلمات البسيطة', tip: 'استخدم مرادفات: "very good" → "highly beneficial, extremely advantageous"' },
-      { text: 'استخدم تعبيرات أكثر تطوراً', tip: 'بدلاً من "I think" استخدم "I would argue, It could be contended"' }
+      { text: 'المفردات محدودة ومتكررة', tip: 'تعلم مرادفات: good → excellent, beneficial, advantageous' },
+      { text: 'أخطاء واضحة في اختيار الكلمات', tip: 'استخدم القاموس للتأكد من المعنى الصحيح' },
+      { text: 'أخطاء إملائية متكررة', tip: 'راجع الإملاء: "imporve" → "improve", "becouse" → "because"' },
+      { text: 'استخدام كلمات عامية', tip: 'استخدم لغة رسمية أكاديمية في IELTS' }
     ],
     currentBand: {
-      level: '7.0',
-      description: 'يستخدم مجموعة واسعة من المفردات بمرونة، يستخدم مفردات أقل شيوعاً بوعي'
+      level: '5.0',
+      description: 'يستخدم مجموعة محدودة من المفردات، أخطاء واضحة في اختيار الكلمات، بعض الأخطاء الإملائية'
     },
     nextBand: {
-      level: '8.0',
-      description: 'يستخدم مجموعة واسعة من المفردات بطلاقة ومرونة للتعبير بدقة',
-      howToReach: 'استخدم مفردات أكاديمية أكثر تطوراً وتجنب التكرار تماماً'
+      level: '6.0',
+      description: 'يستخدم مجموعة كافية من المفردات، يحاول استخدام مفردات أقل شيوعاً',
+      howToReach: 'تعلم مفردات جديدة يومياً، استخدم مرادفات، راجع الإملاء، تجنب التكرار'
     },
     examples: [
-      { text: 'very fun', highlight: 'عامية - الأفضل: "highly enjoyable, tremendously rewarding"' },
-      { text: 'delighted, beneficial', highlight: 'مفردات متقدمة ممتازة!' }
+      { text: 'very good, very bad, very important', highlight: 'تكرار "very" - استخدم: excellent, terrible, crucial' },
+      { text: 'alot, becouse, imporve', highlight: 'أخطاء إملائية - الصحيح: a lot, because, improve' }
     ]
   },
   {
     id: 'grammatical-range',
     name: 'Grammatical Range & Accuracy',
     nameAr: 'التنوع والدقة النحوية',
-    score: 7.5,
+    score: 4.5,
     color: '#FCE7F3',
     borderColor: '#EC4899',
     strengths: [
-      { text: 'استخدام ممتاز للتراكيب المعقدة', example: 'جمل معقدة مع relative clauses و conditionals' },
-      { text: 'أخطاء نحوية قليلة جداً', example: 'معظم الجمل خالية من الأخطاء' },
-      { text: 'تنوع جيد في الأزمنة', example: 'استخدام صحيح للحاضر والماضي والمستقبل' }
+      { text: 'استخدمت بعض الجمل البسيطة الصحيحة', example: 'I like swimming. It is good.' }
     ],
     improvements: [
-      { text: 'تجنب بعض الأخطاء البسيطة', tip: 'راجع subject-verb agreement في الجمل المعقدة' }
+      { text: 'أخطاء نحوية متكررة وتؤثر على الفهم', tip: 'راجع subject-verb agreement: "He like" → "He likes"' },
+      { text: 'استخدام محدود للتراكيب المعقدة', tip: 'تعلم الجمل المركبة والمعقدة باستخدام because, although, while' },
+      { text: 'أخطاء في الأزمنة', tip: 'راجع الأزمنة: Present Simple, Present Perfect, Past Simple' },
+      { text: 'أخطاء في حروف الجر والأدوات', tip: 'احفظ التعبيرات الثابتة مع حروف الجر' },
+      { text: 'نقص علامات الترقيم', tip: 'استخدم الفواصل والنقاط بشكل صحيح' }
     ],
     currentBand: {
-      level: '7.0-7.5',
-      description: 'يستخدم مجموعة من التراكيب المعقدة، ينتج جملاً خالية من الأخطاء بشكل متكرر'
+      level: '4.5',
+      description: 'يستخدم مزيج محدود من الجمل البسيطة والمعقدة، أخطاء نحوية متكررة، أخطاء في الترقيم'
     },
     nextBand: {
-      level: '8.0',
-      description: 'يستخدم مجموعة واسعة من التراكيب، غالبية الجمل خالية من الأخطاء',
-      howToReach: 'استخدم تراكيب نحوية أكثر تعقيداً مع دقة عالية'
+      level: '5.0',
+      description: 'يستخدم مجموعة محدودة من التراكيب، محاولات للجمل المعقدة لكن بأخطاء',
+      howToReach: 'راجع القواعد الأساسية، تدرب على الجمل المركبة، قلل الأخطاء النحوية'
     },
     examples: [
-      { text: 'If you\'re interested, I\'d be happy to accompany you', highlight: 'جملة شرطية معقدة ممتازة!' },
-      { text: 'The pool has recently been renovated', highlight: 'استخدام ممتاز للمبني للمجهول' }
+      { text: 'She don\'t like, He go to school', highlight: 'أخطاء أساسية - الصحيح: doesn\'t like, goes to school' },
+      { text: 'If I will have time I will go', highlight: 'خطأ شرطي وترقيم - الصحيح: If I have time, I will go' }
     ]
   }
 ];
@@ -183,22 +242,34 @@ const improvements = [
 // نصائح التحسين
 const improvementTips = [
   {
-    title: 'تحسين التماسك والترابط',
+    title: 'تصحيح الأخطاء النحوية الأساسية',
     priority: 'عالية',
-    description: 'استخدم المزيد من الرابط بين الفقرات والجمل لتحسين التدفق المنطقي',
+    description: 'راجع subject-verb agreement والأزمنة الأساسية - هذا سيرفع درجتك بشكل كبير',
     completed: false
   },
   {
-    title: 'تنويع المفردات',
+    title: 'زيادة عدد الكلمات المطلوب',
+    priority: 'عالية',
+    description: 'اكتب 150 كلمة على الأقل لـ Task 1 و 250 كلمة لـ Task 2',
+    completed: false
+  },
+  {
+    title: 'تحسين التماسك باستخدام الروابط',
+    priority: 'عالية',
+    description: 'استخدم روابط مناسبة: However, Moreover, Therefore بين الجمل',
+    completed: false
+  },
+  {
+    title: 'توسيع الثروة اللغوية',
     priority: 'متوسطة',
-    description: 'استخدم مرادفات ومفردات أكثر تقدماً بدلاً من تكرار نفس الكلمات',
+    description: 'تعلم 10 كلمات جديدة يومياً وتجنب تكرار نفس الكلمات',
     completed: false
   },
   {
-    title: 'الدقة النحوية',
-    priority: 'منخفضة',
-    description: 'الحفاظ على هذا المستوى الممتاز في القواعد',
-    completed: true
+    title: 'تطوير الأفكار بشكل كامل',
+    priority: 'متوسطة',
+    description: 'اشرح كل فكرة بجملتين أو ثلاث مع أمثلة داعمة',
+    completed: false
   }
 ];
 
@@ -318,10 +389,10 @@ export function WritingTestResultPage() {
           <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-6">
             <div className="text-center mb-4">
               <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] sm:text-[18px] text-[#1B2A4A] mb-2">
-                أداء رهيب! 🔥 باقي 0.5 بس توصل لهدفك! 🏆
+                تحتاج مزيد من التدريب 📚 باقي 0.5 درجة للوصول لـ 5.0
               </h3>
               <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] sm:text-[14px] text-[#6B7280]">
-                أنت قريب! 0.5 درجة فقط من البرونز! اضرب السريع عشان توصل درجتك
+                ركز على تصحيح الأخطاء النحوية وزيادة عدد الكلمات - يمكنك التحسن!
               </p>
             </div>
             
@@ -374,16 +445,16 @@ export function WritingTestResultPage() {
                     stroke="#FF8C00"
                     strokeWidth="12"
                     fill="none"
-                    strokeDasharray={`${(7.0 / 9.0) * 352} 352`}
+                    strokeDasharray={`${(4.5 / 9.0) * 352} 352`}
                     strokeLinecap="round"
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#FF8C00]">7.0</span>
+                  <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#C30020]">4.5</span>
                 </div>
               </div>
               <div className="text-[12px] text-[#4A4A4A] font-['IBM_Plex_Sans_Arabic:Regular',sans-serif]">
-                7.0 / 9.0
+                4.5 / 9.0
               </div>
             </div>
           </div>
@@ -419,13 +490,13 @@ export function WritingTestResultPage() {
                 <circle cx="48" cy="48" r="42" stroke="#E2E8F0" strokeWidth="10" fill="none" />
                 <circle
                   cx="48" cy="48" r="42"
-                  stroke="#FF8C00" strokeWidth="10" fill="none"
-                  strokeDasharray={`${(7.0 / 9.0) * 264} 264`}
+                  stroke="#C30020" strokeWidth="10" fill="none"
+                  strokeDasharray={`${(4.5 / 9.0) * 264} 264`}
                   strokeLinecap="round"
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#FF8C00]">7.0</span>
+                <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#C30020]">4.5</span>
               </div>
             </div>
           </div>
@@ -478,7 +549,7 @@ export function WritingTestResultPage() {
                 <TrendingUp className="w-6 h-6 text-[#C30020]" />
               </div>
               <div>
-                <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[24px] text-[#1B2A4A]">15.6</p>
+                <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[24px] text-[#1B2A4A]">2.0</p>
                 <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">كلمة/دقيقة</p>
               </div>
             </div>
@@ -490,7 +561,7 @@ export function WritingTestResultPage() {
                 <Award className="w-6 h-6 text-[#C30020]" />
               </div>
               <div>
-                <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[24px] text-[#1B2A4A]">92%</p>
+                <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[24px] text-[#C30020]">58%</p>
                 <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">دقة القواعد النحوية</p>
               </div>
             </div>
@@ -899,11 +970,11 @@ export function WritingTestResultPage() {
                   السؤال:
                 </h5>
                 <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] sm:text-[14px] text-[#374151] leading-relaxed">
-                  Your English-speaking friend who lives in your town has asked for your advice about learning a new sport. 
-                  Write a letter to your friend. In your letter:
-                  <br />• Recommend a new sport that would be suitable for your friend to learn
-                  <br />• Explain how your friend could learn this sport
-                  <br />• Suggest that you both learn this sport together
+                  The chart below shows the number of hours per week that children aged 5-14 in a European country spent doing different activities in 2019.
+                  <br /><br />
+                  Summarize the information by selecting and reporting the main features, and make comparisons where relevant.
+                  <br /><br />
+                  Write at least 150 words.
                 </p>
               </div>
 
@@ -930,155 +1001,246 @@ export function WritingTestResultPage() {
                 </div>
                 <div className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] sm:text-[14px] text-[#374151] leading-relaxed space-y-4">
                   <p>
-                    Dear Sarah,
-                  </p>
-                  <p>
                     <span 
-                      className="relative bg-[#D1FAE5] border-b-2 border-[#4CAF50] px-1 cursor-pointer hover:bg-[#BBF7D0] transition-colors"
+                      className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
                       onClick={(e) => {
                         e.stopPropagation();
                         setActiveTooltip(activeTooltip === 0 ? null : 0);
                       }}
                     >
-                      I hope this letter finds you well.
+                      The chart show
                       {activeTooltip === 0 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#4CAF50] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2">
-                            <CheckCircle2 className="w-5 h-5 text-[#4CAF50] flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                ممتاز! 👏
-                              </p>
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                افتتاحية رسمية ومهذبة تناسب الرسائل الشخصية تماماً
-                              </p>
-                            </div>
-                          </div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#4CAF50]"></div>
-                        </span>
-                      )}
-                    </span> I was delighted to hear that you're interested in learning a new sport! 
-                    <span 
-                      className="relative bg-[#FEF3C7] border-b-2 border-[#FF8C00] px-1 cursor-pointer hover:bg-[#FDE68A] transition-colors" 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTooltip(activeTooltip === 1 ? null : 1);
-                      }}
-                    >
-                      I think
-                      {activeTooltip === 1 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#FF8C00] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2">
-                            <AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                يمكن تحسينه
-                              </p>
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                يمكن استخدام 'highly recommend' بدلاً من 'think'
-                              </p>
-                            </div>
-                          </div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
-                        </span>
-                      )}
-                    </span> swimming would be <span 
-                      className="relative bg-[#D1FAE5] border-b-2 border-[#4CAF50] px-1 cursor-pointer hover:bg-[#BBF7D0] transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTooltip(activeTooltip === 5 ? null : 5);
-                      }}
-                    >
-                      an excellent choice
-                      {activeTooltip === 5 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#4CAF50] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2">
-                            <CheckCircle2 className="w-5 h-5 text-[#4CAF50] flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                ممتاز! 🌟
-                              </p>
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                استخدام رائع لمفردات قوية ومقنعة
-                              </p>
-                            </div>
-                          </div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#4CAF50]"></div>
-                        </span>
-                      )}
-                    </span> for you.
-                  </p>
-                  <p>
-                    Swimming is <span 
-                      className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTooltip(activeTooltip === 2 ? null : 2);
-                      }}
-                    >
-                      great sports
-                      {activeTooltip === 2 && (
                         <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
                           <div className="flex items-start gap-2">
                             <XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" />
                             <div>
                               <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                خطأ نحوي
+                                خطأ نحوي ❌
                               </p>
                               <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                استخدم 'a great sport' بدلاً من 'great sports'
+                                Subject-verb agreement: يجب "shows" وليس "show"
                               </p>
                             </div>
                           </div>
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                         </span>
                       )}
-                    </span> because it provides a full-body workout and is gentle on the joints. 
-                    <span 
-                      className="relative bg-[#D1FAE5] border-b-2 border-[#4CAF50] px-1 cursor-pointer hover:bg-[#BBF7D0] transition-colors"
+                    </span> information about <span 
+                      className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
                       onClick={(e) => {
                         e.stopPropagation();
-                        setActiveTooltip(activeTooltip === 6 ? null : 6);
+                        setActiveTooltip(activeTooltip === 1 ? null : 1);
                       }}
                     >
-                      Moreover, it's suitable for all fitness levels
-                      {activeTooltip === 6 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#4CAF50] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                      childs
+                      {activeTooltip === 1 && (
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
                           <div className="flex items-start gap-2">
-                            <CheckCircle2 className="w-5 h-5 text-[#4CAF50] flex-shrink-0 mt-0.5" />
+                            <XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" />
                             <div>
                               <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                رائع! 💪
+                                خطأ نحوي ❌
                               </p>
                               <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                ربط ممتاز (Moreover) مع حجة قوية ومنطقية
+                                الجمع الشاذ: "children" وليس "childs"
                               </p>
                             </div>
                           </div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#4CAF50]"></div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                         </span>
                       )}
-                    </span> and can be practiced year-round at our local swimming pool.
+                    </span> in Europe. <span 
+                      className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveTooltip(activeTooltip === 2 ? null : 2);
+                      }}
+                    >
+                      They do many things
+                      {activeTooltip === 2 && (
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2">
+                            <AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
+                                عامية جداً
+                              </p>
+                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
+                                استخدم: "They engage in various activities" أو "They spend time on different activities"
+                              </p>
+                            </div>
+                          </div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
+                        </span>
+                      )}
+                    </span>.
                   </p>
                   <p>
-                    To get started, <span 
-                      className="relative bg-[#FEF3C7] border-b-2 border-[#FF8C00] px-1 cursor-pointer hover:bg-[#FDE68A] transition-colors"
+                    <span 
+                      className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
                       onClick={(e) => {
                         e.stopPropagation();
                         setActiveTooltip(activeTooltip === 3 ? null : 3);
                       }}
                     >
-                      I suggest
+                      There is many
                       {activeTooltip === 3 && (
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2">
+                            <XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
+                                خطأ أساسي ❌
+                              </p>
+                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
+                                مع الجمع نستخدم "There are" وليس "There is"
+                              </p>
+                            </div>
+                          </div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                        </span>
+                      )}
+                    </span> hours for watching TV and playing sports. <span 
+                      className="relative bg-[#FEF3C7] border-b-2 border-[#FF8C00] px-1 cursor-pointer hover:bg-[#FDE68A] transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveTooltip(activeTooltip === 4 ? null : 4);
+                      }}
+                    >
+                      TV is very good
+                      {activeTooltip === 4 && (
                         <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#FF8C00] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
                           <div className="flex items-start gap-2">
                             <AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" />
                             <div>
                               <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                يمكن تحسينه
+                                خارج الموضوع
                               </p>
                               <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                يمكن استخدام 'I would suggest' لأنها أكثر رسمية
+                                Task 1 يتطلب وصف البيانات فقط، وليس إبداء الرأي
+                              </p>
+                            </div>
+                          </div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
+                        </span>
+                      )}
+                    </span> The <span 
+                      className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveTooltip(activeTooltip === 5 ? null : 5);
+                      }}
+                    >
+                      childs watch
+                      {activeTooltip === 5 && (
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2">
+                            <XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
+                                أخطاء متعددة ❌
+                              </p>
+                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
+                                "children" (جمع شاذ) و "watched" (زمن ماضي للبيانات عام 2019)
+                              </p>
+                            </div>
+                          </div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                        </span>
+                      )}
+                    </span> TV <span 
+                      className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveTooltip(activeTooltip === 6 ? null : 6);
+                      }}
+                    >
+                      alot
+                      {activeTooltip === 6 && (
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2">
+                            <XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
+                                خطأ إملائي ❌
+                              </p>
+                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
+                                كلمتان منفصلتان: "a lot" وليس "alot"
+                              </p>
+                            </div>
+                          </div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                        </span>
+                      )}
+                    </span>. Sport <span 
+                      className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveTooltip(activeTooltip === 7 ? null : 7);
+                      }}
+                    >
+                      is less then
+                      {activeTooltip === 7 && (
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2">
+                            <XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
+                                خطأ إملائي ❌
+                              </p>
+                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
+                                "than" للمقارنة وليس "then"
+                              </p>
+                            </div>
+                          </div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                        </span>
+                      )}
+                    </span> TV. 
+                  </p>
+                  <p>
+                    <span 
+                      className="relative bg-[#FEF3C7] border-b-2 border-[#FF8C00] px-1 cursor-pointer hover:bg-[#FDE68A] transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveTooltip(activeTooltip === 8 ? null : 8);
+                      }}
+                    >
+                      In conclusion
+                      {activeTooltip === 8 && (
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#FF8C00] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2">
+                            <AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
+                                غير مناسب
+                              </p>
+                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
+                                Task 1 يصف بيانات ولا يحتاج خاتمة بـ "In conclusion"
+                              </p>
+                            </div>
+                          </div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
+                        </span>
+                      )}
+                    </span> the chart good to see what <span 
+                      className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveTooltip(activeTooltip === 9 ? null : 9);
+                      }}
+                    >
+                      childs do
+                      {activeTooltip === 9 && (
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2">
+                            <XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
+                                خطأ نحوي ❌
+                              </p>
+                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
+                                "children do" أو "children did"
                               </p>
                             </div>
                           </div>
@@ -1180,7 +1342,7 @@ export function WritingTestResultPage() {
                   عدد الكلمات الكلي
                 </span>
                 <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] text-[#1B2A4A]">
-                  287 كلمة <span className="text-[#4CAF50] text-[14px]">(الحد الأدنى: 150)</span>
+                  118 كلمة <span className="text-[#C30020] text-[14px]">(الحد الأدنى: 150) ⚠️ أقل من المطلوب</span>
                 </span>
               </div>
 
