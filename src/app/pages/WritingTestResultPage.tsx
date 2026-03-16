@@ -4,19 +4,41 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import * as Tabs from '@radix-ui/react-tabs';
 import svgPaths from '../../imports/svg-kef88hpn4e';
 
-// بيانات تجريبية للرسم البياني
-const progressData = [
-  { id: 'progress-1', attempt: 'Attempt 1', score: 3.5 },
-  { id: 'progress-2', attempt: 'Attempt 2', score: 4.0 },
-  { id: 'progress-3', attempt: 'Attempt 3', score: 4.5 },
-];
-
-// بيانات رادار للمعايير الأربعة
-const criteriaRadarData = [
-  { id: 'criteria-1', criteria: 'Task Achievement', score: 4.0, fullMark: 9 },
-  { id: 'criteria-2', criteria: 'Coherence', score: 4.5, fullMark: 9 },
-  { id: 'criteria-3', criteria: 'Lexical Resource', score: 5.0, fullMark: 9 },
-  { id: 'criteria-4', criteria: 'Grammar', score: 4.5, fullMark: 9 },
+// بيانات تجريبية للرسم البياني - كل محاولة مع بيانات المعايير
+const attemptData = [
+  {
+    id: 'progress-1',
+    attempt: 'المحاولة 1',
+    score: 3.5,
+    criteria: [
+      { id: 'c1', criteria: 'Task Achievement', score: 3.0, fullMark: 9 },
+      { id: 'c2', criteria: 'Coherence', score: 3.5, fullMark: 9 },
+      { id: 'c3', criteria: 'Lexical Resource', score: 4.0, fullMark: 9 },
+      { id: 'c4', criteria: 'Grammar', score: 3.5, fullMark: 9 },
+    ]
+  },
+  {
+    id: 'progress-2',
+    attempt: 'المحاولة 2',
+    score: 4.0,
+    criteria: [
+      { id: 'c1', criteria: 'Task Achievement', score: 3.5, fullMark: 9 },
+      { id: 'c2', criteria: 'Coherence', score: 4.0, fullMark: 9 },
+      { id: 'c3', criteria: 'Lexical Resource', score: 4.5, fullMark: 9 },
+      { id: 'c4', criteria: 'Grammar', score: 4.0, fullMark: 9 },
+    ]
+  },
+  {
+    id: 'progress-3',
+    attempt: 'المحاولة 3',
+    score: 4.5,
+    criteria: [
+      { id: 'c1', criteria: 'Task Achievement', score: 4.0, fullMark: 9 },
+      { id: 'c2', criteria: 'Coherence', score: 4.5, fullMark: 9 },
+      { id: 'c3', criteria: 'Lexical Resource', score: 5.0, fullMark: 9 },
+      { id: 'c4', criteria: 'Grammar', score: 4.5, fullMark: 9 },
+    ]
+  },
 ];
 
 // معايير الكتابة الأربعة في IELTS
@@ -169,189 +191,342 @@ In conclusion, while technology offers numerous advantages in education, it shou
   }
 ];
 
-// معايير التقييم التفصيلية
-const detailedCriteria = [
+// معايير التقييم التفصيلية - مجمعة حسب المهمة
+const detailedCriteriaByPart = [
   {
-    id: 'task-achievement',
-    name: 'Task Achievement',
-    nameAr: 'إنجاز المهمة',
-    score: 4.0,
-    color: '#FEF2F2',
-    borderColor: '#EF4444',
-    strengths: [
-      { text: 'حاولت الإجابة على السؤال', example: 'ذكرت بعض المعلومات المطلوبة' }
-    ],
-    improvements: [
-      { text: 'لم تتناول جميع أجزاء المهمة بشكل كامل', tip: 'Task 1 يتطلب وصف البيانات بشكل دقيق مع مقارنات' },
-      { text: 'عدد الكلمات أقل من المطلوب', tip: 'Task 1 يحتاج 150 كلمة على الأقل، Task 2 يحتاج 250 كلمة' },
-      { text: 'الأفكار غير متطورة بشكل كافٍ', tip: 'اشرح كل فكرة بتفصيل أكثر مع أمثلة داعمة' }
-    ],
-    currentBand: {
-      level: '4.0',
-      description: 'يحاول معالجة المهمة لكن لا يغطي جميع المتطلبات، الأفكار محدودة ومكررة'
-    },
-    nextBand: {
-      level: '5.0',
-      description: 'يعالج المهمة جزئياً، التنسيق قد يكون غير مناسب في بعض الأماكن',
-      howToReach: 'اكتب عدد الكلمات المطلوب، تناول جميع أجزاء السؤال، طور أفكارك بشكل أفضل'
-    },
-    examples: [
-      { text: 'The chart show information', highlight: 'خطأ نحوي - يجب "shows" وتحتاج لمزيد من التفاصيل' },
-      { text: 'I think this is good', highlight: 'فكرة عامة جداً وغير مدعومة بأمثلة' }
+    partId: 'task1',
+    partTitle: 'المهمة 1 - General Training Letter',
+    partType: 'رسالة شخصية',
+    partScore: 4.0,
+    criteria: [
+      {
+        id: 'task1-task-achievement',
+        name: 'Task Achievement',
+        nameAr: 'إنجاز المهمة',
+        score: 4.0,
+        color: '#FEF2F2',
+        borderColor: '#EF4444',
+        strengths: [
+          { text: 'حاولت الإجابة على السؤال', example: 'ذكرت بعض المعلومات المطلوبة' }
+        ],
+        improvements: [
+          { text: 'لم تتناول جميع أجزاء المهمة بشكل كامل', tip: 'Task 1 يتطلب وصف البيانات بشكل دقيق مع مقارنات' },
+          { text: 'عدد الكلمات أقل من المطلوب', tip: 'Task 1 يحتاج 150 كلمة على الأقل' },
+          { text: 'الأفكار غير متطورة بشكل كافٍ', tip: 'اشرح كل فكرة بتفصيل أكثر مع أمثلة داعمة' }
+        ],
+        currentBand: {
+          level: '4.0',
+          description: 'يحاول معالجة المهمة لكن لا يغطي جميع المتطلبات، الأفكار محدودة ومكررة'
+        },
+        nextBand: {
+          level: '5.0',
+          description: 'يعالج المهمة جزئياً، التنسيق قد يكون غير مناسب في بعض الأماكن',
+          howToReach: 'اكتب عدد الكلمات المطلوب، تناول جميع أجزاء السؤال، طور أفكارك بشكل أفضل'
+        },
+        examples: [
+          { text: 'The chart show information', highlight: 'خطأ نحوي - يجب "shows" وتحتاج لمزيد من التفاصيل' },
+          { text: 'I think this is good', highlight: 'فكرة عامة جداً وغير مدعومة بأمثلة' }
+        ]
+      },
+      {
+        id: 'task1-coherence-cohesion',
+        name: 'Coherence & Cohesion',
+        nameAr: 'التماسك والترابط',
+        score: 4.5,
+        color: '#FEF3C7',
+        borderColor: '#F59E0B',
+        strengths: [
+          { text: 'حاولت تنظيم الأفكار في فقرات', example: 'قسمت الإجابة لأكثر من فقرة' }
+        ],
+        improvements: [
+          { text: 'الفقرات غير منظمة بشكل منطقي', tip: 'كل فقرة يجب أن تتناول فكرة واحدة واضحة' },
+          { text: 'قلة استخدام أدوات الربط', tip: 'استخدم روابط مثل: However, Moreover, Furthermore, In addition' },
+          { text: 'الأفكار متقطعة وغير مترابطة', tip: 'اربط الجمل ببعضها باستخدام ضمائر الإشارة وأدوات الربط' }
+        ],
+        currentBand: {
+          level: '4.5',
+          description: 'يقدم معلومات وأفكار لكنها غير منظمة بشكل منطقي، استخدام محدود وغير دقيق لأدوات الربط'
+        },
+        nextBand: {
+          level: '5.0',
+          description: 'يقدم معلومات بتماسك واضح ولكن قد يكون هناك تكرار',
+          howToReach: 'استخدم روابط مناسبة بين الجمل، نظم كل فقرة حول فكرة مركزية واحدة'
+        },
+        examples: [
+          { text: 'I like sport. Sport is good. I play sport.', highlight: 'تكرار واضح - استخدم ضمائر: I like sports because they are good for health' }
+        ]
+      },
+      {
+        id: 'task1-lexical-resource',
+        name: 'Lexical Resource',
+        nameAr: 'الثروة اللغوية',
+        score: 5.0,
+        color: '#DBEAFE',
+        borderColor: '#3B82F6',
+        strengths: [
+          { text: 'استخدمت كلمات أساسية صحيحة', example: 'good, bad, people, important' }
+        ],
+        improvements: [
+          { text: 'المفردات محدودة ومتكررة', tip: 'تعلم مرادفات: good → excellent, beneficial, advantageous' },
+          { text: 'أخطاء إملائية متكررة', tip: 'راجع الإملاء: "imporve" → "improve", "becouse" → "because"' }
+        ],
+        currentBand: {
+          level: '5.0',
+          description: 'يستخدم مجموعة محدودة من المفردات، أخطاء واضحة في اختيار الكلمات'
+        },
+        nextBand: {
+          level: '6.0',
+          description: 'يستخدم مجموعة كافية من المفردات، يحاول استخدام مفردات أقل شيوعاً',
+          howToReach: 'تعلم مفردات جديدة يومياً، استخدم مرادفات، راجع الإملاء'
+        },
+        examples: [
+          { text: 'very good, very bad, very important', highlight: 'تكرار "very" - استخدم: excellent, terrible, crucial' },
+          { text: 'alot, becouse, imporve', highlight: 'أخطاء إملائية - الصحيح: a lot, because, improve' }
+        ]
+      },
+      {
+        id: 'task1-grammatical-range',
+        name: 'Grammatical Range & Accuracy',
+        nameAr: 'التنوع والدقة النحوية',
+        score: 4.5,
+        color: '#FCE7F3',
+        borderColor: '#EC4899',
+        strengths: [
+          { text: 'استخدمت بعض الجمل البسيطة الصحيحة', example: 'I like swimming. It is good.' }
+        ],
+        improvements: [
+          { text: 'أخطاء نحوية متكررة وتؤثر على الفهم', tip: 'راجع subject-verb agreement: "He like" → "He likes"' },
+          { text: 'أخطاء في الأزمنة', tip: 'راجع الأزمنة: Present Simple, Present Perfect, Past Simple' },
+          { text: 'نقص علامات الترقيم', tip: 'استخدم الفواصل والنقاط بشكل صحيح' }
+        ],
+        currentBand: {
+          level: '4.5',
+          description: 'يستخدم مزيج محدود من الجمل البسيطة والمعقدة، أخطاء نحوية متكررة'
+        },
+        nextBand: {
+          level: '5.0',
+          description: 'يستخدم مجموعة محدودة من التراكيب، محاولات للجمل المعقدة لكن بأخطاء',
+          howToReach: 'راجع القواعد الأساسية، تدرب على الجمل المركبة، قلل الأخطاء النحوية'
+        },
+        examples: [
+          { text: 'She don\'t like, He go to school', highlight: 'أخطاء أساسية - الصحيح: doesn\'t like, goes to school' },
+          { text: 'If I will have time I will go', highlight: 'خطأ شرطي وترقيم - الصحيح: If I have time, I will go' }
+        ]
+      }
     ]
   },
   {
-    id: 'coherence-cohesion',
-    name: 'Coherence & Cohesion',
-    nameAr: 'التماسك والترابط',
-    score: 4.5,
-    color: '#FEF3C7',
-    borderColor: '#F59E0B',
-    strengths: [
-      { text: 'حاولت تنظيم الأفكار في فقرات', example: 'قسمت الإجابة لأكثر من فقرة' }
-    ],
-    improvements: [
-      { text: 'الفقرات غير منظمة بشكل منطقي', tip: 'كل فقرة يجب أن تتناول فكرة واحدة واضحة' },
-      { text: 'قلة استخدام أدوات الربط', tip: 'استخدم روابط مثل: However, Moreover, Furthermore, In addition' },
-      { text: 'الأفكار متقطعة وغير مترابطة', tip: 'اربط الجمل ببعضها باستخدام ضمائر الإشارة وأدوات الربط' },
-      { text: 'التكرار الواضح للكلمات', tip: 'استخدم ضمائر الإشارة (this, that, these) لتجنب التكرار' }
-    ],
-    currentBand: {
-      level: '4.5',
-      description: 'يقدم معلومات وأفكار لكنها غير منظمة بشكل منطقي، استخدام محدود وغير دقيق لأدوات الربط'
-    },
-    nextBand: {
-      level: '5.0',
-      description: 'يقدم معلومات بتماسك واضح ولكن قد يكون هناك تكرار',
-      howToReach: 'استخدم روابط مناسبة بين الجمل، نظم كل فقرة حول فكرة مركزية واحدة، تجنب التكرار'
-    },
-    examples: [
-      { text: 'I like sport. Sport is good. I play sport.', highlight: 'تكرار واضح - استخدم ضمائر: I like sports because they are good for health' },
-      { text: 'First point. Second point. Third point.', highlight: 'روابط ضعيفة - استخدم: Firstly, Secondly, Finally' }
-    ]
-  },
-  {
-    id: 'lexical-resource',
-    name: 'Lexical Resource',
-    nameAr: 'الثروة اللغوية',
-    score: 5.0,
-    color: '#DBEAFE',
-    borderColor: '#3B82F6',
-    strengths: [
-      { text: 'استخدمت كلمات أساسية صحيحة', example: 'good, bad, people, important' }
-    ],
-    improvements: [
-      { text: 'المفردات محدودة ومتكررة', tip: 'تعلم مرادفات: good → excellent, beneficial, advantageous' },
-      { text: 'أخطاء واضحة في اختيار الكلمات', tip: 'استخدم القاموس للتأكد من المعنى الصحيح' },
-      { text: 'أخطاء إملائية متكررة', tip: 'راجع الإملاء: "imporve" → "improve", "becouse" → "because"' },
-      { text: 'استخدام كلمات عامية', tip: 'استخدم لغة رسمية أكاديمية في IELTS' }
-    ],
-    currentBand: {
-      level: '5.0',
-      description: 'يستخدم مجموعة محدودة من المفردات، أخطاء واضحة في اختيار الكلمات، بعض الأخطاء الإملائية'
-    },
-    nextBand: {
-      level: '6.0',
-      description: 'يستخدم مجموعة كافية من المفردات، يحاول استخدام مفردات أقل شيوعاً',
-      howToReach: 'تعلم مفردات جديدة يومياً، استخدم مرادفات، راجع الإملاء، تجنب التكرار'
-    },
-    examples: [
-      { text: 'very good, very bad, very important', highlight: 'تكرار "very" - استخدم: excellent, terrible, crucial' },
-      { text: 'alot, becouse, imporve', highlight: 'أخطاء إملائية - الصحيح: a lot, because, improve' }
-    ]
-  },
-  {
-    id: 'grammatical-range',
-    name: 'Grammatical Range & Accuracy',
-    nameAr: 'التنوع والدقة النحوية',
-    score: 4.5,
-    color: '#FCE7F3',
-    borderColor: '#EC4899',
-    strengths: [
-      { text: 'استخدمت بعض الجمل البسيطة الصحيحة', example: 'I like swimming. It is good.' }
-    ],
-    improvements: [
-      { text: 'أخطاء نحوية متكررة وتؤثر على الفهم', tip: 'راجع subject-verb agreement: "He like" → "He likes"' },
-      { text: 'استخدام محدود للتراكيب المعقدة', tip: 'تعلم الجمل المركبة والمعقدة باستخدام because, although, while' },
-      { text: 'أخطاء في الأزمنة', tip: 'راجع الأزمنة: Present Simple, Present Perfect, Past Simple' },
-      { text: 'أخطاء في حروف الجر والأدوات', tip: 'احفظ التعبيرات الثابتة مع حروف الجر' },
-      { text: 'نقص علامات الترقيم', tip: 'استخدم الفواصل والنقاط بشكل صحيح' }
-    ],
-    currentBand: {
-      level: '4.5',
-      description: 'يستخدم مزيج محدود من الجمل البسيطة والمعقدة، أخطاء نحوية متكررة، أخطاء في الترقيم'
-    },
-    nextBand: {
-      level: '5.0',
-      description: 'يستخدم مجموعة محدودة من التراكيب، محاولات للجمل المعقدة لكن بأخطاء',
-      howToReach: 'راجع القواعد الأساسية، تدرب على الجمل المركبة، قلل الأخطاء النحوية'
-    },
-    examples: [
-      { text: 'She don\'t like, He go to school', highlight: 'أخطاء أساسية - الصحيح: doesn\'t like, goes to school' },
-      { text: 'If I will have time I will go', highlight: 'خطأ شرطي وترقيم - الصحيح: If I have time, I will go' }
+    partId: 'task2',
+    partTitle: 'المهمة 2 - Essay',
+    partType: 'مقال',
+    partScore: 4.5,
+    criteria: [
+      {
+        id: 'task2-task-achievement',
+        name: 'Task Response',
+        nameAr: 'الاستجابة للمهمة',
+        score: 4.5,
+        color: '#FEF2F2',
+        borderColor: '#EF4444',
+        strengths: [
+          { text: 'حاولت تقديم رأيك في الموضوع', example: 'ذكرت موقفك من القضية المطروحة' }
+        ],
+        improvements: [
+          { text: 'لم تتناول جميع أجزاء السؤال', tip: 'اقرأ السؤال بعناية وتأكد من الإجابة على كل جزء' },
+          { text: 'الأفكار غير مدعومة بأمثلة كافية', tip: 'قدم مثالاً واحداً على الأقل لكل فكرة رئيسية' },
+          { text: 'عدد الكلمات أقل من 250 كلمة', tip: 'Task 2 يحتاج 250 كلمة على الأقل ويمثل 67% من الدرجة' }
+        ],
+        currentBand: {
+          level: '4.5',
+          description: 'يستجيب للمهمة بشكل جزئي فقط، الموقف غير واضح أو متكرر'
+        },
+        nextBand: {
+          level: '5.5',
+          description: 'يعبر عن موقف واضح مع بعض الأفكار الداعمة',
+          howToReach: 'حدد موقفك بوضوح في المقدمة، ادعم كل فكرة بأمثلة، اكتب خاتمة تلخص رأيك'
+        },
+        examples: [
+          { text: 'I think education is important.', highlight: 'رأي عام بدون دعم - أضف: because it provides skills needed for career success' },
+          { text: 'Some people think this. Other people think that.', highlight: 'عرض سطحي - طور كل وجهة نظر بتفصيل' }
+        ]
+      },
+      {
+        id: 'task2-coherence-cohesion',
+        name: 'Coherence & Cohesion',
+        nameAr: 'التماسك والترابط',
+        score: 4.5,
+        color: '#FEF3C7',
+        borderColor: '#F59E0B',
+        strengths: [
+          { text: 'قسمت المقال إلى فقرات', example: 'مقدمة وجسم المقال وخاتمة' }
+        ],
+        improvements: [
+          { text: 'ضعف في الروابط بين الفقرات', tip: 'استخدم: On the other hand, Furthermore, In contrast' },
+          { text: 'التكرار الواضح للكلمات والأفكار', tip: 'استخدم ضمائر الإشارة (this, that, these) والمرادفات' },
+          { text: 'غياب الجمل الموضوعية في بداية الفقرات', tip: 'ابدأ كل فقرة بجملة موضوعية تلخص الفكرة الرئيسية' }
+        ],
+        currentBand: {
+          level: '4.5',
+          description: 'تنظيم الأفكار غير واضح، روابط محدودة وقد تكون ميكانيكية'
+        },
+        nextBand: {
+          level: '5.5',
+          description: 'تنظيم واضح للفقرات مع استخدام أفضل للروابط',
+          howToReach: 'استخدم هيكل واضح: مقدمة → فقرة 1 → فقرة 2 → خاتمة مع روابط مناسبة'
+        },
+        examples: [
+          { text: 'First point. Second point. Third point.', highlight: 'روابط ضعيفة - استخدم: Firstly, Moreover, Finally' }
+        ]
+      },
+      {
+        id: 'task2-lexical-resource',
+        name: 'Lexical Resource',
+        nameAr: 'الثروة اللغوية',
+        score: 5.0,
+        color: '#DBEAFE',
+        borderColor: '#3B82F6',
+        strengths: [
+          { text: 'استخدمت بعض المفردات الأكاديمية', example: 'important, development, society' }
+        ],
+        improvements: [
+          { text: 'تكرار نفس الكلمات في المقال', tip: 'استخدم مرادفات: important → crucial, significant, vital' },
+          { text: 'استخدام كلمات عامية غير أكاديمية', tip: 'تجنب: kids → children, lots of → numerous, good → beneficial' },
+          { text: 'أخطاء في التعبيرات الاصطلاحية', tip: 'تعلم collocations: make a decision (not do a decision)' }
+        ],
+        currentBand: {
+          level: '5.0',
+          description: 'مفردات كافية للمهمة لكن محدودة النطاق، بعض الأخطاء في اختيار الكلمات'
+        },
+        nextBand: {
+          level: '6.0',
+          description: 'مفردات متنوعة مع بعض المحاولات لاستخدام كلمات أقل شيوعاً',
+          howToReach: 'احفظ 5 مرادفات لكل كلمة شائعة، تعلم التعبيرات الأكاديمية'
+        },
+        examples: [
+          { text: 'good → beneficial, advantageous', highlight: 'استبدل الكلمات البسيطة بمفردات أكاديمية' }
+        ]
+      },
+      {
+        id: 'task2-grammatical-range',
+        name: 'Grammatical Range & Accuracy',
+        nameAr: 'التنوع والدقة النحوية',
+        score: 4.5,
+        color: '#FCE7F3',
+        borderColor: '#EC4899',
+        strengths: [
+          { text: 'محاولة لاستخدام جمل مركبة', example: 'استخدمت because و although في بعض الجمل' }
+        ],
+        improvements: [
+          { text: 'استخدام محدود للتراكيب المعقدة', tip: 'تعلم: Although..., Despite..., Not only... but also...' },
+          { text: 'أخطاء في حروف الجر', tip: 'احفظ: depend on, result in, lead to, contribute to' },
+          { text: 'أخطاء في الأزمنة المختلطة', tip: 'حافظ على زمن واحد في الفقرة الواحدة ما لم يتطلب السياق التغيير' },
+          { text: 'أخطاء في المبني للمجهول', tip: 'تعلم: It is believed that..., It can be argued that...' }
+        ],
+        currentBand: {
+          level: '4.5',
+          description: 'جمل بسيطة في الغالب مع محاولات محدودة للجمل المعقدة'
+        },
+        nextBand: {
+          level: '5.5',
+          description: 'مزيج من الجمل البسيطة والمعقدة مع أخطاء أقل',
+          howToReach: 'تدرب على كتابة جملة معقدة واحدة في كل فقرة، راجع القواعد الأساسية'
+        },
+        examples: [
+          { text: 'People is thinking that technology good', highlight: 'أخطاء متعددة - الصحيح: People think that technology is beneficial' }
+        ]
+      }
     ]
   }
 ];
 
-// اقتراحات محسّنة
-const improvements = [
+// اقتراحات محسّنة - مجمعة حسب المهمة
+const improvementsByPart = [
   {
-    category: 'استخدام المفردات',
-    suggestions: [
-      { original: 'good', improved: 'excellent, beneficial, advantageous' },
-      { original: 'show', improved: 'demonstrate, illustrate, indicate' },
-      { original: 'very', improved: 'considerably, significantly, remarkably' }
+    partId: 'task1',
+    partTitle: 'المهمة 1 - General Training Letter',
+    partType: 'رسالة شخصية',
+    improvements: [
+      {
+        category: 'استخدام المفردات',
+        suggestions: [
+          { original: 'good', improved: 'excellent, beneficial, advantageous' },
+          { original: 'show', improved: 'demonstrate, illustrate, indicate' },
+          { original: 'very', improved: 'considerably, significantly, remarkably' }
+        ]
+      },
+      {
+        category: 'الروابط والتماسك',
+        suggestions: [
+          { original: 'and', improved: 'moreover, furthermore, in addition' },
+          { original: 'but', improved: 'however, nevertheless, on the other hand' },
+          { original: 'so', improved: 'therefore, consequently, as a result' }
+        ]
+      }
+    ],
+    tips: [
+      { title: 'تصحيح الأخطاء النحوية الأساسية', priority: 'عالية', description: 'راجع subject-verb agreement والأزمنة الأساسية - هذا سيرفع درجتك بشكل كبير' },
+      { title: 'زيادة عدد الكلمات', priority: 'عالية', description: 'اكتب 150 كلمة على الأقل لـ Task 1' },
+      { title: 'تحسين التماسك باستخدام الروابط', priority: 'عالية', description: 'استخدم روابط مناسبة: However, Moreover, Therefore بين الجمل' }
     ]
   },
   {
-    category: 'الروابط والتماسك',
-    suggestions: [
-      { original: 'and', improved: 'moreover, furthermore, in addition' },
-      { original: 'but', improved: 'however, nevertheless, on the other hand' },
-      { original: 'so', improved: 'therefore, consequently, as a result' }
+    partId: 'task2',
+    partTitle: 'المهمة 2 - Essay',
+    partType: 'مقال',
+    improvements: [
+      {
+        category: 'استخدام المفردات الأكاديمية',
+        suggestions: [
+          { original: 'important', improved: 'crucial, significant, vital, paramount' },
+          { original: 'think', improved: 'believe, consider, argue, contend' },
+          { original: 'a lot of', improved: 'numerous, a significant number of, considerable' }
+        ]
+      },
+      {
+        category: 'التعبيرات الأكاديمية',
+        suggestions: [
+          { original: 'I think', improved: 'In my opinion, From my perspective, I firmly believe' },
+          { original: 'In conclusion', improved: 'To sum up, In light of the above, Taking everything into account' },
+          { original: 'For example', improved: 'For instance, A case in point is, To illustrate' }
+        ]
+      },
+      {
+        category: 'الروابط المتقدمة',
+        suggestions: [
+          { original: 'Also', improved: 'Furthermore, Moreover, In addition to this' },
+          { original: 'But', improved: 'Nevertheless, Conversely, On the contrary' },
+          { original: 'Because', improved: 'Due to the fact that, Owing to, As a consequence of' }
+        ]
+      }
+    ],
+    tips: [
+      { title: 'تطوير الأفكار بشكل كامل', priority: 'عالية', description: 'اشرح كل فكرة بجملتين أو ثلاث مع أمثلة داعمة' },
+      { title: 'توسيع الثروة اللغوية', priority: 'متوسطة', description: 'تعلم 10 كلمات أكاديمية جديدة يومياً وتجنب تكرار نفس الكلمات' },
+      { title: 'كتابة 250 كلمة على الأقل', priority: 'عالية', description: 'Task 2 يمثل 67% من الدرجة - تأكد من كتابة العدد المطلوب' }
     ]
-  }
-];
-
-// نصائح التحسين
-const improvementTips = [
-  {
-    title: 'تصحيح الأخطاء النحوية الأساسية',
-    priority: 'عالية',
-    description: 'راجع subject-verb agreement والأزمنة الأساسية - هذا سيرفع درجتك بشكل كبير',
-    completed: false
-  },
-  {
-    title: 'زيادة عدد الكلمات المطلوب',
-    priority: 'عالية',
-    description: 'اكتب 150 كلمة على الأقل لـ Task 1 و 250 كلمة لـ Task 2',
-    completed: false
-  },
-  {
-    title: 'تحسين التماسك باستخدام الروابط',
-    priority: 'عالية',
-    description: 'استخدم روابط مناسبة: However, Moreover, Therefore بين الجمل',
-    completed: false
-  },
-  {
-    title: 'توسيع الثروة اللغوية',
-    priority: 'متوسطة',
-    description: 'تعلم 10 كلمات جديدة يومياً وتجنب تكرار نفس الكلمات',
-    completed: false
-  },
-  {
-    title: 'تطوير الأفكار بشكل كامل',
-    priority: 'متوسطة',
-    description: 'اشرح كل فكرة بجملتين أو ثلاث مع أمثلة داعمة',
-    completed: false
   }
 ];
 
 export function WritingTestResultPage() {
   const [activeTab, setActiveTab] = useState('answer');
+  const [selectedAttempt, setSelectedAttempt] = useState(2); // index of current attempt (latest)
   const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
   const [expandedCriteria, setExpandedCriteria] = useState<string[]>(['task-achievement']);
   const [activeErrorFilter, setActiveErrorFilter] = useState('all');
+  const [expandedParts, setExpandedParts] = useState<string[]>(['task1']);
+  const [expandedImprovementParts, setExpandedImprovementParts] = useState<string[]>(['task1']);
+
+  const togglePart = (partId: string) => {
+    setExpandedParts(prev =>
+      prev.includes(partId) ? prev.filter(id => id !== partId) : [...prev, partId]
+    );
+  };
+
+  const toggleImprovementPart = (partId: string) => {
+    setExpandedImprovementParts(prev =>
+      prev.includes(partId) ? prev.filter(id => id !== partId) : [...prev, partId]
+    );
+  };
 
   // Close tooltip when clicking anywhere on the page
   const handlePageClick = () => {
@@ -680,86 +855,143 @@ export function WritingTestResultPage() {
 
           {/* Overview Tab */}
           <Tabs.Content value="overview" className="p-4 sm:p-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-              {/* Progress Chart */}
-              <div>
-                <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] sm:text-[18px] text-[#1B2A4A] mb-4">
-                  Progress Over Time
-                </h3>
-                <ResponsiveContainer width="100%" height={250}>
-                  <LineChart data={progressData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#EEEEEE" />
-                    <XAxis 
-                      dataKey="attempt" 
-                      tick={{ fontSize: 12, fontFamily: "'IBM Plex Sans Arabic', sans-serif" }}
-                      stroke="#374151"
-                    />
-                    <YAxis 
-                      domain={[0, 9]} 
-                      tick={{ fontSize: 12, fontFamily: "'IBM Plex Sans Arabic', sans-serif" }}
-                      stroke="#374151"
-                    />
-                    <Tooltip 
-                      contentStyle={{ 
-                        fontFamily: "'IBM Plex Sans Arabic', sans-serif",
-                        borderRadius: '8px',
-                        border: '1px solid #EEEEEE'
-                      }}
-                    />
-                    <Line 
-                      key="progress-line"
-                      type="monotone" 
-                      dataKey="score" 
-                      stroke="#C30020" 
-                      strokeWidth={3}
-                      dot={{ fill: '#C30020', r: 5 }}
-                      activeDot={{ r: 7 }}
-                      isAnimationActive={false}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+
+            {/* Score + Chart in one row */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
+              {/* Score Card */}
+              <div className="bg-gradient-to-bl from-[#012269] via-[#1B2A4A] to-[#0f1d3d] rounded-[20px] p-6 relative overflow-hidden">
+                <div className="absolute top-[-40px] left-[-40px] w-[160px] h-[160px] rounded-full border-[30px] border-white opacity-[0.03]" />
+                <div className="absolute bottom-[-60px] right-[-60px] w-[200px] h-[200px] rounded-full border-[30px] border-white opacity-[0.03]" />
+
+                <div className="relative z-10">
+                  <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-white/50 mb-5">
+                    الدرجة الإجمالية
+                  </p>
+
+                  {/* Ring + Score */}
+                  <div className="flex items-center justify-center mb-6">
+                    <div className="relative w-[140px] h-[140px]">
+                      {(() => {
+                        const score = attemptData[selectedAttempt].score;
+                        const r = 60;
+                        const circ = 2 * Math.PI * r;
+                        const offset = circ - ((score / 9) * circ);
+                        return (
+                          <svg className="w-full h-full -rotate-90" viewBox="0 0 140 140">
+                            <circle cx="70" cy="70" r={r} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="10" />
+                            <circle cx="70" cy="70" r={r} fill="none" stroke="#fff" strokeWidth="10" strokeLinecap="round"
+                              strokeDasharray={circ} strokeDashoffset={offset}
+                              style={{ transition: 'stroke-dashoffset 0.8s ease' }}
+                            />
+                          </svg>
+                        );
+                      })()}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[40px] text-white leading-none">
+                          {attemptData[selectedAttempt].score}
+                        </span>
+                        <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-white/35">من 9</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 4 Criteria - compact row */}
+                  <div className="grid grid-cols-2 gap-2">
+                    {(() => {
+                      const colors = ['#EF4444', '#F59E0B', '#3B82F6', '#EC4899'];
+                      const labels = ['إنجاز المهمة', 'الترابط', 'المفردات', 'النحو'];
+                      return attemptData[selectedAttempt].criteria.map((c, i) => (
+                        <div key={c.id} className="bg-white/8 rounded-[10px] px-3 py-2.5 flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: colors[i] }} />
+                            <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] text-white/60">{labels[i]}</span>
+                          </div>
+                          <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] text-white">{c.score}</span>
+                        </div>
+                      ));
+                    })()}
+                  </div>
+                </div>
               </div>
 
-              {/* Radar Chart for Criteria */}
-              <div>
+              {/* Progress Chart */}
+              <div className="bg-white rounded-[20px] p-5 sm:p-6 border border-[#EEEEEE] flex flex-col">
                 <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] sm:text-[18px] text-[#1B2A4A] mb-4">
-                  Criteria Breakdown
+                  تطور الدرجات
                 </h3>
-                <ResponsiveContainer width="100%" height={250}>
-                  <RadarChart data={criteriaRadarData} margin={{ top: 20, right: 30, left: 30, bottom: 20 }}>
-                    <PolarGrid stroke="#E5E7EB" strokeWidth={1} />
-                    <PolarAngleAxis 
-                      dataKey="criteria" 
-                      tick={{ 
-                        fontSize: 12, 
-                        fontFamily: "'IBM Plex Sans Arabic', sans-serif", 
-                        fill: '#1B2A4A',
-                        fontWeight: 600
-                      }}
-                    />
-                    <PolarRadiusAxis 
-                      domain={[0, 9]} 
-                      tick={{ 
-                        fontSize: 11, 
-                        fontFamily: "'IBM Plex Sans Arabic', sans-serif", 
-                        fill: '#6B7280' 
-                      }}
-                      tickCount={4}
-                      angle={90}
-                    />
-                    <Radar 
-                      key="criteria-radar"
-                      name="Score" 
-                      dataKey="score" 
-                      stroke="#012269" 
-                      fill="#C30020" 
-                      fillOpacity={0.15}
-                      strokeWidth={3}
-                      dot={{ fill: '#C30020', r: 4 }}
-                      isAnimationActive={false}
-                    />
-                  </RadarChart>
-                </ResponsiveContainer>
+                <div className="flex-1 min-h-[250px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={attemptData} margin={{ top: 30, right: 40, left: 0, bottom: 10 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+                      <XAxis
+                        dataKey="attempt"
+                        tick={({ x, y, index, payload }: { x: number; y: number; index: number; payload: { value: string } }) => {
+                          const isCurrent = index === attemptData.length - 1;
+                          return (
+                            <g style={{ cursor: isCurrent ? 'default' : 'pointer' }}>
+                              <a href={isCurrent ? undefined : `#result-${index + 1}`}>
+                                <text
+                                  x={x} y={y + 18}
+                                  textAnchor="middle"
+                                  fill={isCurrent ? '#1B2A4A' : '#012269'}
+                                  fontSize={12}
+                                  fontWeight={isCurrent ? 700 : 400}
+                                  fontFamily="'IBM Plex Sans Arabic', sans-serif"
+                                  textDecoration={isCurrent ? 'none' : 'underline'}
+                                >
+                                  {payload.value}
+                                </text>
+                              </a>
+                            </g>
+                          );
+                        }}
+                        stroke="#E5E7EB"
+                        height={35}
+                      />
+                      <YAxis
+                        domain={[0, 9]}
+                        tick={{ fontSize: 11, fontFamily: "'IBM Plex Sans Arabic', sans-serif", fill: '#D1D5DB' }}
+                        stroke="#E5E7EB"
+                        tickCount={5}
+                        width={25}
+                      />
+                      <Line
+                        key="progress-line"
+                        type="monotone"
+                        dataKey="score"
+                        stroke="#012269"
+                        strokeWidth={3}
+                        dot={(props: { cx: number; cy: number; index: number }) => {
+                          const { cx, cy, index } = props;
+                          const isCurrent = index === attemptData.length - 1;
+                          const score = attemptData[index].score;
+                          return (
+                            <g key={`dot-${index}`}>
+                              <circle
+                                cx={cx} cy={cy}
+                                r={isCurrent ? 6 : 4}
+                                fill={isCurrent ? '#012269' : '#fff'}
+                                stroke="#012269"
+                                strokeWidth={2}
+                              />
+                              <text
+                                x={cx} y={cy - 14}
+                                textAnchor="middle"
+                                fill="#1B2A4A"
+                                fontSize={13}
+                                fontWeight={700}
+                                fontFamily="'IBM Plex Sans Arabic', sans-serif"
+                              >
+                                {score}
+                              </text>
+                            </g>
+                          );
+                        }}
+                        isAnimationActive={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
             </div>
 
@@ -769,7 +1001,7 @@ export function WritingTestResultPage() {
                 🎯 خطة العمل الشخصية
               </h3>
               <div className="space-y-3">
-                {improvementTips.map((tip, idx) => (
+                {improvementsByPart.flatMap(p => p.tips.map(t => ({ ...t, completed: false }))).map((tip, idx) => (
                   <div key={idx} className="flex items-start sm:items-center gap-3 sm:gap-4 p-4 bg-[#F9FAFB] rounded-[8px] border border-[#EEEEEE]">
                     <div className="flex gap-1 flex-shrink-0">
                       {[1, 2, 3].map((i) => (
@@ -811,159 +1043,166 @@ export function WritingTestResultPage() {
                 تحليل مفصل للمعايير الأربعة
               </h3>
               <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] sm:text-[14px] text-[#6B7280]">
-                اضغط على أي معيار للحصول على تحليل شامل مع أمثلة من إجابتك ونصائح للتحسين
+                اضغط على أي جزء لعرض المعايير التفصيلية، ثم اضغط على أي معيار للحصول على تحليل شامل
               </p>
             </div>
-            
-            <div className="space-y-4">{detailedCriteria.map((criteria) => (
-                <div 
-                  key={criteria.id}
-                  className="bg-white rounded-[16px] border-2 border-[#EEEEEE] overflow-hidden hover:border-[#BFDBFE] transition-all"
-                  style={{ borderLeftColor: expandedCriteria.includes(criteria.id) ? criteria.borderColor : '#EEEEEE', borderLeftWidth: expandedCriteria.includes(criteria.id) ? '4px' : '2px' }}
-                >
-                  {/* Header */}
+
+            <div className="space-y-6">
+              {detailedCriteriaByPart.map((part) => (
+                <div key={part.partId} className="rounded-[16px] border border-[#EEEEEE] overflow-hidden">
+                  {/* Part Header - Collapsible */}
                   <button
-                    onClick={() => toggleCriteria(criteria.id)}
-                    className="w-full px-6 py-5 flex items-center justify-between hover:bg-[#F9FAFB] transition-colors"
+                    onClick={() => togglePart(part.partId)}
+                    className="w-full bg-gradient-to-l from-[#012269] to-[#1B2A4A] px-6 py-5 flex items-center justify-between hover:opacity-95 transition-opacity"
                   >
-                    <div className="flex items-center gap-4 flex-1">
-                      <div 
-                        className="w-12 h-12 rounded-[12px] flex items-center justify-center flex-shrink-0"
-                        style={{ backgroundColor: criteria.color }}
-                      >
-                        <BarChart3 className="w-6 h-6" style={{ color: criteria.borderColor }} />
+                    <div className="flex items-center gap-3">
+                      <FileText className="w-6 h-6 text-white" />
+                      <div className="text-right">
+                        <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] text-white">
+                          {part.partTitle}
+                        </h4>
+                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-white/70">
+                          {part.partType} • المعدل: {part.partScore}/9
+                        </p>
                       </div>
-                      <div className="text-right flex-1">
-                        <div className="flex items-center justify-between gap-4">
-                          <div>
-                            <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] sm:text-[17px] text-[#1B2A4A] mb-1">
-                              {criteria.nameAr}
-                            </h4>
-                            <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] sm:text-[13px] text-[#6B7280]">
-                              {criteria.name}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <div className="text-left">
-                              <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[24px] sm:text-[28px]" style={{ color: criteria.borderColor }}>
-                                {criteria.score}
-                              </span>
-                              <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#6B7280]">/9</span>
-                            </div>
-                            {expandedCriteria.includes(criteria.id) ? (
-                              <ChevronUp className="w-5 h-5 text-[#6B7280]" />
-                            ) : (
-                              <ChevronDown className="w-5 h-5 text-[#6B7280]" />
-                            )}
-                          </div>
-                        </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="bg-white/20 backdrop-blur-sm rounded-[8px] px-3 py-1.5">
+                        <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[18px] text-white">{part.partScore}</span>
+                        <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-white/70">/9</span>
                       </div>
+                      {expandedParts.includes(part.partId) ? (
+                        <ChevronUp className="w-5 h-5 text-white" />
+                      ) : (
+                        <ChevronDown className="w-5 h-5 text-white" />
+                      )}
                     </div>
                   </button>
 
-                  {/* Expanded Content */}
-                  {expandedCriteria.includes(criteria.id) && (
-                    <div className="px-6 pb-6 border-t border-[#EEEEEE]">
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-                        {/* Strengths */}
-                        <div className="space-y-4">
-                          <div className="flex items-center gap-2">
-                            <CheckCircle2 className="w-5 h-5 text-[#4CAF50]" />
-                            <h5 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A]">
-                              نقاط القوة
-                            </h5>
-                          </div>
-                          <div className="space-y-3">
-                            {criteria.strengths.map((strength, idx) => (
-                              <div key={idx} className="bg-[#D1FAE5] rounded-[12px] p-4 border border-[#86EFAC]">
-                                <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-2">
-                                  ✓ {strength.text}
-                                </p>
-                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151] bg-white/50 rounded-[8px] p-2">
-                                  <span className="text-[#6B7280]">مثال:</span> {strength.example}
-                                </p>
+                  {/* Part Content - Criteria List */}
+                  {expandedParts.includes(part.partId) && (
+                    <div className="p-4 bg-white space-y-4">
+                      {part.criteria.map((criteria) => (
+                        <div
+                          key={criteria.id}
+                          className="bg-white rounded-[16px] border-2 border-[#EEEEEE] overflow-hidden hover:border-[#BFDBFE] transition-all"
+                          style={{ borderLeftColor: expandedCriteria.includes(criteria.id) ? criteria.borderColor : '#EEEEEE', borderLeftWidth: expandedCriteria.includes(criteria.id) ? '4px' : '2px' }}
+                        >
+                          <button
+                            onClick={() => toggleCriteria(criteria.id)}
+                            className="w-full px-6 py-5 flex items-center justify-between hover:bg-[#F9FAFB] transition-colors"
+                          >
+                            <div className="flex items-center gap-4 flex-1">
+                              <div
+                                className="w-12 h-12 rounded-[12px] flex items-center justify-center flex-shrink-0"
+                                style={{ backgroundColor: criteria.color }}
+                              >
+                                <BarChart3 className="w-6 h-6" style={{ color: criteria.borderColor }} />
                               </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Improvements */}
-                        <div className="space-y-4">
-                          <div className="flex items-center gap-2">
-                            <Lightbulb className="w-5 h-5 text-[#FF8C00]" />
-                            <h5 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A]">
-                              مجالات التحسين
-                            </h5>
-                          </div>
-                          <div className="space-y-3">
-                            {criteria.improvements.map((improvement, idx) => (
-                              <div key={idx} className="bg-[#FEF3C7] rounded-[12px] p-4 border border-[#FDE68A]">
-                                <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-2">
-                                  💡 {improvement.text}
-                                </p>
-                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151] bg-white/50 rounded-[8px] p-2">
-                                  <span className="text-[#6B7280]">نصيحة:</span> {improvement.tip}
-                                </p>
+                              <div className="text-right flex-1">
+                                <div className="flex items-center justify-between gap-4">
+                                  <div>
+                                    <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] sm:text-[17px] text-[#1B2A4A] mb-1">
+                                      {criteria.nameAr}
+                                    </h4>
+                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] sm:text-[13px] text-[#6B7280]">
+                                      {criteria.name}
+                                    </p>
+                                  </div>
+                                  <div className="flex items-center gap-3">
+                                    <div className="text-left">
+                                      <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[24px] sm:text-[28px]" style={{ color: criteria.borderColor }}>
+                                        {criteria.score}
+                                      </span>
+                                      <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#6B7280]">/9</span>
+                                    </div>
+                                    {expandedCriteria.includes(criteria.id) ? (
+                                      <ChevronUp className="w-5 h-5 text-[#6B7280]" />
+                                    ) : (
+                                      <ChevronDown className="w-5 h-5 text-[#6B7280]" />
+                                    )}
+                                  </div>
+                                </div>
                               </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Band Descriptors */}
-                      <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div className="bg-[#F9FAFB] rounded-[12px] p-4 border border-[#EEEEEE]">
-                          <div className="flex items-center gap-2 mb-3">
-                            <div className="px-3 py-1 bg-[#E0F2FE] rounded-full">
-                              <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[12px] text-[#0369A1]">
-                                مستواك الحالي: {criteria.currentBand.level}
-                              </span>
                             </div>
-                          </div>
-                          <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151] leading-relaxed">
-                            {criteria.currentBand.description}
-                          </p>
-                        </div>
+                          </button>
 
-                        <div className="bg-gradient-to-br from-[#FEF3C7] to-[#FDE68A] rounded-[12px] p-4 border border-[#F59E0B]">
-                          <div className="flex items-center gap-2 mb-3">
-                            <Target className="w-4 h-4 text-[#92400E]" />
-                            <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[13px] text-[#92400E]">
-                              للوصول للمستوى {criteria.nextBand.level}
-                            </span>
-                          </div>
-                          <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151] leading-relaxed mb-2">
-                            {criteria.nextBand.description}
-                          </p>
-                          <div className="bg-white/70 rounded-[8px] p-2 mt-2">
-                            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[11px] text-[#92400E]">
-                              📍 كيف تصل: {criteria.nextBand.howToReach}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
+                          {expandedCriteria.includes(criteria.id) && (
+                            <div className="px-6 pb-6 border-t border-[#EEEEEE]">
+                              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                                <div className="space-y-4">
+                                  <div className="flex items-center gap-2">
+                                    <CheckCircle2 className="w-5 h-5 text-[#4CAF50]" />
+                                    <h5 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A]">نقاط القوة</h5>
+                                  </div>
+                                  <div className="space-y-3">
+                                    {criteria.strengths.map((strength, idx) => (
+                                      <div key={idx} className="bg-[#D1FAE5] rounded-[12px] p-4 border border-[#86EFAC]">
+                                        <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-2">✓ {strength.text}</p>
+                                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151] bg-white/50 rounded-[8px] p-2">
+                                          <span className="text-[#6B7280]">مثال:</span> {strength.example}
+                                        </p>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                                <div className="space-y-4">
+                                  <div className="flex items-center gap-2">
+                                    <Lightbulb className="w-5 h-5 text-[#FF8C00]" />
+                                    <h5 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A]">مجالات التحسين</h5>
+                                  </div>
+                                  <div className="space-y-3">
+                                    {criteria.improvements.map((improvement, idx) => (
+                                      <div key={idx} className="bg-[#FEF3C7] rounded-[12px] p-4 border border-[#FDE68A]">
+                                        <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-2">💡 {improvement.text}</p>
+                                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151] bg-white/50 rounded-[8px] p-2">
+                                          <span className="text-[#6B7280]">نصيحة:</span> {improvement.tip}
+                                        </p>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
 
-                      {/* Examples from Text */}
-                      <div className="mt-6">
-                        <div className="flex items-center gap-2 mb-3">
-                          <BookOpen className="w-5 h-5 text-[#012269]" />
-                          <h5 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A]">
-                            أمثلة من إجابتك
-                          </h5>
-                        </div>
-                        <div className="space-y-2">
-                          {criteria.examples.map((example, idx) => (
-                            <div key={idx} className="bg-white rounded-[8px] p-3 border border-[#EEEEEE]">
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#374151] mb-1 italic">
-                                "{example.text}"
-                              </p>
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] text-[#6B7280]">
-                                → {example.highlight}
-                              </p>
+                              <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                <div className="bg-[#F9FAFB] rounded-[12px] p-4 border border-[#EEEEEE]">
+                                  <div className="flex items-center gap-2 mb-3">
+                                    <div className="px-3 py-1 bg-[#E0F2FE] rounded-full">
+                                      <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[12px] text-[#0369A1]">مستواك الحالي: {criteria.currentBand.level}</span>
+                                    </div>
+                                  </div>
+                                  <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151] leading-relaxed">{criteria.currentBand.description}</p>
+                                </div>
+                                <div className="bg-gradient-to-br from-[#FEF3C7] to-[#FDE68A] rounded-[12px] p-4 border border-[#F59E0B]">
+                                  <div className="flex items-center gap-2 mb-3">
+                                    <Target className="w-4 h-4 text-[#92400E]" />
+                                    <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[13px] text-[#92400E]">للوصول للمستوى {criteria.nextBand.level}</span>
+                                  </div>
+                                  <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151] leading-relaxed mb-2">{criteria.nextBand.description}</p>
+                                  <div className="bg-white/70 rounded-[8px] p-2 mt-2">
+                                    <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[11px] text-[#92400E]">📍 كيف تصل: {criteria.nextBand.howToReach}</p>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="mt-6">
+                                <div className="flex items-center gap-2 mb-3">
+                                  <BookOpen className="w-5 h-5 text-[#012269]" />
+                                  <h5 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A]">أمثلة من إجابتك</h5>
+                                </div>
+                                <div className="space-y-2">
+                                  {criteria.examples.map((example, idx) => (
+                                    <div key={idx} className="bg-white rounded-[8px] p-3 border border-[#EEEEEE]">
+                                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#374151] mb-1 italic">"{example.text}"</p>
+                                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] text-[#6B7280]">→ {example.highlight}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
                             </div>
-                          ))}
+                          )}
                         </div>
-                      </div>
+                      ))}
                     </div>
                   )}
                 </div>
@@ -973,47 +1212,106 @@ export function WritingTestResultPage() {
 
           {/* Improvements Tab */}
           <Tabs.Content value="improvements" className="p-4 sm:p-8">
-            <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] sm:text-[18px] text-[#1B2A4A] mb-6">
-              💡 كان بإمكانك استخدام عبارات أفضل
-            </h3>
+            <div className="mb-6">
+              <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] sm:text-[18px] text-[#1B2A4A] mb-2">
+                💡 اقتراحات التحسين
+              </h3>
+              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] sm:text-[14px] text-[#6B7280]">
+                اضغط على أي جزء لعرض اقتراحات التحسين الخاصة به مع بدائل أفضل للعبارات المستخدمة
+              </p>
+            </div>
+
             <div className="space-y-6">
-              {improvements.map((category, idx) => (
-                <div key={idx} className="bg-white rounded-[12px] border border-[#EEEEEE] overflow-hidden">
-                  <div className="bg-[#F9FAFB] px-4 sm:px-6 py-3 border-b border-[#EEEEEE]">
-                    <h4 className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] sm:text-[16px] text-[#1B2A4A]">
-                      {category.category}
-                    </h4>
-                  </div>
-                  <div className="p-4 sm:p-6">
-                    <div className="space-y-4">
-                      {category.suggestions.map((suggestion, sIdx) => (
-                        <div key={sIdx} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div className="bg-[#FEF2F2] px-4 py-3 rounded-[8px] border border-[#FECACA]">
-                            <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#6B7280] mb-1">
-                              استخدمت:
-                            </p>
-                            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#991B1B]">
-                              {suggestion.original}
-                            </p>
-                          </div>
-                          <div className="bg-[#ECFDF5] px-4 py-3 rounded-[8px] border border-[#A7F3D0]">
-                            <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#6B7280] mb-1">
-                              يمكنك استخدام:
-                            </p>
-                            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#065F46]">
-                              {suggestion.improved}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
+              {improvementsByPart.map((part) => (
+                <div key={part.partId} className="rounded-[16px] border border-[#EEEEEE] overflow-hidden">
+                  {/* Part Header - Collapsible */}
+                  <button
+                    onClick={() => toggleImprovementPart(part.partId)}
+                    className="w-full bg-gradient-to-l from-[#012269] to-[#1B2A4A] px-6 py-5 flex items-center justify-between hover:opacity-95 transition-opacity"
+                  >
+                    <div className="flex items-center gap-3">
+                      <FileText className="w-6 h-6 text-white" />
+                      <div className="text-right">
+                        <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] text-white">
+                          {part.partTitle}
+                        </h4>
+                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-white/70">
+                          {part.partType} • {part.improvements.length} فئات تحسين • {part.tips.length} نصائح
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                    {expandedImprovementParts.includes(part.partId) ? (
+                      <ChevronUp className="w-5 h-5 text-white" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-white" />
+                    )}
+                  </button>
+
+                  {/* Part Content */}
+                  {expandedImprovementParts.includes(part.partId) && (
+                    <div className="p-4 bg-white space-y-6">
+                      {/* Word Improvements */}
+                      <div>
+                        <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A] mb-4 flex items-center gap-2">
+                          <TrendingUp className="w-5 h-5 text-[#012269]" />
+                          كان بإمكانك استخدام عبارات أفضل
+                        </h4>
+                        <div className="space-y-4">
+                          {part.improvements.map((category, idx) => (
+                            <div key={idx} className="bg-white rounded-[12px] border border-[#EEEEEE] overflow-hidden">
+                              <div className="bg-[#F9FAFB] px-4 sm:px-6 py-3 border-b border-[#EEEEEE]">
+                                <h5 className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] sm:text-[15px] text-[#1B2A4A]">
+                                  {category.category}
+                                </h5>
+                              </div>
+                              <div className="p-4 sm:p-5">
+                                <div className="space-y-3">
+                                  {category.suggestions.map((suggestion, sIdx) => (
+                                    <div key={sIdx} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                      <div className="bg-[#FEF2F2] px-4 py-3 rounded-[8px] border border-[#FECACA]">
+                                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#6B7280] mb-1">استخدمت:</p>
+                                        <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#991B1B]">{suggestion.original}</p>
+                                      </div>
+                                      <div className="bg-[#ECFDF5] px-4 py-3 rounded-[8px] border border-[#A7F3D0]">
+                                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#6B7280] mb-1">يمكنك استخدام:</p>
+                                        <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#065F46]">{suggestion.improved}</p>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Tips Checklist */}
+                      <div>
+                        <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A] mb-4 flex items-center gap-2">
+                          <Target className="w-5 h-5 text-[#FF8C00]" />
+                          نصائح للتحسين
+                        </h4>
+                        <div className="space-y-3">
+                          {part.tips.map((tip, idx) => (
+                            <div key={idx} className="bg-[#F9FAFB] rounded-[12px] p-4 border border-[#EEEEEE] flex items-start gap-3">
+                              <div className={`px-2.5 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] flex-shrink-0 mt-0.5 ${
+                                tip.priority === 'عالية' ? 'bg-[#FEE2E2] text-[#991B1B]' : 'bg-[#FEF3C7] text-[#92400E]'
+                              }`}>
+                                {tip.priority}
+                              </div>
+                              <div className="flex-1">
+                                <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#1B2A4A] mb-1">{tip.title}</p>
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280]">{tip.description}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
-
-            {/* Additional Resources */}
-            
           </Tabs.Content>
 
           {/* Answer Tab */}
