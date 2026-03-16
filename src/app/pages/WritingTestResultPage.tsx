@@ -130,6 +130,45 @@ const errorExamples = [
   }
 ];
 
+// الإجابات النموذجية لكل مهمة
+const modelAnswers = [
+  {
+    id: 'task1',
+    title: 'المهمة 1 - General Training Letter',
+    type: 'General Training - رسالة شخصية',
+    bandScore: '7.0',
+    answer: `Dear Sarah,
+
+I hope this letter finds you well. I am writing to share my thoughts about a wonderful idea that I believe could benefit both of us.
+
+As you know, I have been exploring various ways to improve our community's engagement with local sports activities. Recently, I came across an initiative that encourages residents to participate in weekly group exercises at the local park.
+
+The programme offers a range of activities, including yoga, jogging, and team sports such as football and basketball. I believe this would be an excellent opportunity for us to stay active while also meeting new people in our neighbourhood.
+
+I would love it if you could join me for the first session next Saturday morning. The activities begin at 8 AM and typically last for about two hours. Please let me know if you are available, and I will register both of us.
+
+I look forward to hearing from you soon.
+
+Best wishes,
+Alex`,
+  },
+  {
+    id: 'task2',
+    title: 'المهمة 2 - Essay',
+    type: 'General Training - مقال',
+    bandScore: '7.5',
+    answer: `In recent years, the impact of technology on education has become a topic of considerable debate. While some argue that traditional teaching methods remain superior, others believe that technology has revolutionised the way we learn. In my opinion, technology, when used effectively, can significantly enhance the educational experience.
+
+To begin with, technology provides students with access to a vast array of resources that were previously unavailable. Online libraries, educational videos, and interactive platforms enable learners to explore subjects in greater depth. For instance, a student studying biology can watch detailed animations of cellular processes, which would be difficult to replicate in a traditional classroom setting.
+
+Furthermore, technology facilitates personalised learning. Adaptive software can assess a student's strengths and weaknesses, tailoring content to their individual needs. This approach ensures that each learner progresses at their own pace, which is particularly beneficial for those who may struggle with certain topics.
+
+However, it is important to acknowledge that technology alone cannot replace the role of a skilled teacher. The human element of education — including mentorship, motivation, and emotional support — remains indispensable. Therefore, the most effective approach combines technological tools with traditional teaching methods.
+
+In conclusion, while technology offers numerous advantages in education, it should be viewed as a complement to, rather than a replacement for, conventional teaching. A balanced approach that leverages the strengths of both will yield the best outcomes for students.`,
+  }
+];
+
 // معايير التقييم التفصيلية
 const detailedCriteria = [
   {
@@ -624,6 +663,12 @@ export function WritingTestResultPage() {
               className="flex-1 px-3 sm:px-6 py-4 font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[12px] sm:text-[14px] text-[#374151] hover:bg-white transition-colors data-[state=active]:bg-white data-[state=active]:text-[#012269] data-[state=active]:border-b-2 data-[state=active]:border-[#012269] text-center"
             >
               اقتراحات التحسين
+            </Tabs.Trigger>
+            <Tabs.Trigger
+              value="model-answer"
+              className="flex-1 px-3 sm:px-6 py-4 font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[12px] sm:text-[14px] text-[#374151] hover:bg-white transition-colors data-[state=active]:bg-white data-[state=active]:text-[#012269] data-[state=active]:border-b-2 data-[state=active]:border-[#012269] text-center"
+            >
+              الإجابة النموذجية
             </Tabs.Trigger>
             <Tabs.Trigger
               value="answer"
@@ -1514,6 +1559,71 @@ export function WritingTestResultPage() {
                   })}
                 </div>
               </div>
+            </div>
+          </Tabs.Content>
+
+          {/* Model Answer Tab */}
+          <Tabs.Content value="model-answer" className="p-4 sm:p-8">
+            <div className="space-y-6">
+              <div className="flex items-center gap-3 mb-2">
+                <Award className="w-6 h-6 text-[#012269]" />
+                <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] sm:text-[18px] text-[#1B2A4A]">
+                  الإجابة النموذجية لكل مهمة
+                </h3>
+              </div>
+              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#6B7280] mb-4">
+                إجابات نموذجية عالية المستوى لكل جزء من أجزاء الاختبار، يمكنك الاستفادة منها لتحسين أسلوبك في الكتابة.
+              </p>
+
+              {modelAnswers.map((model) => (
+                <div key={model.id} className="rounded-[16px] border border-[#EEEEEE] overflow-hidden">
+                  {/* Model Answer Header */}
+                  <div className="bg-gradient-to-l from-[#012269] to-[#1B2A4A] px-6 py-4 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <FileText className="w-5 h-5 text-white" />
+                      <div>
+                        <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-white">
+                          {model.title}
+                        </h4>
+                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-white/70">
+                          {model.type}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="bg-white/20 backdrop-blur-sm rounded-[8px] px-3 py-1.5 text-center">
+                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[10px] text-white/70">
+                          Band Score
+                        </p>
+                        <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] text-white">
+                          {model.bandScore}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Model Answer Body */}
+                  <div className="p-6 bg-[#FAFFFE] border-r-4 border-[#4CAF50]">
+                    <div className="flex items-center gap-2 mb-4">
+                      <CheckCircle2 className="w-5 h-5 text-[#4CAF50]" />
+                      <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#4CAF50]">
+                        إجابة نموذجية
+                      </span>
+                    </div>
+                    <div className="bg-white rounded-[12px] p-5 border border-[#E5E7EB] shadow-sm">
+                      <pre className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] leading-[1.8] whitespace-pre-wrap" style={{ direction: 'ltr', textAlign: 'left' }}>
+                        {model.answer}
+                      </pre>
+                    </div>
+                    <div className="mt-4 flex items-start gap-2 bg-[#EFF6FF] rounded-[8px] p-3">
+                      <Lightbulb className="w-5 h-5 text-[#1E40AF] mt-0.5 flex-shrink-0" />
+                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#1E40AF]">
+                        قارن إجابتك بالإجابة النموذجية ولاحظ كيف تم تنظيم الأفكار واستخدام المفردات والروابط بشكل فعّال.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </Tabs.Content>
         </Tabs.Root>
