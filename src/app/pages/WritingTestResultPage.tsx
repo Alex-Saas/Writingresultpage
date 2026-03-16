@@ -19,79 +19,114 @@ const criteriaRadarData = [
   { id: 'criteria-4', criteria: 'Grammar', score: 4.5, fullMark: 9 },
 ];
 
-// بيانات الأخطاء
+// معايير الكتابة الأربعة في IELTS
+const writingCriteria = [
+  { id: 'all', label: 'الكل', color: 'bg-[#1B2A4A] text-white', icon: '📋' },
+  { id: 'task-achievement', label: 'تحقيق المهمة', color: 'bg-[#DBEAFE] text-[#1E40AF]', activeColor: 'bg-[#1E40AF] text-white', icon: '🎯' },
+  { id: 'coherence-cohesion', label: 'الترابط والتماسك', color: 'bg-[#E0E7FF] text-[#3730A3]', activeColor: 'bg-[#3730A3] text-white', icon: '🔗' },
+  { id: 'lexical-resource', label: 'الثروة اللغوية', color: 'bg-[#FEF3C7] text-[#92400E]', activeColor: 'bg-[#92400E] text-white', icon: '📖' },
+  { id: 'grammatical-accuracy', label: 'المدى النحوي والدقة', color: 'bg-[#FEE2E2] text-[#991B1B]', activeColor: 'bg-[#991B1B] text-white', icon: '✏️' },
+];
+
+// بيانات الأخطاء مجمعة حسب المعيار
 const errorExamples = [
   {
     type: 'grammar',
+    criteria: 'grammatical-accuracy',
     original: 'Many people is using social media',
     corrected: 'Many people are using social media',
     explanation: 'خطأ في تطابق الفعل مع الفاعل - "people" جمع يتطلب "are"'
   },
   {
     type: 'grammar',
+    criteria: 'grammatical-accuracy',
     original: 'She don\'t like to play sports',
     corrected: 'She doesn\'t like to play sports',
     explanation: 'استخدام خاطئ للنفي مع الضمير المفرد'
   },
   {
     type: 'vocabulary',
+    criteria: 'lexical-resource',
     original: 'I very like this sport',
     corrected: 'I really like this sport',
     explanation: 'ترتيب خاطئ للكلمات - "very" لا تأتي قبل الفعل مباشرة'
   },
   {
     type: 'vocabulary',
+    criteria: 'lexical-resource',
     original: 'The price is so much expensive',
     corrected: 'The price is very expensive',
     explanation: 'استخدام خاطئ - "much" لا تستخدم مع الصفات العادية'
   },
   {
     type: 'spelling',
+    criteria: 'grammatical-accuracy',
     original: 'I want to imporve my english',
     corrected: 'I want to improve my English',
     explanation: 'خطأ إملائي في "improve" و"English" يجب أن تبدأ بحرف كبير'
   },
   {
     type: 'coherence',
+    criteria: 'coherence-cohesion',
     original: 'I like swimming. Swimming good. I swim every day.',
     corrected: 'I like swimming because it is beneficial. I swim every day to stay healthy.',
     explanation: 'جمل متقطعة بدون روابط - تحتاج لتماسك أفضل'
   },
   {
     type: 'grammar',
+    criteria: 'grammatical-accuracy',
     original: 'If I will have time, I will go',
     corrected: 'If I have time, I will go',
     explanation: 'خطأ في الجملة الشرطية - لا نستخدم "will" بعد "if"'
   },
   {
     type: 'grammar',
+    criteria: 'grammatical-accuracy',
     original: 'I have study English for 3 years',
     corrected: 'I have studied English for 3 years',
     explanation: 'استخدام خاطئ للمضارع التام - يجب استخدام التصريف الثالث'
   },
   {
     type: 'vocabulary',
+    criteria: 'lexical-resource',
     original: 'The weather is very hot in my country in summer time',
     corrected: 'The weather is extremely hot in my country during summer',
     explanation: 'استخدام كلمات بسيطة ومكررة - يمكن استخدام مفردات أقوى'
   },
   {
     type: 'punctuation',
+    criteria: 'grammatical-accuracy',
     original: 'I like to read books play football and watch movies',
     corrected: 'I like to read books, play football, and watch movies',
     explanation: 'نقص الفواصل في القائمة'
   },
   {
     type: 'coherence',
+    criteria: 'coherence-cohesion',
     original: 'First benefit health. Second benefit money save.',
     corrected: 'The first benefit is improved health. The second benefit is saving money.',
     explanation: 'جمل غير مكتملة - تحتاج لأفعال وتركيب صحيح'
   },
   {
     type: 'grammar',
+    criteria: 'grammatical-accuracy',
     original: 'There is many problems in the city',
     corrected: 'There are many problems in the city',
     explanation: 'خطأ في استخدام "there is/are" - مع الجمع نستخدم "are"'
+  },
+  {
+    type: 'task',
+    criteria: 'task-achievement',
+    original: 'Some people think technology is good. Other people think it is bad.',
+    corrected: 'While some argue technology enhances productivity, others contend it diminishes interpersonal connections.',
+    explanation: 'لم يتم تناول جميع أجزاء السؤال بشكل كافٍ - يجب تطوير الأفكار بعمق أكثر'
+  },
+  {
+    type: 'task',
+    criteria: 'task-achievement',
+    original: 'I think education is important.',
+    corrected: 'In my view, education plays a pivotal role in shaping individuals and society, as it equips people with essential skills.',
+    explanation: 'رأي غير مدعوم - يجب تقديم أسباب وأمثلة واضحة لدعم الموقف'
   }
 ];
 
@@ -277,6 +312,7 @@ export function WritingTestResultPage() {
   const [activeTab, setActiveTab] = useState('answer');
   const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
   const [expandedCriteria, setExpandedCriteria] = useState<string[]>(['task-achievement']);
+  const [activeErrorFilter, setActiveErrorFilter] = useState('all');
 
   // Close tooltip when clicking anywhere on the page
   const handlePageClick = () => {
@@ -1346,7 +1382,7 @@ export function WritingTestResultPage() {
                 </span>
               </div>
 
-              {/* Errors and Corrections Section */}
+              {/* Errors and Corrections Section - Grouped by IELTS Criteria */}
               <div className="mt-8">
                 <div className="flex items-center gap-3 mb-6">
                   <XCircle className="w-6 h-6 text-[#C30020]" />
@@ -1354,60 +1390,128 @@ export function WritingTestResultPage() {
                     الأخطاء الشائعة وكيفية تصحيحها
                   </h3>
                 </div>
-                <div className="space-y-4">
-                  {errorExamples.map((error, idx) => (
-                    <div key={idx} className="bg-[#F9FAFB] rounded-[12px] p-6 border border-[#EEEEEE]">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className={`px-3 py-1 rounded-full text-[12px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] ${
-                          error.type === 'grammar' ? 'bg-[#FEE2E2] text-[#991B1B]' :
-                          error.type === 'vocabulary' ? 'bg-[#FEF3C7] text-[#92400E]' :
-                          'bg-[#DBEAFE] text-[#1E40AF]'
+
+                {/* Filter Tabs */}
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {writingCriteria.map((criterion) => {
+                    const count = criterion.id === 'all'
+                      ? errorExamples.length
+                      : errorExamples.filter(e => e.criteria === criterion.id).length;
+                    const isActive = activeErrorFilter === criterion.id;
+                    return (
+                      <button
+                        key={criterion.id}
+                        onClick={() => setActiveErrorFilter(criterion.id)}
+                        className={`px-4 py-2 rounded-full text-[13px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] transition-all duration-200 flex items-center gap-2 ${
+                          isActive
+                            ? (criterion.id === 'all' ? 'bg-[#1B2A4A] text-white shadow-md' : (criterion.activeColor || criterion.color) + ' shadow-md')
+                            : 'bg-[#F3F4F6] text-[#6B7280] hover:bg-[#E5E7EB]'
+                        }`}
+                      >
+                        <span>{criterion.icon}</span>
+                        <span>{criterion.label}</span>
+                        <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full text-[11px] ${
+                          isActive ? 'bg-white/20 text-inherit' : 'bg-[#D1D5DB] text-[#374151]'
                         }`}>
-                          {error.type === 'grammar' ? 'خطأ نحوي' : 
-                           error.type === 'vocabulary' ? 'استخدام المفردات' : 
-                           'الترابط'}
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-3">
-                        <div className="flex items-start gap-3">
-                          <XCircle className="w-5 h-5 text-[#C30020] mt-1 flex-shrink-0" />
-                          <div className="flex-1">
-                            <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">
-                              جملتك:
-                            </p>
-                            <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] bg-[#FEE2E2] px-3 py-2 rounded-[8px]">
-                              {error.original}
-                            </p>
+                          {count}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Grouped Errors */}
+                <div className="space-y-6">
+                  {writingCriteria.filter(c => c.id !== 'all').map((criterion) => {
+                    const criteriaErrors = errorExamples.filter(e => e.criteria === criterion.id);
+                    if (criteriaErrors.length === 0) return null;
+                    if (activeErrorFilter !== 'all' && activeErrorFilter !== criterion.id) return null;
+
+                    return (
+                      <div key={criterion.id} className="rounded-[16px] border border-[#EEEEEE] overflow-hidden">
+                        {/* Criteria Header */}
+                        <div className={`px-6 py-4 flex items-center justify-between ${
+                          criterion.id === 'task-achievement' ? 'bg-[#EFF6FF] border-b-2 border-[#1E40AF]' :
+                          criterion.id === 'coherence-cohesion' ? 'bg-[#EEF2FF] border-b-2 border-[#3730A3]' :
+                          criterion.id === 'lexical-resource' ? 'bg-[#FFFBEB] border-b-2 border-[#92400E]' :
+                          'bg-[#FEF2F2] border-b-2 border-[#991B1B]'
+                        }`}>
+                          <div className="flex items-center gap-3">
+                            <span className="text-[20px]">{criterion.icon}</span>
+                            <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A]">
+                              {criterion.label}
+                            </h4>
                           </div>
+                          <span className={`px-3 py-1 rounded-full text-[12px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] ${criterion.color}`}>
+                            {criteriaErrors.length} {criteriaErrors.length === 1 ? 'خطأ' : 'أخطاء'}
+                          </span>
                         </div>
 
-                        <div className="flex items-start gap-3">
-                          <CheckCircle2 className="w-5 h-5 text-[#4CAF50] mt-1 flex-shrink-0" />
-                          <div className="flex-1">
-                            <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">
-                              التصحيح:
-                            </p>
-                            <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] bg-[#D1FAE5] px-3 py-2 rounded-[8px]">
-                              {error.corrected}
-                            </p>
-                          </div>
-                        </div>
+                        {/* Error Cards */}
+                        <div className="p-4 space-y-3 bg-white">
+                          {criteriaErrors.map((error, idx) => (
+                            <div key={idx} className="bg-[#F9FAFB] rounded-[12px] p-5 border border-[#EEEEEE]">
+                              <div className="flex items-center gap-2 mb-3">
+                                <div className={`px-3 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] ${
+                                  error.type === 'grammar' ? 'bg-[#FEE2E2] text-[#991B1B]' :
+                                  error.type === 'vocabulary' ? 'bg-[#FEF3C7] text-[#92400E]' :
+                                  error.type === 'spelling' ? 'bg-[#FCE7F3] text-[#9D174D]' :
+                                  error.type === 'punctuation' ? 'bg-[#F3E8FF] text-[#6B21A8]' :
+                                  error.type === 'task' ? 'bg-[#DBEAFE] text-[#1E40AF]' :
+                                  'bg-[#E0E7FF] text-[#3730A3]'
+                                }`}>
+                                  {error.type === 'grammar' ? 'خطأ نحوي' :
+                                   error.type === 'vocabulary' ? 'استخدام المفردات' :
+                                   error.type === 'spelling' ? 'خطأ إملائي' :
+                                   error.type === 'punctuation' ? 'علامات الترقيم' :
+                                   error.type === 'task' ? 'تحقيق المهمة' :
+                                   'الترابط'}
+                                </div>
+                              </div>
 
-                        <div className="flex items-start gap-3">
-                          <BookOpen className="w-5 h-5 text-[#FF8C00] mt-1 flex-shrink-0" />
-                          <div className="flex-1">
-                            <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">
-                              الشرح:
-                            </p>
-                            <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">
-                              {error.explanation}
-                            </p>
-                          </div>
+                              <div className="space-y-3">
+                                <div className="flex items-start gap-3">
+                                  <XCircle className="w-5 h-5 text-[#C30020] mt-1 flex-shrink-0" />
+                                  <div className="flex-1">
+                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">
+                                      جملتك:
+                                    </p>
+                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] bg-[#FEE2E2] px-3 py-2 rounded-[8px]">
+                                      {error.original}
+                                    </p>
+                                  </div>
+                                </div>
+
+                                <div className="flex items-start gap-3">
+                                  <CheckCircle2 className="w-5 h-5 text-[#4CAF50] mt-1 flex-shrink-0" />
+                                  <div className="flex-1">
+                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">
+                                      التصحيح:
+                                    </p>
+                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] bg-[#D1FAE5] px-3 py-2 rounded-[8px]">
+                                      {error.corrected}
+                                    </p>
+                                  </div>
+                                </div>
+
+                                <div className="flex items-start gap-3">
+                                  <BookOpen className="w-5 h-5 text-[#FF8C00] mt-1 flex-shrink-0" />
+                                  <div className="flex-1">
+                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">
+                                      الشرح:
+                                    </p>
+                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">
+                                      {error.explanation}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>
