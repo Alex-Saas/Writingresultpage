@@ -50,106 +50,290 @@ const writingCriteria = [
   { id: 'grammatical-accuracy', label: 'المدى النحوي والدقة', color: 'bg-[#FEE2E2] text-[#991B1B]', activeColor: 'bg-[#991B1B] text-white', icon: '✏️' },
 ];
 
-// بيانات الأخطاء مجمعة حسب المعيار
+// بيانات الأخطاء مجمعة حسب المعيار والمهمة
 const errorExamples = [
+  // Task 1 errors
   {
+    task: 'task1',
     type: 'grammar',
     criteria: 'grammatical-accuracy',
-    original: 'Many people is using social media',
-    corrected: 'Many people are using social media',
-    explanation: 'خطأ في تطابق الفعل مع الفاعل - "people" جمع يتطلب "are"'
+    original: 'I want tell you about swimming class',
+    corrected: 'I want to tell you about a swimming class',
+    explanation: '"want" يتبعه "to" + فعل — "want to tell" وليس "want tell"، وأيضاً ينقص أداة التنكير "a"'
   },
   {
-    type: 'grammar',
-    criteria: 'grammatical-accuracy',
-    original: 'She don\'t like to play sports',
-    corrected: 'She doesn\'t like to play sports',
-    explanation: 'استخدام خاطئ للنفي مع الضمير المفرد'
-  },
-  {
-    type: 'vocabulary',
-    criteria: 'lexical-resource',
-    original: 'I very like this sport',
-    corrected: 'I really like this sport',
-    explanation: 'ترتيب خاطئ للكلمات - "very" لا تأتي قبل الفعل مباشرة'
-  },
-  {
-    type: 'vocabulary',
-    criteria: 'lexical-resource',
-    original: 'The price is so much expensive',
-    corrected: 'The price is very expensive',
-    explanation: 'استخدام خاطئ - "much" لا تستخدم مع الصفات العادية'
-  },
-  {
+    task: 'task1',
     type: 'spelling',
     criteria: 'grammatical-accuracy',
-    original: 'I want to imporve my english',
-    corrected: 'I want to improve my English',
-    explanation: 'خطأ إملائي في "improve" و"English" يجب أن تبدأ بحرف كبير'
+    original: 'The comunity center',
+    corrected: 'The community center',
+    explanation: '"community" وليس "comunity" — حرفان m'
   },
   {
-    type: 'coherence',
-    criteria: 'coherence-cohesion',
-    original: 'I like swimming. Swimming good. I swim every day.',
-    corrected: 'I like swimming because it is beneficial. I swim every day to stay healthy.',
-    explanation: 'جمل متقطعة بدون روابط - تحتاج لتماسك أفضل'
-  },
-  {
+    task: 'task1',
     type: 'grammar',
     criteria: 'grammatical-accuracy',
-    original: 'If I will have time, I will go',
-    corrected: 'If I have time, I will go',
-    explanation: 'خطأ في الجملة الشرطية - لا نستخدم "will" بعد "if"'
+    original: 'The comunity center have new class',
+    corrected: 'The community center has a new class',
+    explanation: 'Center مفرد — يتطلب "has" وليس "have"، وينقص أداة التنكير "a"'
   },
   {
+    task: 'task1',
     type: 'grammar',
     criteria: 'grammatical-accuracy',
-    original: 'I have study English for 3 years',
-    corrected: 'I have studied English for 3 years',
-    explanation: 'استخدام خاطئ للمضارع التام - يجب استخدام التصريف الثالث'
+    original: 'people who dont know swim',
+    corrected: "people who don't know how to swim",
+    explanation: '"know how to swim" وليس "know swim" — ولا تنسَ الفاصلة العليا في "don\'t"'
   },
   {
+    task: 'task1',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'The class is in Tuesday and Thursday',
+    corrected: 'The class is on Tuesday and Thursday',
+    explanation: 'نستخدم "on" مع أيام الأسبوع وليس "in"'
+  },
+  {
+    task: 'task1',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'in evening time',
+    corrected: 'in the evening',
+    explanation: '"in the evening" هي العبارة الصحيحة — لا نقول "evening time"'
+  },
+  {
+    task: 'task1',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'he teached many peoples before',
+    corrected: 'he taught many people before',
+    explanation: 'فعل شاذ: "teach" يصبح "taught" وليس "teached"، و"people" لا تُجمع بإضافة s'
+  },
+  {
+    task: 'task1',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'It cost 50 dollar per month',
+    corrected: 'It costs 50 dollars per month',
+    explanation: 'المفرد يتطلب "costs" مع s، و"dollars" جمع مع الأرقام'
+  },
+  {
+    task: 'task1',
     type: 'vocabulary',
     criteria: 'lexical-resource',
-    original: 'The weather is very hot in my country in summer time',
-    corrected: 'The weather is extremely hot in my country during summer',
-    explanation: 'استخدام كلمات بسيطة ومكررة - يمكن استخدام مفردات أقوى'
+    original: 'they give you all thing you need',
+    corrected: 'they provide you with everything you need',
+    explanation: '"thing" يجب أن تكون "things" (جمع)، واستخدم "provide" بدلاً من "give" للغة أكاديمية'
   },
   {
-    type: 'punctuation',
+    task: 'task1',
+    type: 'spelling',
     criteria: 'grammatical-accuracy',
-    original: 'I like to read books play football and watch movies',
-    corrected: 'I like to read books, play football, and watch movies',
-    explanation: 'نقص الفواصل في القائمة'
+    original: 'the price is not much expensif',
+    corrected: 'the price is not very expensive',
+    explanation: '"expensive" وليس "expensif"، و"very" وليس "much" مع الصفات'
   },
   {
-    type: 'coherence',
-    criteria: 'coherence-cohesion',
-    original: 'First benefit health. Second benefit money save.',
-    corrected: 'The first benefit is improved health. The second benefit is saving money.',
-    explanation: 'جمل غير مكتملة - تحتاج لأفعال وتركيب صحيح'
-  },
-  {
+    task: 'task1',
     type: 'grammar',
     criteria: 'grammatical-accuracy',
-    original: 'There is many problems in the city',
-    corrected: 'There are many problems in the city',
-    explanation: 'خطأ في استخدام "there is/are" - مع الجمع نستخدم "are"'
+    original: 'maybe me and you can go togather',
+    corrected: 'maybe you and I can go together',
+    explanation: '"you and I" وليس "me and you" — الضمير المرفوع "I" وليس "me"، و"together" وليس "togather"'
   },
   {
-    type: 'task',
-    criteria: 'task-achievement',
-    original: 'Some people think technology is good. Other people think it is bad.',
-    corrected: 'While some argue technology enhances productivity, others contend it diminishes interpersonal connections.',
-    explanation: 'لم يتم تناول جميع أجزاء السؤال بشكل كافٍ - يجب تطوير الأفكار بعمق أكثر'
+    task: 'task1',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'you want learn swimming',
+    corrected: 'you want to learn swimming',
+    explanation: '"want to learn" — يجب إضافة "to" بعد "want"'
   },
   {
-    type: 'task',
-    criteria: 'task-achievement',
-    original: 'I think education is important.',
-    corrected: 'In my view, education plays a pivotal role in shaping individuals and society, as it equips people with essential skills.',
-    explanation: 'رأي غير مدعوم - يجب تقديم أسباب وأمثلة واضحة لدعم الموقف'
-  }
+    task: 'task1',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'if we go same class',
+    corrected: 'if we go to the same class',
+    explanation: 'ينقص حرف الجر "to" وأداة التعريف "the" قبل "same"'
+  },
+  {
+    task: 'task1',
+    type: 'spelling',
+    criteria: 'grammatical-accuracy',
+    original: 'do practise in weekend togather',
+    corrected: 'practice on the weekend together',
+    explanation: '"practice" (فعل)، "on the weekend" وليس "in weekend"، و"together" وليس "togather"'
+  },
+  {
+    task: 'task1',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'Waiting your reply',
+    corrected: 'I await your reply / Awaiting your reply',
+    explanation: '"Waiting your reply" غير صحيح — استخدم "Awaiting your reply" أو "I await your reply"'
+  },
+  // Task 2 errors
+  {
+    task: 'task2',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'technology have become very importent part',
+    corrected: 'technology has become a very important part',
+    explanation: 'Technology مفرد — يتطلب "has"، وينقص "a"، و"important" وليس "importent"'
+  },
+  {
+    task: 'task2',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'Some peoples think technology make life hard',
+    corrected: 'Some people think technology makes life hard',
+    explanation: '"people" لا تُجمع بـ s، و"technology" مفرد يتطلب "makes"'
+  },
+  {
+    task: 'task2',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'I will talk about both side',
+    corrected: 'I will talk about both sides',
+    explanation: '"both" تتبعها كلمة جمع: "sides" وليس "side"'
+  },
+  {
+    task: 'task2',
+    type: 'spelling',
+    criteria: 'grammatical-accuracy',
+    original: 'some people belive technology is bad',
+    corrected: 'some people believe technology is bad',
+    explanation: '"believe" وليس "belive"'
+  },
+  {
+    task: 'task2',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'it make people lazy',
+    corrected: 'it makes people lazy',
+    explanation: '"it" مفرد — يتطلب "makes" وليس "make"'
+  },
+  {
+    task: 'task2',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'many person spend all the time on there phone',
+    corrected: 'many people spend all their time on their phones',
+    explanation: '"many" تتبعها جمع: "people"، و"their" وليس "there"، و"phones" جمع'
+  },
+  {
+    task: 'task2',
+    type: 'spelling',
+    criteria: 'grammatical-accuracy',
+    original: 'dont do any exercice or go outside',
+    corrected: "don't do any exercise or go outside",
+    explanation: '"don\'t" بفاصلة عليا، و"exercise" وليس "exercice"'
+  },
+  {
+    task: 'task2',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'childs now play video game all day',
+    corrected: 'children now play video games all day',
+    explanation: 'جمع شاذ: "children" وليس "childs"، و"games" جمع'
+  },
+  {
+    task: 'task2',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'dont study good',
+    corrected: "don't study well",
+    explanation: '"well" حال وليس "good" — نستخدم الحال مع الأفعال'
+  },
+  {
+    task: 'task2',
+    type: 'spelling',
+    criteria: 'grammatical-accuracy',
+    original: 'Another probleme is that people dont talk becouse',
+    corrected: "Another problem is that people don't talk because",
+    explanation: '"problem" وليس "probleme"، و"because" وليس "becouse"'
+  },
+  {
+    task: 'task2',
+    type: 'spelling',
+    criteria: 'grammatical-accuracy',
+    original: 'technology is also very usefull',
+    corrected: 'technology is also very useful',
+    explanation: '"useful" بحرف l واحد وليس "usefull"'
+  },
+  {
+    task: 'task2',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'It help people to communecate with family who live in diffrent country',
+    corrected: 'It helps people communicate with family who live in different countries',
+    explanation: '"helps" مع المفرد، "communicate" بدون to، "different" و"countries" جمع'
+  },
+  {
+    task: 'task2',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'student can learn many thing from internet',
+    corrected: 'students can learn many things from the internet',
+    explanation: '"students" و"things" جمع، و"the internet" مع أداة التعريف'
+  },
+  {
+    task: 'task2',
+    type: 'spelling',
+    criteria: 'grammatical-accuracy',
+    original: 'it help me alot',
+    corrected: 'it helps me a lot',
+    explanation: '"helps" مع المفرد، و"a lot" كلمتان منفصلتان وليس "alot"'
+  },
+  {
+    task: 'task2',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'hospital use technology for help sick people and save lifes',
+    corrected: 'hospitals use technology to help sick people and save lives',
+    explanation: '"hospitals" جمع، "to help" وليس "for help"، و"lives" وليس "lifes"'
+  },
+  {
+    task: 'task2',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'technology brung more good thing than bad thing',
+    corrected: 'technology brought more good things than bad things',
+    explanation: 'فعل شاذ: "brought" وليس "brung"، و"things" جمع'
+  },
+  {
+    task: 'task2',
+    type: 'spelling',
+    criteria: 'grammatical-accuracy',
+    original: 'it will be very helpfull for everyone. Goverments should also teach',
+    corrected: 'it will be very helpful for everyone. Governments should also teach',
+    explanation: '"helpful" بحرف l واحد، و"Governments" وليس "Goverments"'
+  },
+  {
+    task: 'task2',
+    type: 'spelling',
+    criteria: 'grammatical-accuracy',
+    original: 'In conclution, technology have both good and bad side',
+    corrected: 'In conclusion, technology has both good and bad sides',
+    explanation: '"conclusion" وليس "conclution"، و"has" مع المفرد، و"sides" جمع'
+  },
+  {
+    task: 'task2',
+    type: 'vocabulary',
+    criteria: 'lexical-resource',
+    original: 'I believe it is more good than bad',
+    corrected: 'I believe the benefits outweigh the drawbacks',
+    explanation: '"more good" غير صحيح — استخدم "better" أو عبارة أكاديمية مثل "benefits outweigh drawbacks"'
+  },
+  {
+    task: 'task2',
+    type: 'grammar',
+    criteria: 'grammatical-accuracy',
+    original: 'We need to be carefull and use it wisely',
+    corrected: 'We need to be careful and use it wisely',
+    explanation: '"careful" بحرف l واحد وليس "carefull"'
+  },
 ];
 
 // الإجابات النموذجية لكل مهمة
@@ -1378,485 +1562,613 @@ export function WritingTestResultPage() {
                     </div>
                   </div>
                 </div>
+                {/* Helper to render annotated text spans */}
+                {(() => {
+                  const AnnotatedSpan = ({ id, text, type, title, desc }: { id: number; text: string; type: 'error' | 'warning' | 'good'; title: string; desc: string }) => {
+                    const colors = type === 'error'
+                      ? { bg: 'bg-[#FEE2E2]', border: 'border-[#C30020]', hover: 'hover:bg-[#FCA5A5]', tooltipBorder: 'border-[#C30020]', arrow: 'border-t-[#C30020]' }
+                      : type === 'warning'
+                      ? { bg: 'bg-[#FEF3C7]', border: 'border-[#FF8C00]', hover: 'hover:bg-[#FDE68A]', tooltipBorder: 'border-[#FF8C00]', arrow: 'border-t-[#FF8C00]' }
+                      : { bg: 'bg-[#D1FAE5]', border: 'border-[#4CAF50]', hover: 'hover:bg-[#BBF7D0]', tooltipBorder: 'border-[#4CAF50]', arrow: 'border-t-[#4CAF50]' };
+                    const Icon = type === 'error' ? XCircle : type === 'warning' ? AlertCircle : CheckCircle2;
+                    const iconColor = type === 'error' ? 'text-[#C30020]' : type === 'warning' ? 'text-[#FF8C00]' : 'text-[#4CAF50]';
+                    return (
+                      <span
+                        className={`relative ${colors.bg} border-b-2 ${colors.border} px-1 cursor-pointer ${colors.hover} transition-colors`}
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === id ? null : id); }}
+                      >
+                        {text}
+                        {activeTooltip === id && (
+                          <span className={`absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 ${colors.tooltipBorder} rounded-[12px] p-4 shadow-lg`} onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2">
+                              <Icon className={`w-5 h-5 ${iconColor} flex-shrink-0 mt-0.5`} />
+                              <div>
+                                <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">{title}</p>
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">{desc}</p>
+                              </div>
+                            </div>
+                            <div className={`absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent ${colors.arrow}`}></div>
+                          </span>
+                        )}
+                      </span>
+                    );
+                  };
+                  return null;
+                })()}
                 <div className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] sm:text-[14px] text-[#374151] leading-relaxed space-y-4">
                   <p>
-                    <span 
-                      className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTooltip(activeTooltip === 0 ? null : 0);
-                      }}
-                    >
-                      The chart show
+                    <span className="relative bg-[#D1FAE5] border-b-2 border-[#4CAF50] px-1 cursor-pointer hover:bg-[#BBF7D0] transition-colors"
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 0 ? null : 0); }}>
+                      Dear Sarah,
                       {activeTooltip === 0 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2">
-                            <XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                خطأ نحوي ❌
-                              </p>
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                Subject-verb agreement: يجب "shows" وليس "show"
-                              </p>
-                            </div>
-                          </div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#4CAF50] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2"><CheckCircle2 className="w-5 h-5 text-[#4CAF50] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">تحية مناسبة ⭐</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">بداية صحيحة للرسالة غير الرسمية</p></div></div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#4CAF50]"></div>
                         </span>
                       )}
-                    </span> information about <span 
-                      className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTooltip(activeTooltip === 1 ? null : 1);
-                      }}
-                    >
-                      childs
+                    </span>
+                  </p>
+                  <p>
+                    I am writing to you because I <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 1 ? null : 1); }}>
+                      want tell you
                       {activeTooltip === 1 && (
                         <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2">
-                            <XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                خطأ نحوي ❌
-                              </p>
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                الجمع الشاذ: "children" وليس "childs"
-                              </p>
-                            </div>
-                          </div>
+                          <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"want to tell" وليس "want tell" — يجب إضافة "to" بعد "want"</p></div></div>
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                         </span>
                       )}
-                    </span> in Europe. <span 
-                      className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTooltip(activeTooltip === 2 ? null : 2);
-                      }}
-                    >
-                      They do many things
+                    </span> about <span className="relative bg-[#FEF3C7] border-b-2 border-[#FF8C00] px-1 cursor-pointer hover:bg-[#FDE68A] transition-colors"
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 2 ? null : 2); }}>
+                      swimming class in our area
                       {activeTooltip === 2 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2">
-                            <AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                عامية جداً
-                              </p>
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                استخدم: "They engage in various activities" أو "They spend time on different activities"
-                              </p>
-                            </div>
-                          </div>
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#FF8C00] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2"><AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">موضوع مناسب</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">ذكر الموضوع جيد لكن ينقص أداة التنكير: "a swimming class"</p></div></div>
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
+                        </span>
+                      )}
+                    </span>. The <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 3 ? null : 3); }}>
+                      comunity center have new class
+                      {activeTooltip === 3 && (
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">إملائي + نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"community" وليس "comunity"، و"has" وليس "have" مع المفرد، وينقص "a" قبل "new class"</p></div></div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                        </span>
+                      )}
+                    </span> for people who <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 4 ? null : 4); }}>
+                      dont know swim
+                      {activeTooltip === 4 && (
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">{`"don't know how to swim" — ينقص "how to" ولا تنسَ الفاصلة العليا في "don't"`}</p></div></div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                         </span>
                       )}
                     </span>.
                   </p>
                   <p>
-                    <span 
-                      className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTooltip(activeTooltip === 3 ? null : 3);
-                      }}
-                    >
-                      There is many
-                      {activeTooltip === 3 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2">
-                            <XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                خطأ أساسي ❌
-                              </p>
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                مع الجمع نستخدم "There are" وليس "There is"
-                              </p>
-                            </div>
-                          </div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                        </span>
-                      )}
-                    </span> hours for watching TV and playing sports. <span 
-                      className="relative bg-[#FEF3C7] border-b-2 border-[#FF8C00] px-1 cursor-pointer hover:bg-[#FDE68A] transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTooltip(activeTooltip === 4 ? null : 4);
-                      }}
-                    >
-                      TV is very good
-                      {activeTooltip === 4 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#FF8C00] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2">
-                            <AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                خارج الموضوع
-                              </p>
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                Task 1 يتطلب وصف البيانات فقط، وليس إبداء الرأي
-                              </p>
-                            </div>
-                          </div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
-                        </span>
-                      )}
-                    </span> The <span 
-                      className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTooltip(activeTooltip === 5 ? null : 5);
-                      }}
-                    >
-                      childs watch
+                    The class is <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 5 ? null : 5); }}>
+                      in Tuesday and Thursday
                       {activeTooltip === 5 && (
                         <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2">
-                            <XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                أخطاء متعددة ❌
-                              </p>
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                "children" (جمع شاذ) و "watched" (زمن ماضي للبيانات عام 2019)
-                              </p>
-                            </div>
-                          </div>
+                          <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ حرف جر ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"on Tuesday and Thursday" — نستخدم "on" مع أيام الأسبوع وليس "in"</p></div></div>
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                         </span>
                       )}
-                    </span> TV <span 
-                      className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTooltip(activeTooltip === 6 ? null : 6);
-                      }}
-                    >
-                      alot
+                    </span> <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 6 ? null : 6); }}>
+                      in evening time
                       {activeTooltip === 6 && (
                         <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2">
-                            <XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                خطأ إملائي ❌
-                              </p>
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                كلمتان منفصلتان: "a lot" وليس "alot"
-                              </p>
-                            </div>
-                          </div>
+                          <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">تعبير خاطئ ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"in the evening" هي العبارة الصحيحة — لا نقول "evening time"</p></div></div>
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                         </span>
                       )}
-                    </span>. Sport <span 
-                      className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTooltip(activeTooltip === 7 ? null : 7);
-                      }}
-                    >
-                      is less then
+                    </span>. The teacher is good and he <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 7 ? null : 7); }}>
+                      teached many peoples before
                       {activeTooltip === 7 && (
                         <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2">
-                            <XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                خطأ إملائي ❌
-                              </p>
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                "than" للمقارنة وليس "then"
-                              </p>
-                            </div>
-                          </div>
+                          <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">فعل شاذ: "taught" وليس "teached"، و"people" لا تُجمع بإضافة s</p></div></div>
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                         </span>
                       )}
-                    </span> TV. 
-                  </p>
-                  <p>
-                    <span 
-                      className="relative bg-[#FEF3C7] border-b-2 border-[#FF8C00] px-1 cursor-pointer hover:bg-[#FDE68A] transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTooltip(activeTooltip === 8 ? null : 8);
-                      }}
-                    >
-                      In conclusion
+                    </span>. <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 8 ? null : 8); }}>
+                      It cost 50 dollar per month
                       {activeTooltip === 8 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#FF8C00] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2">
-                            <AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                غير مناسب
-                              </p>
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                Task 1 يصف بيانات ولا يحتاج خاتمة بـ "In conclusion"
-                              </p>
-                            </div>
-                          </div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"It costs 50 dollars" — المفرد يتطلب "costs" مع s، و"dollars" جمع</p></div></div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                         </span>
                       )}
-                    </span> the chart good to see what <span 
-                      className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTooltip(activeTooltip === 9 ? null : 9);
-                      }}
-                    >
-                      childs do
+                    </span> and they give you <span className="relative bg-[#FEF3C7] border-b-2 border-[#FF8C00] px-1 cursor-pointer hover:bg-[#FDE68A] transition-colors"
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 9 ? null : 9); }}>
+                      all thing you need
                       {activeTooltip === 9 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2">
-                            <XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                خطأ نحوي ❌
-                              </p>
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                "children do" أو "children did"
-                              </p>
-                            </div>
-                          </div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
-                        </span>
-                      )}
-                    </span> enrolling in beginner classes at the community center. 
-                    They offer <span 
-                      className="relative bg-[#D1FAE5] border-b-2 border-[#4CAF50] px-1 cursor-pointer hover:bg-[#BBF7D0] transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTooltip(activeTooltip === 7 ? null : 7);
-                      }}
-                    >
-                      comprehensive lessons with qualified instructors
-                      {activeTooltip === 7 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#4CAF50] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2">
-                            <CheckCircle2 className="w-5 h-5 text-[#4CAF50] flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                ممتاز جداً! ⭐
-                              </p>
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                استخدام مفردات متقدمة (comprehensive, qualified) يعزز الأكاديمية
-                              </p>
-                            </div>
-                          </div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#4CAF50]"></div>
-                        </span>
-                      )}
-                    </span> three times a week. The courses are reasonably priced and include all necessary equipment.
-                  </p>
-                  <p>
-                    <span 
-                      className="relative bg-[#D1FAE5] border-b-2 border-[#4CAF50] px-1 cursor-pointer hover:bg-[#BBF7D0] transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTooltip(activeTooltip === 8 ? null : 8);
-                      }}
-                    >
-                      What makes this even better is that
-                      {activeTooltip === 8 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#4CAF50] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2">
-                            <CheckCircle2 className="w-5 h-5 text-[#4CAF50] flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                استثنائي! 🎯
-                              </p>
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                تعبير طبيعي ومتقدم للانتقال لموضوع جديد بسلاسة
-                              </p>
-                            </div>
-                          </div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#4CAF50]"></div>
-                        </span>
-                      )}
-                    </span> I've been thinking about learning to swim properly myself! Why don't we sign up together? 
-                    It would be <span 
-                      className="relative bg-[#FEF3C7] border-b-2 border-[#FF8C00] px-1 cursor-pointer hover:bg-[#FDE68A] transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveTooltip(activeTooltip === 4 ? null : 4);
-                      }}
-                    >
-                      very fun
-                      {activeTooltip === 4 && (
                         <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#FF8C00] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2">
-                            <AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">
-                                يمكن تحسينه
-                              </p>
-                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">
-                                يمكن استخدام 'tremendously enjoyable' أو 'highly motivating'
-                              </p>
-                            </div>
-                          </div>
+                          <div className="flex items-start gap-2"><AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">مفردات ضعيفة</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"everything you need" أو "all the things you need" — "thing" يجب أن تكون جمع "things"</p></div></div>
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
                         </span>
                       )}
-                    </span> to learn alongside each other, and we could practice together on weekends.
+                    </span> like towel and cap. I think the price is <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 10 ? null : 10); }}>
+                      not much expensif
+                      {activeTooltip === 10 && (
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ إملائي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"expensive" وليس "expensif"، و"not very expensive" وليس "not much expensif"</p></div></div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                        </span>
+                      )}
+                    </span>.
                   </p>
                   <p>
-                    Let me know what you think about this idea!
+                    I was thinking <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 11 ? null : 11); }}>
+                      maybe me and you can go togather
+                      {activeTooltip === 11 && (
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي + إملائي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"you and I" وليس "me and you"، و"together" وليس "togather"</p></div></div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                        </span>
+                      )}
+                    </span>. You said before you <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 12 ? null : 12); }}>
+                      want learn swimming
+                      {activeTooltip === 12 && (
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"want to learn" — يجب إضافة "to" بعد "want"</p></div></div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                        </span>
+                      )}
+                    </span>. It will be very fun if we go <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 13 ? null : 13); }}>
+                      same class
+                      {activeTooltip === 13 && (
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"to the same class" — ينقص "to" و"the" قبل "same"</p></div></div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                        </span>
+                      )}
+                    </span>. We can also <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 14 ? null : 14); }}>
+                      do practise in weekend togather
+                      {activeTooltip === 14 && (
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء متعددة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"practice on the weekend together" — "practice" (فعل)، "on the weekend"، و"together" وليس "togather"</p></div></div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                        </span>
+                      )}
+                    </span>.
                   </p>
                   <p>
-                    Best wishes,<br />
+                    Please tell me what you think about this. I hope you will come with me.
+                  </p>
+                  <p>
+                    <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 15 ? null : 15); }}>
+                      Waiting your reply,
+                      {activeTooltip === 15 && (
+                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خاتمة خاطئة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"Awaiting your reply" أو "I await your reply" — "Waiting your reply" غير صحيح</p></div></div>
+                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                        </span>
+                      )}
+                    </span><br />
                     Alex
                   </p>
                 </div>
               </div>
 
-              {/* Word Count */}
+              {/* Word Count - Task 1 */}
               <div className="flex justify-between items-center bg-[#F9FAFB] rounded-[8px] px-6 py-3 border border-[#EEEEEE]">
                 <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">
-                  عدد الكلمات الكلي
+                  عدد الكلمات
                 </span>
                 <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] text-[#1B2A4A]">
-                  118 كلمة <span className="text-[#C30020] text-[14px]">(الحد الأدنى: 150) ⚠️ أقل من المطلوب</span>
+                  155 كلمة <span className="text-[#4CAF50] text-[14px]">(الحد الأدنى: 150) ✅</span>
                 </span>
               </div>
 
-              {/* Errors and Corrections Section - Grouped by IELTS Criteria */}
-              <div className="mt-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <XCircle className="w-6 h-6 text-[#C30020]" />
-                  <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] sm:text-[18px] text-[#1B2A4A]">
-                    الأخطاء الشائعة وكيفية تصحيحها
-                  </h3>
-                </div>
-
-                {/* Filter Tabs */}
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {writingCriteria.map((criterion) => {
-                    const count = criterion.id === 'all'
-                      ? errorExamples.length
-                      : errorExamples.filter(e => e.criteria === criterion.id).length;
-                    const isActive = activeErrorFilter === criterion.id;
-                    return (
-                      <button
-                        key={criterion.id}
-                        onClick={() => setActiveErrorFilter(criterion.id)}
-                        className={`px-4 py-2 rounded-full text-[13px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] transition-all duration-200 flex items-center gap-2 ${
-                          isActive
-                            ? (criterion.id === 'all' ? 'bg-[#1B2A4A] text-white shadow-md' : (criterion.activeColor || criterion.color) + ' shadow-md')
-                            : 'bg-[#F3F4F6] text-[#6B7280] hover:bg-[#E5E7EB]'
-                        }`}
-                      >
-                        <span>{criterion.icon}</span>
-                        <span>{criterion.label}</span>
-                        <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full text-[11px] ${
-                          isActive ? 'bg-white/20 text-inherit' : 'bg-[#D1D5DB] text-[#374151]'
-                        }`}>
-                          {count}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Grouped Errors */}
-                <div className="space-y-6">
-                  {writingCriteria.filter(c => c.id !== 'all').map((criterion) => {
-                    const criteriaErrors = errorExamples.filter(e => e.criteria === criterion.id);
-                    if (criteriaErrors.length === 0) return null;
-                    if (activeErrorFilter !== 'all' && activeErrorFilter !== criterion.id) return null;
-
-                    return (
-                      <div key={criterion.id} className="rounded-[16px] border border-[#EEEEEE] overflow-hidden">
-                        {/* Criteria Header */}
-                        <div className={`px-6 py-4 flex items-center justify-between ${
-                          criterion.id === 'task-achievement' ? 'bg-[#EFF6FF] border-b-2 border-[#1E40AF]' :
-                          criterion.id === 'coherence-cohesion' ? 'bg-[#EEF2FF] border-b-2 border-[#3730A3]' :
-                          criterion.id === 'lexical-resource' ? 'bg-[#FFFBEB] border-b-2 border-[#92400E]' :
-                          'bg-[#FEF2F2] border-b-2 border-[#991B1B]'
-                        }`}>
-                          <div className="flex items-center gap-3">
-                            <span className="text-[20px]">{criterion.icon}</span>
-                            <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A]">
-                              {criterion.label}
-                            </h4>
+              {/* ═══════════════════════════════════════════════════════ */}
+              {/* TASK 1 - Errors and Corrections */}
+              {/* ═══════════════════════════════════════════════════════ */}
+              {(() => {
+                const task1Errors = errorExamples.filter(e => e.task === 'task1');
+                return (
+                  <div className="mt-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <XCircle className="w-5 h-5 text-[#C30020]" />
+                      <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A]">
+                        الأخطاء وتصحيحها - المهمة 1
+                      </h4>
+                      <span className="px-3 py-1 rounded-full text-[12px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#FEE2E2] text-[#991B1B]">
+                        {task1Errors.length} أخطاء
+                      </span>
+                    </div>
+                    <div className="space-y-3">
+                      {task1Errors.map((error, idx) => (
+                        <div key={idx} className="bg-[#F9FAFB] rounded-[12px] p-5 border border-[#EEEEEE]">
+                          <div className="flex items-center gap-2 mb-3">
+                            <div className={`px-3 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] ${
+                              error.type === 'grammar' ? 'bg-[#FEE2E2] text-[#991B1B]' :
+                              error.type === 'vocabulary' ? 'bg-[#FEF3C7] text-[#92400E]' :
+                              error.type === 'spelling' ? 'bg-[#FCE7F3] text-[#9D174D]' :
+                              error.type === 'punctuation' ? 'bg-[#F3E8FF] text-[#6B21A8]' :
+                              error.type === 'task' ? 'bg-[#DBEAFE] text-[#1E40AF]' :
+                              'bg-[#E0E7FF] text-[#3730A3]'
+                            }`}>
+                              {error.type === 'grammar' ? 'خطأ نحوي' :
+                               error.type === 'vocabulary' ? 'استخدام المفردات' :
+                               error.type === 'spelling' ? 'خطأ إملائي' :
+                               error.type === 'punctuation' ? 'علامات الترقيم' :
+                               error.type === 'task' ? 'تحقيق المهمة' :
+                               'الترابط'}
+                            </div>
                           </div>
-                          <span className={`px-3 py-1 rounded-full text-[12px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] ${criterion.color}`}>
-                            {criteriaErrors.length} {criteriaErrors.length === 1 ? 'خطأ' : 'أخطاء'}
-                          </span>
-                        </div>
-
-                        {/* Error Cards */}
-                        <div className="p-4 space-y-3 bg-white">
-                          {criteriaErrors.map((error, idx) => (
-                            <div key={idx} className="bg-[#F9FAFB] rounded-[12px] p-5 border border-[#EEEEEE]">
-                              <div className="flex items-center gap-2 mb-3">
-                                <div className={`px-3 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] ${
-                                  error.type === 'grammar' ? 'bg-[#FEE2E2] text-[#991B1B]' :
-                                  error.type === 'vocabulary' ? 'bg-[#FEF3C7] text-[#92400E]' :
-                                  error.type === 'spelling' ? 'bg-[#FCE7F3] text-[#9D174D]' :
-                                  error.type === 'punctuation' ? 'bg-[#F3E8FF] text-[#6B21A8]' :
-                                  error.type === 'task' ? 'bg-[#DBEAFE] text-[#1E40AF]' :
-                                  'bg-[#E0E7FF] text-[#3730A3]'
-                                }`}>
-                                  {error.type === 'grammar' ? 'خطأ نحوي' :
-                                   error.type === 'vocabulary' ? 'استخدام المفردات' :
-                                   error.type === 'spelling' ? 'خطأ إملائي' :
-                                   error.type === 'punctuation' ? 'علامات الترقيم' :
-                                   error.type === 'task' ? 'تحقيق المهمة' :
-                                   'الترابط'}
-                                </div>
-                              </div>
-
-                              <div className="space-y-3">
-                                <div className="flex items-start gap-3">
-                                  <XCircle className="w-5 h-5 text-[#C30020] mt-1 flex-shrink-0" />
-                                  <div className="flex-1">
-                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">
-                                      جملتك:
-                                    </p>
-                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] bg-[#FEE2E2] px-3 py-2 rounded-[8px]">
-                                      {error.original}
-                                    </p>
-                                  </div>
-                                </div>
-
-                                <div className="flex items-start gap-3">
-                                  <CheckCircle2 className="w-5 h-5 text-[#4CAF50] mt-1 flex-shrink-0" />
-                                  <div className="flex-1">
-                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">
-                                      التصحيح:
-                                    </p>
-                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] bg-[#D1FAE5] px-3 py-2 rounded-[8px]">
-                                      {error.corrected}
-                                    </p>
-                                  </div>
-                                </div>
-
-                                <div className="flex items-start gap-3">
-                                  <BookOpen className="w-5 h-5 text-[#FF8C00] mt-1 flex-shrink-0" />
-                                  <div className="flex-1">
-                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">
-                                      الشرح:
-                                    </p>
-                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">
-                                      {error.explanation}
-                                    </p>
-                                  </div>
-                                </div>
+                          <div className="space-y-3">
+                            <div className="flex items-start gap-3">
+                              <XCircle className="w-5 h-5 text-[#C30020] mt-1 flex-shrink-0" />
+                              <div className="flex-1">
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">جملتك:</p>
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] bg-[#FEE2E2] px-3 py-2 rounded-[8px]">{error.original}</p>
                               </div>
                             </div>
-                          ))}
+                            <div className="flex items-start gap-3">
+                              <CheckCircle2 className="w-5 h-5 text-[#4CAF50] mt-1 flex-shrink-0" />
+                              <div className="flex-1">
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">التصحيح:</p>
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] bg-[#D1FAE5] px-3 py-2 rounded-[8px]">{error.corrected}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-start gap-3">
+                              <BookOpen className="w-5 h-5 text-[#FF8C00] mt-1 flex-shrink-0" />
+                              <div className="flex-1">
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">الشرح:</p>
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">{error.explanation}</p>
+                              </div>
+                            </div>
+                          </div>
                         </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* ═══════════════════════════════════════════════════════ */}
+              {/* TASK 2 - Essay */}
+              {/* ═══════════════════════════════════════════════════════ */}
+              <div className="mt-10 pt-8 border-t-2 border-[#E5E7EB]">
+                {/* Task 2 Information */}
+                <div className="bg-gradient-to-r from-[#F0F9FF] to-[#E0F2FE] rounded-[12px] p-4 sm:p-6 border border-[#BAE6FD]">
+                  <div className="flex items-center justify-between flex-wrap gap-4 mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-[#012269] rounded-[12px] flex items-center justify-center">
+                        <FileText className="w-6 h-6 text-white" />
                       </div>
-                    );
-                  })}
+                      <div>
+                        <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] sm:text-[18px] text-[#012269]">
+                          المهمة 2 - Essay
+                        </h4>
+                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] sm:text-[13px] text-[#6B7280]">
+                          مقال أكاديمي - Opinion Essay
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="text-center px-4 py-2 bg-white rounded-[8px] border border-[#BFDBFE]">
+                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] text-[#6B7280] mb-1">الحد الأدنى</p>
+                        <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] text-[#012269]">250 كلمة</p>
+                      </div>
+                      <div className="text-center px-4 py-2 bg-white rounded-[8px] border border-[#BFDBFE]">
+                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] text-[#6B7280] mb-1">الوزن</p>
+                        <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] text-[#012269]">67%</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <h5 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] sm:text-[15px] text-[#012269] mb-3">
+                    السؤال:
+                  </h5>
+                  <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] sm:text-[14px] text-[#374151] leading-relaxed">
+                    Some people believe that technology has made our lives more complicated, while others think it has made life easier.
+                    <br /><br />
+                    Discuss both views and give your own opinion.
+                    <br /><br />
+                    Write at least 250 words.
+                  </p>
+                </div>
+
+                {/* Task 2 Answer with Annotations */}
+                <div className="bg-white rounded-[12px] p-4 sm:p-6 border border-[#EEEEEE] mt-6">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+                    <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] sm:text-[16px] text-[#1B2A4A]">
+                      إجابتك - المهمة 2 (مع التعليقات التوضيحية)
+                    </h4>
+                    <div className="flex gap-2 sm:gap-4 text-[11px] sm:text-[12px] font-['IBM_Plex_Sans_Arabic:Regular',sans-serif]">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-[#D1FAE5] border border-[#4CAF50] rounded"></div>
+                        <span className="text-[#374151]">ممتاز</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-[#FEF3C7] border border-[#FF8C00] rounded"></div>
+                        <span className="text-[#374151]">يمكن تحسينه</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-[#FEE2E2] border border-[#C30020] rounded"></div>
+                        <span className="text-[#374151]">خطأ</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] sm:text-[14px] text-[#374151] leading-relaxed space-y-4">
+                    <p>
+                      In todays world technology <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 100 ? null : 100); }}>
+                        have become very importent part
+                        {activeTooltip === 100 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء متعددة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"has become a very important part" — "has" مع المفرد، ينقص "a"، و"important" وليس "importent"</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                          </span>
+                        )}
+                      </span> of our life. <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 101 ? null : 101); }}>
+                        Some peoples think technology make life hard
+                        {activeTooltip === 101 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"people" لا تُجمع بـ s، و"technology makes" مع المفرد</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                          </span>
+                        )}
+                      </span> and some think it make life easy. <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 102 ? null : 102); }}>
+                        I will talk about both side
+                        {activeTooltip === 102 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"both sides" — "both" تتبعها كلمة جمع</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                          </span>
+                        )}
+                      </span> and give my opinion.
+                    </p>
+                    <p>
+                      First, some people <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 103 ? null : 103); }}>
+                        belive technology is bad because it make people lazy
+                        {activeTooltip === 103 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">إملائي + نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"believe" وليس "belive"، و"it makes" مع المفرد</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                          </span>
+                        )}
+                      </span>. For example <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 104 ? null : 104); }}>
+                        many person spend all the time on there phone
+                        {activeTooltip === 104 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء متعددة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"many people" وليس "person"، "their" وليس "there"، و"phones" جمع</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                          </span>
+                        )}
+                      </span> and <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 105 ? null : 105); }}>
+                        dont do any exercice
+                        {activeTooltip === 105 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">إملاء + ترقيم ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">{`"don't" بفاصلة عليا، و"exercise" وليس "exercice"`}</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                          </span>
+                        )}
+                      </span> or go outside. Also <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 106 ? null : 106); }}>
+                        childs now play video game all day and dont study good
+                        {activeTooltip === 106 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء متعددة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">{`"children" وليس "childs"، "games" جمع، "don't study well" — "well" حال وليس "good"`}</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                          </span>
+                        )}
+                      </span>. <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 107 ? null : 107); }}>
+                        Another probleme is that people dont talk to each other becouse they always on social media
+                        {activeTooltip === 107 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء إملائية ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">{`"problem" وليس "probleme"، "don't" بفاصلة عليا، "because" وليس "becouse"، وينقص "are" — "they are always"`}</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                          </span>
+                        )}
+                      </span>. <span className="relative bg-[#FEF3C7] border-b-2 border-[#FF8C00] px-1 cursor-pointer hover:bg-[#FDE68A] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 108 ? null : 108); }}>
+                        This is very bad for the society
+                        {activeTooltip === 108 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#FF8C00] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">مفردات ضعيفة</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"This is detrimental to society" أكاديمي أكثر — وبدون "the" قبل "society"</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
+                          </span>
+                        )}
+                      </span>.
+                    </p>
+                    <p>
+                      On the other hand, technology is also very <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 109 ? null : 109); }}>
+                        usefull
+                        {activeTooltip === 109 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ إملائي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"useful" بحرف l واحد وليس "usefull"</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                          </span>
+                        )}
+                      </span>. <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 110 ? null : 110); }}>
+                        It help people to communecate with family who live in diffrent country
+                        {activeTooltip === 110 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء متعددة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"helps" مع المفرد، "communicate" بدون to، "different" و"countries" جمع</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                          </span>
+                        )}
+                      </span>. Also <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 111 ? null : 111); }}>
+                        student can learn many thing from internet
+                        {activeTooltip === 111 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"students" و"things" جمع، و"the internet" مع أداة التعريف</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                          </span>
+                        )}
+                      </span> and get informations easy. <span className="relative bg-[#D1FAE5] border-b-2 border-[#4CAF50] px-1 cursor-pointer hover:bg-[#BBF7D0] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 112 ? null : 112); }}>
+                        For exemple, I use technology for study english and it help me alot
+                        {activeTooltip === 112 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#4CAF50] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><CheckCircle2 className="w-5 h-5 text-[#4CAF50] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">مثال شخصي جيد</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">محاولة جيدة لإعطاء مثال شخصي يدعم الحجة، رغم الأخطاء الإملائية: "example"، "helps"، "a lot"</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#4CAF50]"></div>
+                          </span>
+                        )}
+                      </span>. Moreover, <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 113 ? null : 113); }}>
+                        hospital use technology for help sick people and save lifes
+                        {activeTooltip === 113 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء متعددة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"hospitals" جمع، "to help" وليس "for help"، و"lives" وليس "lifes"</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                          </span>
+                        )}
+                      </span>.
+                    </p>
+                    <p>
+                      In my <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 114 ? null : 114); }}>
+                        openion, I think technology brung more good thing than bad thing
+                        {activeTooltip === 114 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء متعددة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"opinion" وليس "openion"، "brought" وليس "brung"، و"things" جمع</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                          </span>
+                        )}
+                      </span>. But we should use it in a good way and not too much. If people use technology with balance it will be very <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 115 ? null : 115); }}>
+                        helpfull for everyone. Goverments should also teach
+                        {activeTooltip === 115 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء إملائية ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"helpful" بحرف l واحد، و"Governments" وليس "Goverments"</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                          </span>
+                        )}
+                      </span> people how to use technology in correct way.
+                    </p>
+                    <p>
+                      <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 116 ? null : 116); }}>
+                        In conclution, technology have both good and bad side
+                        {activeTooltip === 116 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء متعددة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"conclusion" وليس "conclution"، "has" مع المفرد، و"sides" جمع</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                          </span>
+                        )}
+                      </span> but <span className="relative bg-[#FEF3C7] border-b-2 border-[#FF8C00] px-1 cursor-pointer hover:bg-[#FDE68A] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 117 ? null : 117); }}>
+                        I believe it is more good than bad
+                        {activeTooltip === 117 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#FF8C00] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">مفردات ضعيفة</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"more good" غير صحيح — استخدم "better" أو "the benefits outweigh the drawbacks"</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
+                          </span>
+                        )}
+                      </span>. We need to be <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 118 ? null : 118); }}>
+                        carefull
+                        {activeTooltip === 118 && (
+                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ إملائي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"careful" بحرف l واحد وليس "carefull"</p></div></div>
+                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
+                          </span>
+                        )}
+                      </span> and use it wisely.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Word Count - Task 2 */}
+                <div className="flex justify-between items-center bg-[#F9FAFB] rounded-[8px] px-6 py-3 border border-[#EEEEEE] mt-6">
+                  <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">
+                    عدد الكلمات
+                  </span>
+                  <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] text-[#1B2A4A]">
+                    258 كلمة <span className="text-[#4CAF50] text-[14px]">(الحد الأدنى: 250) ✅</span>
+                  </span>
                 </div>
               </div>
+
+              {/* ═══════════════════════════════════════════════════════ */}
+              {/* TASK 2 - Errors and Corrections */}
+              {/* ═══════════════════════════════════════════════════════ */}
+              {(() => {
+                const task2Errors = errorExamples.filter(e => e.task === 'task2');
+                return (
+                  <div className="mt-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <XCircle className="w-5 h-5 text-[#C30020]" />
+                      <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A]">
+                        الأخطاء وتصحيحها - المهمة 2
+                      </h4>
+                      <span className="px-3 py-1 rounded-full text-[12px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#FEE2E2] text-[#991B1B]">
+                        {task2Errors.length} أخطاء
+                      </span>
+                    </div>
+                    <div className="space-y-3">
+                      {task2Errors.map((error, idx) => (
+                        <div key={idx} className="bg-[#F9FAFB] rounded-[12px] p-5 border border-[#EEEEEE]">
+                          <div className="flex items-center gap-2 mb-3">
+                            <div className={`px-3 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] ${
+                              error.type === 'grammar' ? 'bg-[#FEE2E2] text-[#991B1B]' :
+                              error.type === 'vocabulary' ? 'bg-[#FEF3C7] text-[#92400E]' :
+                              error.type === 'spelling' ? 'bg-[#FCE7F3] text-[#9D174D]' :
+                              error.type === 'punctuation' ? 'bg-[#F3E8FF] text-[#6B21A8]' :
+                              error.type === 'task' ? 'bg-[#DBEAFE] text-[#1E40AF]' :
+                              'bg-[#E0E7FF] text-[#3730A3]'
+                            }`}>
+                              {error.type === 'grammar' ? 'خطأ نحوي' :
+                               error.type === 'vocabulary' ? 'استخدام المفردات' :
+                               error.type === 'spelling' ? 'خطأ إملائي' :
+                               error.type === 'punctuation' ? 'علامات الترقيم' :
+                               error.type === 'task' ? 'تحقيق المهمة' :
+                               'الترابط'}
+                            </div>
+                          </div>
+                          <div className="space-y-3">
+                            <div className="flex items-start gap-3">
+                              <XCircle className="w-5 h-5 text-[#C30020] mt-1 flex-shrink-0" />
+                              <div className="flex-1">
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">جملتك:</p>
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] bg-[#FEE2E2] px-3 py-2 rounded-[8px]">{error.original}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-start gap-3">
+                              <CheckCircle2 className="w-5 h-5 text-[#4CAF50] mt-1 flex-shrink-0" />
+                              <div className="flex-1">
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">التصحيح:</p>
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] bg-[#D1FAE5] px-3 py-2 rounded-[8px]">{error.corrected}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-start gap-3">
+                              <BookOpen className="w-5 h-5 text-[#FF8C00] mt-1 flex-shrink-0" />
+                              <div className="flex-1">
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">الشرح:</p>
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">{error.explanation}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           </Tabs.Content>
 
