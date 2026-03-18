@@ -699,6 +699,9 @@ export function WritingTestResultPage() {
   const [activeErrorFilter, setActiveErrorFilter] = useState('all');
   const [expandedParts, setExpandedParts] = useState<string[]>(['task1']);
   const [expandedImprovementParts, setExpandedImprovementParts] = useState<string[]>(['task1']);
+  const [highlightFilter, setHighlightFilter] = useState<'all' | 'error' | 'warning' | 'good'>('all');
+  const [task1AnswerTab, setTask1AnswerTab] = useState<'original' | 'model'>('original');
+  const [task2AnswerTab, setTask2AnswerTab] = useState<'original' | 'model'>('original');
 
   const togglePart = (partId: string) => {
     setExpandedParts(prev =>
@@ -1022,12 +1025,6 @@ export function WritingTestResultPage() {
               className="flex-1 px-3 sm:px-6 py-4 font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[12px] sm:text-[14px] text-[#374151] hover:bg-white transition-colors data-[state=active]:bg-white data-[state=active]:text-[#012269] data-[state=active]:border-b-2 data-[state=active]:border-[#012269] text-center"
             >
               اقتراحات التحسين
-            </Tabs.Trigger>
-            <Tabs.Trigger
-              value="model-answer"
-              className="flex-1 px-3 sm:px-6 py-4 font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[12px] sm:text-[14px] text-[#374151] hover:bg-white transition-colors data-[state=active]:bg-white data-[state=active]:text-[#012269] data-[state=active]:border-b-2 data-[state=active]:border-[#012269] text-center"
-            >
-              الإجابة النموذجية
             </Tabs.Trigger>
             <Tabs.Trigger
               value="answer"
@@ -1541,63 +1538,72 @@ export function WritingTestResultPage() {
                 </p>
               </div>
 
-              {/* Your Answer with Annotations */}
-              <div className="bg-white rounded-[12px] p-4 sm:p-6 border border-[#EEEEEE]">
+              {/* Task 1 Answer - Sub Tabs */}
+              <div className="bg-white rounded-[12px] border border-[#EEEEEE] overflow-hidden">
+                {/* Sub-tab switcher */}
+                <div className="flex border-b border-[#EEEEEE]">
+                  <button
+                    onClick={() => setTask1AnswerTab('original')}
+                    className={`flex-1 px-4 py-3 text-[13px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] transition-all ${
+                      task1AnswerTab === 'original'
+                        ? 'bg-white text-[#012269] border-b-2 border-[#012269]'
+                        : 'bg-[#F9FAFB] text-[#6B7280] hover:bg-[#F3F4F6]'
+                    }`}
+                  >
+                    إجابتك الأصلية
+                  </button>
+                  <button
+                    onClick={() => setTask1AnswerTab('model')}
+                    className={`flex-1 px-4 py-3 text-[13px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] transition-all ${
+                      task1AnswerTab === 'model'
+                        ? 'bg-white text-[#4CAF50] border-b-2 border-[#4CAF50]'
+                        : 'bg-[#F9FAFB] text-[#6B7280] hover:bg-[#F3F4F6]'
+                    }`}
+                  >
+                    النسخة المحسنة
+                  </button>
+                </div>
+
+                {task1AnswerTab === 'original' ? (
+                <div className="p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
                   <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] sm:text-[16px] text-[#1B2A4A]">
-                    إجابتك (مع التعليقات التوضيحية)
+                    إجابتك - المهمة 1
                   </h4>
-                  <div className="flex gap-2 sm:gap-4 text-[11px] sm:text-[12px] font-['IBM_Plex_Sans_Arabic:Regular',sans-serif]">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-[#D1FAE5] border border-[#4CAF50] rounded"></div>
-                      <span className="text-[#374151]">ممتاز</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-[#FEF3C7] border border-[#FF8C00] rounded"></div>
-                      <span className="text-[#374151]">يمكن تحسينه</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-[#FEE2E2] border border-[#C30020] rounded"></div>
-                      <span className="text-[#374151]">خطأ</span>
-                    </div>
+                  <div className="flex gap-1.5">
+                    {([
+                      { key: 'all' as const, label: 'الكل', active: 'bg-[#1B2A4A] text-white border-[#1B2A4A]', dot: '' },
+                      { key: 'error' as const, label: 'خطأ', active: 'bg-[#C30020] text-white border-[#C30020]', dot: 'bg-[#FEE2E2] border-[#C30020]' },
+                      { key: 'warning' as const, label: 'تحسين', active: 'bg-[#FF8C00] text-white border-[#FF8C00]', dot: 'bg-[#FEF3C7] border-[#FF8C00]' },
+                      { key: 'good' as const, label: 'ممتاز', active: 'bg-[#4CAF50] text-white border-[#4CAF50]', dot: 'bg-[#D1FAE5] border-[#4CAF50]' },
+                    ] as const).map((f) => (
+                      <button
+                        key={f.key}
+                        onClick={() => setHighlightFilter(f.key)}
+                        className={`flex items-center gap-1 px-2.5 py-1 rounded-full border text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] transition-all ${
+                          highlightFilter === f.key ? f.active : 'bg-white text-[#6B7280] border-[#D1D5DB] hover:bg-[#F3F4F6]'
+                        }`}
+                      >
+                        {f.dot && <div className={`w-2 h-2 rounded-full border ${highlightFilter === f.key ? 'bg-white/40 border-white/60' : f.dot}`}></div>}
+                        {f.label}
+                      </button>
+                    ))}
                   </div>
                 </div>
-                {/* Helper to render annotated text spans */}
-                {(() => {
-                  const AnnotatedSpan = ({ id, text, type, title, desc }: { id: number; text: string; type: 'error' | 'warning' | 'good'; title: string; desc: string }) => {
-                    const colors = type === 'error'
-                      ? { bg: 'bg-[#FEE2E2]', border: 'border-[#C30020]', hover: 'hover:bg-[#FCA5A5]', tooltipBorder: 'border-[#C30020]', arrow: 'border-t-[#C30020]' }
-                      : type === 'warning'
-                      ? { bg: 'bg-[#FEF3C7]', border: 'border-[#FF8C00]', hover: 'hover:bg-[#FDE68A]', tooltipBorder: 'border-[#FF8C00]', arrow: 'border-t-[#FF8C00]' }
-                      : { bg: 'bg-[#D1FAE5]', border: 'border-[#4CAF50]', hover: 'hover:bg-[#BBF7D0]', tooltipBorder: 'border-[#4CAF50]', arrow: 'border-t-[#4CAF50]' };
-                    const Icon = type === 'error' ? XCircle : type === 'warning' ? AlertCircle : CheckCircle2;
-                    const iconColor = type === 'error' ? 'text-[#C30020]' : type === 'warning' ? 'text-[#FF8C00]' : 'text-[#4CAF50]';
-                    return (
-                      <span
-                        className={`relative ${colors.bg} border-b-2 ${colors.border} px-1 cursor-pointer ${colors.hover} transition-colors`}
-                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === id ? null : id); }}
-                      >
-                        {text}
-                        {activeTooltip === id && (
-                          <span className={`absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 ${colors.tooltipBorder} rounded-[12px] p-4 shadow-lg`} onClick={(e) => e.stopPropagation()}>
-                            <div className="flex items-start gap-2">
-                              <Icon className={`w-5 h-5 ${iconColor} flex-shrink-0 mt-0.5`} />
-                              <div>
-                                <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">{title}</p>
-                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">{desc}</p>
-                              </div>
-                            </div>
-                            <div className={`absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent ${colors.arrow}`}></div>
-                          </span>
-                        )}
-                      </span>
-                    );
-                  };
-                  return null;
-                })()}
+                {/* Annotation highlight styles based on filter */}
+                <style>{`
+                  .ann-error { background: #FEE2E2; border-bottom: 2px solid #C30020; padding: 0 4px; cursor: pointer; transition: background 0.2s; }
+                  .ann-error:hover { background: #FCA5A5; }
+                  .ann-warning { background: #FEF3C7; border-bottom: 2px solid #FF8C00; padding: 0 4px; cursor: pointer; transition: background 0.2s; }
+                  .ann-warning:hover { background: #FDE68A; }
+                  .ann-good { background: #D1FAE5; border-bottom: 2px solid #4CAF50; padding: 0 4px; cursor: pointer; transition: background 0.2s; }
+                  .ann-good:hover { background: #BBF7D0; }
+                  .ann-hidden { background: transparent !important; border-bottom: none !important; cursor: default !important; padding: 0 !important; }
+                  .ann-dimmed { opacity: 0.4; }
+                `}</style>
                 <div className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] sm:text-[14px] text-[#374151] leading-relaxed space-y-4">
                   <p>
-                    <span className="relative bg-[#D1FAE5] border-b-2 border-[#4CAF50] px-1 cursor-pointer hover:bg-[#BBF7D0] transition-colors"
+                    <span className={`relative ann-good ${highlightFilter !== 'all' && highlightFilter !== 'good' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 0 ? null : 0); }}>
                       Dear Sarah,
                       {activeTooltip === 0 && (
@@ -1609,7 +1615,7 @@ export function WritingTestResultPage() {
                     </span>
                   </p>
                   <p>
-                    I am writing to you because I <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                    I am writing to you because I <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 1 ? null : 1); }}>
                       want tell you
                       {activeTooltip === 1 && (
@@ -1618,7 +1624,7 @@ export function WritingTestResultPage() {
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                         </span>
                       )}
-                    </span> about <span className="relative bg-[#FEF3C7] border-b-2 border-[#FF8C00] px-1 cursor-pointer hover:bg-[#FDE68A] transition-colors"
+                    </span> about <span className={`relative ann-warning ${highlightFilter !== 'all' && highlightFilter !== 'warning' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 2 ? null : 2); }}>
                       swimming class in our area
                       {activeTooltip === 2 && (
@@ -1627,7 +1633,7 @@ export function WritingTestResultPage() {
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
                         </span>
                       )}
-                    </span>. The <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                    </span>. The <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 3 ? null : 3); }}>
                       comunity center have new class
                       {activeTooltip === 3 && (
@@ -1636,7 +1642,7 @@ export function WritingTestResultPage() {
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                         </span>
                       )}
-                    </span> for people who <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                    </span> for people who <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 4 ? null : 4); }}>
                       dont know swim
                       {activeTooltip === 4 && (
@@ -1648,7 +1654,7 @@ export function WritingTestResultPage() {
                     </span>.
                   </p>
                   <p>
-                    The class is <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                    The class is <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 5 ? null : 5); }}>
                       in Tuesday and Thursday
                       {activeTooltip === 5 && (
@@ -1657,7 +1663,7 @@ export function WritingTestResultPage() {
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                         </span>
                       )}
-                    </span> <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                    </span> <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 6 ? null : 6); }}>
                       in evening time
                       {activeTooltip === 6 && (
@@ -1666,7 +1672,7 @@ export function WritingTestResultPage() {
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                         </span>
                       )}
-                    </span>. The teacher is good and he <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                    </span>. The teacher is good and he <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 7 ? null : 7); }}>
                       teached many peoples before
                       {activeTooltip === 7 && (
@@ -1675,7 +1681,7 @@ export function WritingTestResultPage() {
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                         </span>
                       )}
-                    </span>. <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                    </span>. <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 8 ? null : 8); }}>
                       It cost 50 dollar per month
                       {activeTooltip === 8 && (
@@ -1684,7 +1690,7 @@ export function WritingTestResultPage() {
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                         </span>
                       )}
-                    </span> and they give you <span className="relative bg-[#FEF3C7] border-b-2 border-[#FF8C00] px-1 cursor-pointer hover:bg-[#FDE68A] transition-colors"
+                    </span> and they give you <span className={`relative ann-warning ${highlightFilter !== 'all' && highlightFilter !== 'warning' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 9 ? null : 9); }}>
                       all thing you need
                       {activeTooltip === 9 && (
@@ -1693,7 +1699,7 @@ export function WritingTestResultPage() {
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
                         </span>
                       )}
-                    </span> like towel and cap. I think the price is <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                    </span> like towel and cap. I think the price is <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 10 ? null : 10); }}>
                       not much expensif
                       {activeTooltip === 10 && (
@@ -1705,7 +1711,7 @@ export function WritingTestResultPage() {
                     </span>.
                   </p>
                   <p>
-                    I was thinking <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                    I was thinking <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 11 ? null : 11); }}>
                       maybe me and you can go togather
                       {activeTooltip === 11 && (
@@ -1714,7 +1720,7 @@ export function WritingTestResultPage() {
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                         </span>
                       )}
-                    </span>. You said before you <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                    </span>. You said before you <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 12 ? null : 12); }}>
                       want learn swimming
                       {activeTooltip === 12 && (
@@ -1723,7 +1729,7 @@ export function WritingTestResultPage() {
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                         </span>
                       )}
-                    </span>. It will be very fun if we go <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                    </span>. It will be very fun if we go <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 13 ? null : 13); }}>
                       same class
                       {activeTooltip === 13 && (
@@ -1732,7 +1738,7 @@ export function WritingTestResultPage() {
                           <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                         </span>
                       )}
-                    </span>. We can also <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                    </span>. We can also <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 14 ? null : 14); }}>
                       do practise in weekend togather
                       {activeTooltip === 14 && (
@@ -1747,7 +1753,7 @@ export function WritingTestResultPage() {
                     Please tell me what you think about this. I hope you will come with me.
                   </p>
                   <p>
-                    <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                    <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 15 ? null : 15); }}>
                       Waiting your reply,
                       {activeTooltip === 15 && (
@@ -1760,6 +1766,28 @@ export function WritingTestResultPage() {
                     Alex
                   </p>
                 </div>
+                </div>
+                ) : (
+                <div className="p-4 sm:p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <CheckCircle2 className="w-5 h-5 text-[#4CAF50]" />
+                    <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#4CAF50]">
+                      إجابة نموذجية — Band {modelAnswers[0].bandScore}
+                    </span>
+                  </div>
+                  <div className="bg-[#FAFFFE] rounded-[12px] p-5 border border-[#E5E7EB]">
+                    <pre className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] leading-[1.8] whitespace-pre-wrap" style={{ direction: 'ltr', textAlign: 'left' }}>
+                      {modelAnswers[0].answer}
+                    </pre>
+                  </div>
+                  <div className="mt-4 flex items-start gap-2 bg-[#EFF6FF] rounded-[8px] p-3">
+                    <Lightbulb className="w-5 h-5 text-[#1E40AF] mt-0.5 flex-shrink-0" />
+                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#1E40AF]">
+                      قارن إجابتك بالإجابة النموذجية ولاحظ كيف تم تنظيم الأفكار واستخدام المفردات والروابط بشكل فعّال.
+                    </p>
+                  </div>
+                </div>
+                )}
               </div>
 
               {/* Word Count - Task 1 */}
@@ -1882,30 +1910,61 @@ export function WritingTestResultPage() {
                   </p>
                 </div>
 
-                {/* Task 2 Answer with Annotations */}
-                <div className="bg-white rounded-[12px] p-4 sm:p-6 border border-[#EEEEEE] mt-6">
+                {/* Task 2 Answer - Sub Tabs */}
+                <div className="bg-white rounded-[12px] border border-[#EEEEEE] mt-6 overflow-hidden">
+                  {/* Sub-tab switcher */}
+                  <div className="flex border-b border-[#EEEEEE]">
+                    <button
+                      onClick={() => setTask2AnswerTab('original')}
+                      className={`flex-1 px-4 py-3 text-[13px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] transition-all ${
+                        task2AnswerTab === 'original'
+                          ? 'bg-white text-[#012269] border-b-2 border-[#012269]'
+                          : 'bg-[#F9FAFB] text-[#6B7280] hover:bg-[#F3F4F6]'
+                      }`}
+                    >
+                      إجابتك الأصلية
+                    </button>
+                    <button
+                      onClick={() => setTask2AnswerTab('model')}
+                      className={`flex-1 px-4 py-3 text-[13px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] transition-all ${
+                        task2AnswerTab === 'model'
+                          ? 'bg-white text-[#4CAF50] border-b-2 border-[#4CAF50]'
+                          : 'bg-[#F9FAFB] text-[#6B7280] hover:bg-[#F3F4F6]'
+                      }`}
+                    >
+                      النسخة المحسنة
+                    </button>
+                  </div>
+
+                  {task2AnswerTab === 'original' ? (
+                  <div className="p-4 sm:p-6">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
                     <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] sm:text-[16px] text-[#1B2A4A]">
-                      إجابتك - المهمة 2 (مع التعليقات التوضيحية)
+                      إجابتك - المهمة 2
                     </h4>
-                    <div className="flex gap-2 sm:gap-4 text-[11px] sm:text-[12px] font-['IBM_Plex_Sans_Arabic:Regular',sans-serif]">
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 bg-[#D1FAE5] border border-[#4CAF50] rounded"></div>
-                        <span className="text-[#374151]">ممتاز</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 bg-[#FEF3C7] border border-[#FF8C00] rounded"></div>
-                        <span className="text-[#374151]">يمكن تحسينه</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 bg-[#FEE2E2] border border-[#C30020] rounded"></div>
-                        <span className="text-[#374151]">خطأ</span>
-                      </div>
+                    <div className="flex gap-1.5">
+                      {([
+                        { key: 'all' as const, label: 'الكل', active: 'bg-[#1B2A4A] text-white border-[#1B2A4A]', dot: '' },
+                        { key: 'error' as const, label: 'خطأ', active: 'bg-[#C30020] text-white border-[#C30020]', dot: 'bg-[#FEE2E2] border-[#C30020]' },
+                        { key: 'warning' as const, label: 'تحسين', active: 'bg-[#FF8C00] text-white border-[#FF8C00]', dot: 'bg-[#FEF3C7] border-[#FF8C00]' },
+                        { key: 'good' as const, label: 'ممتاز', active: 'bg-[#4CAF50] text-white border-[#4CAF50]', dot: 'bg-[#D1FAE5] border-[#4CAF50]' },
+                      ] as const).map((f) => (
+                        <button
+                          key={f.key}
+                          onClick={() => setHighlightFilter(f.key)}
+                          className={`flex items-center gap-1 px-2.5 py-1 rounded-full border text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] transition-all ${
+                            highlightFilter === f.key ? f.active : 'bg-white text-[#6B7280] border-[#D1D5DB] hover:bg-[#F3F4F6]'
+                          }`}
+                        >
+                          {f.dot && <div className={`w-2 h-2 rounded-full border ${highlightFilter === f.key ? 'bg-white/40 border-white/60' : f.dot}`}></div>}
+                          {f.label}
+                        </button>
+                      ))}
                     </div>
                   </div>
                   <div className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] sm:text-[14px] text-[#374151] leading-relaxed space-y-4">
                     <p>
-                      In todays world technology <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      In todays world technology <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 100 ? null : 100); }}>
                         have become very importent part
                         {activeTooltip === 100 && (
@@ -1914,7 +1973,7 @@ export function WritingTestResultPage() {
                             <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                           </span>
                         )}
-                      </span> of our life. <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      </span> of our life. <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 101 ? null : 101); }}>
                         Some peoples think technology make life hard
                         {activeTooltip === 101 && (
@@ -1923,7 +1982,7 @@ export function WritingTestResultPage() {
                             <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                           </span>
                         )}
-                      </span> and some think it make life easy. <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      </span> and some think it make life easy. <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 102 ? null : 102); }}>
                         I will talk about both side
                         {activeTooltip === 102 && (
@@ -1935,7 +1994,7 @@ export function WritingTestResultPage() {
                       </span> and give my opinion.
                     </p>
                     <p>
-                      First, some people <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      First, some people <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 103 ? null : 103); }}>
                         belive technology is bad because it make people lazy
                         {activeTooltip === 103 && (
@@ -1944,7 +2003,7 @@ export function WritingTestResultPage() {
                             <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                           </span>
                         )}
-                      </span>. For example <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      </span>. For example <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 104 ? null : 104); }}>
                         many person spend all the time on there phone
                         {activeTooltip === 104 && (
@@ -1953,7 +2012,7 @@ export function WritingTestResultPage() {
                             <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                           </span>
                         )}
-                      </span> and <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      </span> and <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 105 ? null : 105); }}>
                         dont do any exercice
                         {activeTooltip === 105 && (
@@ -1962,7 +2021,7 @@ export function WritingTestResultPage() {
                             <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                           </span>
                         )}
-                      </span> or go outside. Also <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      </span> or go outside. Also <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 106 ? null : 106); }}>
                         childs now play video game all day and dont study good
                         {activeTooltip === 106 && (
@@ -1971,7 +2030,7 @@ export function WritingTestResultPage() {
                             <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                           </span>
                         )}
-                      </span>. <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      </span>. <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 107 ? null : 107); }}>
                         Another probleme is that people dont talk to each other becouse they always on social media
                         {activeTooltip === 107 && (
@@ -1980,7 +2039,7 @@ export function WritingTestResultPage() {
                             <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                           </span>
                         )}
-                      </span>. <span className="relative bg-[#FEF3C7] border-b-2 border-[#FF8C00] px-1 cursor-pointer hover:bg-[#FDE68A] transition-colors"
+                      </span>. <span className={`relative ann-warning ${highlightFilter !== 'all' && highlightFilter !== 'warning' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 108 ? null : 108); }}>
                         This is very bad for the society
                         {activeTooltip === 108 && (
@@ -1992,7 +2051,7 @@ export function WritingTestResultPage() {
                       </span>.
                     </p>
                     <p>
-                      On the other hand, technology is also very <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      On the other hand, technology is also very <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 109 ? null : 109); }}>
                         usefull
                         {activeTooltip === 109 && (
@@ -2001,7 +2060,7 @@ export function WritingTestResultPage() {
                             <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                           </span>
                         )}
-                      </span>. <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      </span>. <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 110 ? null : 110); }}>
                         It help people to communecate with family who live in diffrent country
                         {activeTooltip === 110 && (
@@ -2010,7 +2069,7 @@ export function WritingTestResultPage() {
                             <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                           </span>
                         )}
-                      </span>. Also <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      </span>. Also <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 111 ? null : 111); }}>
                         student can learn many thing from internet
                         {activeTooltip === 111 && (
@@ -2019,7 +2078,7 @@ export function WritingTestResultPage() {
                             <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                           </span>
                         )}
-                      </span> and get informations easy. <span className="relative bg-[#D1FAE5] border-b-2 border-[#4CAF50] px-1 cursor-pointer hover:bg-[#BBF7D0] transition-colors"
+                      </span> and get informations easy. <span className={`relative ann-good ${highlightFilter !== 'all' && highlightFilter !== 'good' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 112 ? null : 112); }}>
                         For exemple, I use technology for study english and it help me alot
                         {activeTooltip === 112 && (
@@ -2028,7 +2087,7 @@ export function WritingTestResultPage() {
                             <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#4CAF50]"></div>
                           </span>
                         )}
-                      </span>. Moreover, <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      </span>. Moreover, <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 113 ? null : 113); }}>
                         hospital use technology for help sick people and save lifes
                         {activeTooltip === 113 && (
@@ -2040,7 +2099,7 @@ export function WritingTestResultPage() {
                       </span>.
                     </p>
                     <p>
-                      In my <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      In my <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 114 ? null : 114); }}>
                         openion, I think technology brung more good thing than bad thing
                         {activeTooltip === 114 && (
@@ -2049,7 +2108,7 @@ export function WritingTestResultPage() {
                             <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                           </span>
                         )}
-                      </span>. But we should use it in a good way and not too much. If people use technology with balance it will be very <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      </span>. But we should use it in a good way and not too much. If people use technology with balance it will be very <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 115 ? null : 115); }}>
                         helpfull for everyone. Goverments should also teach
                         {activeTooltip === 115 && (
@@ -2061,7 +2120,7 @@ export function WritingTestResultPage() {
                       </span> people how to use technology in correct way.
                     </p>
                     <p>
-                      <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 116 ? null : 116); }}>
                         In conclution, technology have both good and bad side
                         {activeTooltip === 116 && (
@@ -2070,7 +2129,7 @@ export function WritingTestResultPage() {
                             <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
                           </span>
                         )}
-                      </span> but <span className="relative bg-[#FEF3C7] border-b-2 border-[#FF8C00] px-1 cursor-pointer hover:bg-[#FDE68A] transition-colors"
+                      </span> but <span className={`relative ann-warning ${highlightFilter !== 'all' && highlightFilter !== 'warning' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 117 ? null : 117); }}>
                         I believe it is more good than bad
                         {activeTooltip === 117 && (
@@ -2079,7 +2138,7 @@ export function WritingTestResultPage() {
                             <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
                           </span>
                         )}
-                      </span>. We need to be <span className="relative bg-[#FEE2E2] border-b-2 border-[#C30020] px-1 cursor-pointer hover:bg-[#FCA5A5] transition-colors"
+                      </span>. We need to be <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 118 ? null : 118); }}>
                         carefull
                         {activeTooltip === 118 && (
@@ -2091,6 +2150,28 @@ export function WritingTestResultPage() {
                       </span> and use it wisely.
                     </p>
                   </div>
+                  </div>
+                  ) : (
+                  <div className="p-4 sm:p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <CheckCircle2 className="w-5 h-5 text-[#4CAF50]" />
+                      <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#4CAF50]">
+                        إجابة نموذجية — Band {modelAnswers[1].bandScore}
+                      </span>
+                    </div>
+                    <div className="bg-[#FAFFFE] rounded-[12px] p-5 border border-[#E5E7EB]">
+                      <pre className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] leading-[1.8] whitespace-pre-wrap" style={{ direction: 'ltr', textAlign: 'left' }}>
+                        {modelAnswers[1].answer}
+                      </pre>
+                    </div>
+                    <div className="mt-4 flex items-start gap-2 bg-[#EFF6FF] rounded-[8px] p-3">
+                      <Lightbulb className="w-5 h-5 text-[#1E40AF] mt-0.5 flex-shrink-0" />
+                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#1E40AF]">
+                        قارن إجابتك بالإجابة النموذجية ولاحظ كيف تم تنظيم الأفكار واستخدام المفردات والروابط بشكل فعّال.
+                      </p>
+                    </div>
+                  </div>
+                  )}
                 </div>
 
                 {/* Word Count - Task 2 */}
@@ -2173,69 +2254,7 @@ export function WritingTestResultPage() {
           </Tabs.Content>
 
           {/* Model Answer Tab */}
-          <Tabs.Content value="model-answer" className="p-4 sm:p-8">
-            <div className="space-y-6">
-              <div className="flex items-center gap-3 mb-2">
-                <Award className="w-6 h-6 text-[#012269]" />
-                <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] sm:text-[18px] text-[#1B2A4A]">
-                  الإجابة النموذجية لكل مهمة
-                </h3>
-              </div>
-              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#6B7280] mb-4">
-                إجابات نموذجية عالية المستوى لكل جزء من أجزاء الاختبار، يمكنك الاستفادة منها لتحسين أسلوبك في الكتابة.
-              </p>
-
-              {modelAnswers.map((model) => (
-                <div key={model.id} className="rounded-[16px] border border-[#EEEEEE] overflow-hidden">
-                  {/* Model Answer Header */}
-                  <div className="bg-gradient-to-l from-[#012269] to-[#1B2A4A] px-6 py-4 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <FileText className="w-5 h-5 text-white" />
-                      <div>
-                        <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-white">
-                          {model.title}
-                        </h4>
-                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-white/70">
-                          {model.type}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="bg-white/20 backdrop-blur-sm rounded-[8px] px-3 py-1.5 text-center">
-                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[10px] text-white/70">
-                          Band Score
-                        </p>
-                        <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] text-white">
-                          {model.bandScore}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Model Answer Body */}
-                  <div className="p-6 bg-[#FAFFFE] border-r-4 border-[#4CAF50]">
-                    <div className="flex items-center gap-2 mb-4">
-                      <CheckCircle2 className="w-5 h-5 text-[#4CAF50]" />
-                      <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#4CAF50]">
-                        إجابة نموذجية
-                      </span>
-                    </div>
-                    <div className="bg-white rounded-[12px] p-5 border border-[#E5E7EB] shadow-sm">
-                      <pre className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] leading-[1.8] whitespace-pre-wrap" style={{ direction: 'ltr', textAlign: 'left' }}>
-                        {model.answer}
-                      </pre>
-                    </div>
-                    <div className="mt-4 flex items-start gap-2 bg-[#EFF6FF] rounded-[8px] p-3">
-                      <Lightbulb className="w-5 h-5 text-[#1E40AF] mt-0.5 flex-shrink-0" />
-                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#1E40AF]">
-                        قارن إجابتك بالإجابة النموذجية ولاحظ كيف تم تنظيم الأفكار واستخدام المفردات والروابط بشكل فعّال.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Tabs.Content>
+          {/* Model Answer tab removed — now inline with answer tab */}
         </Tabs.Root>
 
       </div>
