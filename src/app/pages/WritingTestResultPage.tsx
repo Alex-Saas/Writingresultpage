@@ -841,7 +841,7 @@ function SmartTooltip({ borderColor, children }: { borderColor: string; children
 
   const style: React.CSSProperties = {
     position: 'absolute',
-    zIndex: 50,
+    zIndex: 9999,
     width: '16rem',
     ...(pos.bottom ? { bottom: pos.bottom, marginBottom: '0.5rem' } : {}),
     ...(pos.top ? { top: pos.top, marginTop: '0.5rem' } : {}),
@@ -1541,10 +1541,10 @@ export function WritingTestResultPage() {
           <Tabs.Content value="answer" className="p-4 sm:p-8">
             <div className="space-y-4">
               {/* Task 1 Collapsible */}
-              <div className="rounded-[16px] border border-[#EEEEEE] overflow-hidden">
+              <div className="rounded-[16px] border border-[#EEEEEE] overflow-visible">
                 <button
                   onClick={() => toggleAnswerTask('answer-task1')}
-                  className="w-full bg-gradient-to-bl from-[#012269] via-[#1B2A4A] to-[#0f1d3d] p-4 sm:p-5 flex items-center justify-between"
+                  className="w-full bg-gradient-to-bl from-[#012269] via-[#1B2A4A] to-[#0f1d3d] p-4 sm:p-5 flex items-center justify-between rounded-t-[16px]"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-white/10 rounded-[10px] flex items-center justify-center">
@@ -1581,7 +1581,7 @@ export function WritingTestResultPage() {
               </div>
 
               {/* Task 1 Answer - Sub Tabs */}
-              <div className="bg-white rounded-[12px] border border-[#EEEEEE]">
+              <div className="bg-white rounded-[12px] border border-[#EEEEEE] overflow-visible">
                 {/* Sub-tab switcher */}
                 <div className="flex border-b border-[#EEEEEE]">
                   <button
@@ -2033,10 +2033,10 @@ export function WritingTestResultPage() {
               </div>
 
               {/* Task 2 Collapsible */}
-              <div className="rounded-[16px] border border-[#EEEEEE] overflow-hidden">
+              <div className="rounded-[16px] border border-[#EEEEEE] overflow-visible">
                 <button
                   onClick={() => toggleAnswerTask('answer-task2')}
-                  className="w-full bg-gradient-to-bl from-[#012269] via-[#1B2A4A] to-[#0f1d3d] p-4 sm:p-5 flex items-center justify-between"
+                  className="w-full bg-gradient-to-bl from-[#012269] via-[#1B2A4A] to-[#0f1d3d] p-4 sm:p-5 flex items-center justify-between rounded-t-[16px]"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-white/10 rounded-[10px] flex items-center justify-center">
@@ -2073,7 +2073,7 @@ export function WritingTestResultPage() {
                 </div>
 
                 {/* Task 2 Answer - Sub Tabs */}
-                <div className="bg-white rounded-[12px] border border-[#EEEEEE] mt-6">
+                <div className="bg-white rounded-[12px] border border-[#EEEEEE] mt-6 overflow-visible">
                   {/* Sub-tab switcher */}
                   <div className="flex border-b border-[#EEEEEE]">
                     <button
