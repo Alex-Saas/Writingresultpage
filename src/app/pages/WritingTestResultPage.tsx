@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Award, Clock, FileText, TrendingUp, CheckCircle2, XCircle, AlertCircle, BookOpen, ArrowLeft, Share2, Download, ChevronDown, ChevronUp, Lightbulb, Target, BarChart3 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 import * as Tabs from '@radix-ui/react-tabs';
@@ -375,6 +375,35 @@ In conclusion, while technology offers numerous advantages in education, it shou
   }
 ];
 
+// الإجابات الأصلية للطالب (نص خام بدون تعليقات)
+const originalAnswers = [
+  {
+    id: 'task1',
+    answer: `Dear Sarah,
+
+I am writing to you because I want tell you about swimming class in our area. The comunity center have new class for people who dont know swim.
+
+The class is in Tuesday and Thursday in evening time. The teacher is good and he teached many peoples before. It cost 50 dollar per month and they give you all thing you need like towel and cap. I think the price is not much expensif.
+
+I was thinking maybe me and you can go togather. You said before you want learn swimming. It will be very fun if we go same class. We can also do practise in weekend togather.
+
+Please tell me what you think about this. I hope you will come with me.
+
+Waiting your reply,
+Alex`,
+  },
+  {
+    id: 'task2',
+    answer: `In today days, technology is very importent in our lifes. Some peoples think technology have become very importent part of daily life and it make everything easy. Other peoples think it is make life more hard. I will give my opinion about this topic.
+
+First, technology help us alot in many thing. For exemple, I use technology for study english and it help me alot. Also we can use internet to find informations easy about anything we want. This is make our life more easier than before.
+
+On the other hand, some people think technology is bad for the society. This is very bad for the society because peoples spend too much time on phone and they dont talk to each other. Also childs use technology too much and this is not good for there health.
+
+I believe it is more good than bad. Technology is very useful if we use it in good way. We should use technology but not too much. In my opinion technology make life easy and we should use it carefully.`,
+  }
+];
+
 // معايير التقييم التفصيلية - مجمعة حسب المهمة
 const detailedCriteriaByPart = [
   {
@@ -629,9 +658,43 @@ const improvementsByPart = [
     partId: 'task1',
     partTitle: 'المهمة 1 - General Training Letter',
     partType: 'رسالة شخصية',
-    improvements: [
+    criteriaImprovements: [
       {
-        category: 'استخدام المفردات',
+        criteriaName: 'Task Achievement',
+        criteriaNameAr: 'إنجاز المهمة',
+        score: 4.0,
+        color: '#EF4444',
+        bgColor: '#FEF2F2',
+        tips: [
+          { title: 'زيادة عدد الكلمات', priority: 'عالية', description: 'اكتب 150 كلمة على الأقل لـ Task 1 — عدد الكلمات الحالي أقل من المطلوب', scoreImpact: '+0.5' },
+          { title: 'تناول جميع أجزاء السؤال', priority: 'عالية', description: 'لم يتم تغطية جميع متطلبات المهمة — تأكد من الإجابة على كل نقطة', scoreImpact: '+0.5' },
+        ],
+        suggestions: []
+      },
+      {
+        criteriaName: 'Coherence & Cohesion',
+        criteriaNameAr: 'التماسك والترابط',
+        score: 4.5,
+        color: '#F59E0B',
+        bgColor: '#FEF3C7',
+        tips: [
+          { title: 'تحسين التماسك باستخدام الروابط', priority: 'عالية', description: 'استخدم روابط مناسبة: However, Moreover, Therefore بين الجمل', scoreImpact: '+0.5' },
+        ],
+        suggestions: [
+          { original: 'and', improved: 'moreover, furthermore, in addition' },
+          { original: 'but', improved: 'however, nevertheless, on the other hand' },
+          { original: 'so', improved: 'therefore, consequently, as a result' }
+        ]
+      },
+      {
+        criteriaName: 'Lexical Resource',
+        criteriaNameAr: 'الثروة اللغوية',
+        score: 5.0,
+        color: '#3B82F6',
+        bgColor: '#DBEAFE',
+        tips: [
+          { title: 'تنويع المفردات', priority: 'متوسطة', description: 'تجنب تكرار نفس الكلمات واستخدم مرادفات أكثر تقدماً', scoreImpact: '+0.5' },
+        ],
         suggestions: [
           { original: 'good', improved: 'excellent, beneficial, advantageous' },
           { original: 'show', improved: 'demonstrate, illustrate, indicate' },
@@ -639,57 +702,172 @@ const improvementsByPart = [
         ]
       },
       {
-        category: 'الروابط والتماسك',
-        suggestions: [
-          { original: 'and', improved: 'moreover, furthermore, in addition' },
-          { original: 'but', improved: 'however, nevertheless, on the other hand' },
-          { original: 'so', improved: 'therefore, consequently, as a result' }
-        ]
+        criteriaName: 'Grammatical Range & Accuracy',
+        criteriaNameAr: 'التنوع والدقة النحوية',
+        score: 4.5,
+        color: '#EC4899',
+        bgColor: '#FCE7F3',
+        tips: [
+          { title: 'تصحيح الأخطاء النحوية الأساسية', priority: 'عالية', description: 'راجع subject-verb agreement والأزمنة الأساسية — هذا سيرفع درجتك بشكل كبير', scoreImpact: '+1.0' },
+          { title: 'تنويع التراكيب النحوية', priority: 'متوسطة', description: 'استخدم جمل مركبة ومعقدة بجانب الجمل البسيطة', scoreImpact: '+0.5' },
+        ],
+        suggestions: []
       }
     ],
+    // Keep flat tips for action plan
     tips: [
-      { title: 'تصحيح الأخطاء النحوية الأساسية', priority: 'عالية', description: 'راجع subject-verb agreement والأزمنة الأساسية - هذا سيرفع درجتك بشكل كبير' },
-      { title: 'زيادة عدد الكلمات', priority: 'عالية', description: 'اكتب 150 كلمة على الأقل لـ Task 1' },
-      { title: 'تحسين التماسك باستخدام الروابط', priority: 'عالية', description: 'استخدم روابط مناسبة: However, Moreover, Therefore بين الجمل' }
+      { title: 'تصحيح الأخطاء النحوية الأساسية', priority: 'عالية', description: 'راجع subject-verb agreement والأزمنة الأساسية - هذا سيرفع درجتك بشكل كبير', scoreImpact: '+1.0', criteria: 'التنوع والدقة النحوية' },
+      { title: 'زيادة عدد الكلمات', priority: 'عالية', description: 'اكتب 150 كلمة على الأقل لـ Task 1', scoreImpact: '+0.5', criteria: 'إنجاز المهمة' },
+      { title: 'تحسين التماسك باستخدام الروابط', priority: 'عالية', description: 'استخدم روابط مناسبة: However, Moreover, Therefore بين الجمل', scoreImpact: '+0.5', criteria: 'التماسك والترابط' }
     ]
   },
   {
     partId: 'task2',
     partTitle: 'المهمة 2 - Essay',
     partType: 'مقال',
-    improvements: [
+    criteriaImprovements: [
       {
-        category: 'استخدام المفردات الأكاديمية',
-        suggestions: [
-          { original: 'important', improved: 'crucial, significant, vital, paramount' },
-          { original: 'think', improved: 'believe, consider, argue, contend' },
-          { original: 'a lot of', improved: 'numerous, a significant number of, considerable' }
-        ]
-      },
-      {
-        category: 'التعبيرات الأكاديمية',
+        criteriaName: 'Task Achievement',
+        criteriaNameAr: 'إنجاز المهمة',
+        score: 4.0,
+        color: '#EF4444',
+        bgColor: '#FEF2F2',
+        tips: [
+          { title: 'تطوير الأفكار بشكل كامل', priority: 'عالية', description: 'اشرح كل فكرة بجملتين أو ثلاث مع أمثلة داعمة', scoreImpact: '+1.0' },
+          { title: 'كتابة 250 كلمة على الأقل', priority: 'عالية', description: 'Task 2 يمثل 67% من الدرجة — تأكد من كتابة العدد المطلوب', scoreImpact: '+0.5' },
+        ],
         suggestions: [
           { original: 'I think', improved: 'In my opinion, From my perspective, I firmly believe' },
-          { original: 'In conclusion', improved: 'To sum up, In light of the above, Taking everything into account' },
-          { original: 'For example', improved: 'For instance, A case in point is, To illustrate' }
+          { original: 'In conclusion', improved: 'To sum up, In light of the above, Taking everything into account' }
         ]
       },
       {
-        category: 'الروابط المتقدمة',
+        criteriaName: 'Coherence & Cohesion',
+        criteriaNameAr: 'التماسك والترابط',
+        score: 4.5,
+        color: '#F59E0B',
+        bgColor: '#FEF3C7',
+        tips: [
+          { title: 'استخدام روابط متنوعة', priority: 'عالية', description: 'لا تكرر نفس الروابط — نوّع بين الروابط المختلفة', scoreImpact: '+0.5' },
+        ],
         suggestions: [
           { original: 'Also', improved: 'Furthermore, Moreover, In addition to this' },
           { original: 'But', improved: 'Nevertheless, Conversely, On the contrary' },
           { original: 'Because', improved: 'Due to the fact that, Owing to, As a consequence of' }
         ]
+      },
+      {
+        criteriaName: 'Lexical Resource',
+        criteriaNameAr: 'الثروة اللغوية',
+        score: 5.0,
+        color: '#3B82F6',
+        bgColor: '#DBEAFE',
+        tips: [
+          { title: 'توسيع الثروة اللغوية', priority: 'متوسطة', description: 'تعلم 10 كلمات أكاديمية جديدة يومياً وتجنب تكرار نفس الكلمات', scoreImpact: '+0.5' },
+        ],
+        suggestions: [
+          { original: 'important', improved: 'crucial, significant, vital, paramount' },
+          { original: 'think', improved: 'believe, consider, argue, contend' },
+          { original: 'a lot of', improved: 'numerous, a significant number of, considerable' },
+          { original: 'For example', improved: 'For instance, A case in point is, To illustrate' }
+        ]
+      },
+      {
+        criteriaName: 'Grammatical Range & Accuracy',
+        criteriaNameAr: 'التنوع والدقة النحوية',
+        score: 4.5,
+        color: '#EC4899',
+        bgColor: '#FCE7F3',
+        tips: [
+          { title: 'تصحيح الأخطاء النحوية المتكررة', priority: 'عالية', description: 'راجع subject-verb agreement و أزمنة الأفعال والأخطاء الإملائية', scoreImpact: '+1.0' },
+        ],
+        suggestions: []
       }
     ],
     tips: [
-      { title: 'تطوير الأفكار بشكل كامل', priority: 'عالية', description: 'اشرح كل فكرة بجملتين أو ثلاث مع أمثلة داعمة' },
-      { title: 'توسيع الثروة اللغوية', priority: 'متوسطة', description: 'تعلم 10 كلمات أكاديمية جديدة يومياً وتجنب تكرار نفس الكلمات' },
-      { title: 'كتابة 250 كلمة على الأقل', priority: 'عالية', description: 'Task 2 يمثل 67% من الدرجة - تأكد من كتابة العدد المطلوب' }
+      { title: 'تطوير الأفكار بشكل كامل', priority: 'عالية', description: 'اشرح كل فكرة بجملتين أو ثلاث مع أمثلة داعمة', scoreImpact: '+1.0', criteria: 'إنجاز المهمة' },
+      { title: 'توسيع الثروة اللغوية', priority: 'متوسطة', description: 'تعلم 10 كلمات أكاديمية جديدة يومياً وتجنب تكرار نفس الكلمات', scoreImpact: '+0.5', criteria: 'الثروة اللغوية' },
+      { title: 'كتابة 250 كلمة على الأقل', priority: 'عالية', description: 'Task 2 يمثل 67% من الدرجة - تأكد من كتابة العدد المطلوب', scoreImpact: '+0.5', criteria: 'إنجاز المهمة' }
     ]
   }
 ];
+
+function SmartTooltip({ borderColor, children }: { borderColor: string; children: React.ReactNode }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [pos, setPos] = useState<{ top?: string; bottom?: string; left?: string; right?: string; arrowTop?: boolean; arrowLeft?: number }>({ bottom: '100%', right: '0', arrowLeft: 24 });
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const el = ref.current;
+    const parent = el.parentElement;
+    const rect = el.getBoundingClientRect();
+    const parentRect = parent?.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const tooltipW = 256; // 16rem
+    const newPos: typeof pos = {};
+
+    // Vertical: show below if not enough space above
+    if (rect.top < 10) {
+      newPos.top = '100%';
+      newPos.arrowTop = true;
+    } else {
+      newPos.bottom = '100%';
+      newPos.arrowTop = false;
+    }
+
+    // Horizontal: center tooltip on parent word, clamp to viewport
+    if (parentRect) {
+      const parentCenter = parentRect.left + parentRect.width / 2;
+      let tooltipLeft = parentCenter - tooltipW / 2;
+      // Clamp to viewport
+      if (tooltipLeft < 10) tooltipLeft = 10;
+      if (tooltipLeft + tooltipW > vw - 10) tooltipLeft = vw - 10 - tooltipW;
+
+      // Convert to offset relative to parent
+      const offsetLeft = tooltipLeft - parentRect.left;
+      newPos.left = `${offsetLeft}px`;
+      newPos.right = undefined;
+
+      // Arrow points to center of parent word relative to tooltip
+      const arrowPos = parentCenter - tooltipLeft;
+      newPos.arrowLeft = Math.max(12, Math.min(arrowPos, tooltipW - 12));
+    } else {
+      newPos.right = '0';
+      newPos.arrowLeft = 24;
+    }
+
+    setPos(newPos);
+  }, []);
+
+  const style: React.CSSProperties = {
+    position: 'absolute',
+    zIndex: 50,
+    width: '16rem',
+    ...(pos.bottom ? { bottom: pos.bottom, marginBottom: '0.5rem' } : {}),
+    ...(pos.top ? { top: pos.top, marginTop: '0.5rem' } : {}),
+    ...(pos.right !== undefined ? { right: pos.right } : {}),
+    ...(pos.left !== undefined ? { left: pos.left } : {}),
+  };
+
+  return (
+    <span
+      ref={ref}
+      className={`bg-white border-2 rounded-[12px] p-4 shadow-lg`}
+      style={{ ...style, borderColor }}
+      onClick={(e) => e.stopPropagation()}
+    >
+      {children}
+      <span
+        className="absolute w-0 h-0 border-l-8 border-r-8 border-l-transparent border-r-transparent"
+        style={
+          pos.arrowTop
+            ? { bottom: '100%', left: `${pos.arrowLeft ?? 24}px`, transform: 'translateX(-8px)', borderBottom: `8px solid ${borderColor}` }
+            : { top: '100%', left: `${pos.arrowLeft ?? 24}px`, transform: 'translateX(-8px)', borderTop: `8px solid ${borderColor}` }
+        }
+      ></span>
+    </span>
+  );
+}
 
 export function WritingTestResultPage() {
   const [activeTab, setActiveTab] = useState('answer');
@@ -700,8 +878,15 @@ export function WritingTestResultPage() {
   const [expandedParts, setExpandedParts] = useState<string[]>(['task1']);
   const [expandedImprovementParts, setExpandedImprovementParts] = useState<string[]>(['task1']);
   const [highlightFilter, setHighlightFilter] = useState<'all' | 'error' | 'warning' | 'good'>('all');
-  const [task1AnswerTab, setTask1AnswerTab] = useState<'original' | 'model'>('original');
-  const [task2AnswerTab, setTask2AnswerTab] = useState<'original' | 'model'>('original');
+  const [task1AnswerTab, setTask1AnswerTab] = useState<'original' | 'model' | 'improvements'>('original');
+  const [task2AnswerTab, setTask2AnswerTab] = useState<'original' | 'model' | 'improvements'>('original');
+  const [expandedAnswerTasks, setExpandedAnswerTasks] = useState<string[]>(['answer-task1']);
+
+  const toggleAnswerTask = (taskId: string) => {
+    setExpandedAnswerTasks(prev =>
+      prev.includes(taskId) ? prev.filter(id => id !== taskId) : [...prev, taskId]
+    );
+  };
 
   const togglePart = (partId: string) => {
     setExpandedParts(prev =>
@@ -954,59 +1139,63 @@ export function WritingTestResultPage() {
           </div>
         </div>
 
-        {/* Quick Stats */}
+        {/* Criteria Summary Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-4 sm:mb-8">
-          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-6 shadow-sm">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-[rgba(217,68,68,0.2)] rounded-[12px] flex items-center justify-center">
-                <FileText className="w-6 h-6 text-[#C30020]" />
+          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-5 shadow-sm">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 bg-[#C3002015] rounded-[10px] flex items-center justify-center">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="10" width="3" height="8" rx="1" fill="#C30020"/><rect x="8.5" y="6" width="3" height="12" rx="1" fill="#C30020"/><rect x="14" y="2" width="3" height="16" rx="1" fill="#C30020"/></svg>
               </div>
-              <div>
-                <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[24px] text-[#1B2A4A]">287</p>
-                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">كلمة</p>
-              </div>
+              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A]">إنجاز المهمة</p>
+            </div>
+            <div className="flex items-baseline gap-1">
+              <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#C30020]">4</p>
+              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[16px] text-[#9CA3AF]">/9</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-6 shadow-sm">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-[rgba(217,68,68,0.2)] rounded-[12px] flex items-center justify-center">
-                <Clock className="w-6 h-6 text-[#C30020]" />
+          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-5 shadow-sm">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 bg-[#F59E0B15] rounded-[10px] flex items-center justify-center">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="10" width="3" height="8" rx="1" fill="#F59E0B"/><rect x="8.5" y="6" width="3" height="12" rx="1" fill="#F59E0B"/><rect x="14" y="2" width="3" height="16" rx="1" fill="#F59E0B"/></svg>
               </div>
-              <div>
-                <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[24px] text-[#1B2A4A]">18:32</p>
-                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">دقيقة</p>
-              </div>
+              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A]">التماسك والترابط</p>
+            </div>
+            <div className="flex items-baseline gap-1">
+              <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#F59E0B]">4.5</p>
+              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[16px] text-[#9CA3AF]">/9</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-6 shadow-sm">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-[rgba(217,68,68,0.2)] rounded-[12px] flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-[#C30020]" />
+          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-5 shadow-sm">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 bg-[#3B82F615] rounded-[10px] flex items-center justify-center">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="10" width="3" height="8" rx="1" fill="#3B82F6"/><rect x="8.5" y="6" width="3" height="12" rx="1" fill="#3B82F6"/><rect x="14" y="2" width="3" height="16" rx="1" fill="#3B82F6"/></svg>
               </div>
-              <div>
-                <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[24px] text-[#1B2A4A]">2.0</p>
-                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">كلمة/دقيقة</p>
-              </div>
+              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A]">الثروة اللغوية</p>
+            </div>
+            <div className="flex items-baseline gap-1">
+              <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#3B82F6]">5</p>
+              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[16px] text-[#9CA3AF]">/9</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-6 shadow-sm">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-[rgba(217,68,68,0.2)] rounded-[12px] flex items-center justify-center">
-                <Award className="w-6 h-6 text-[#C30020]" />
+          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-5 shadow-sm">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 bg-[#EC489915] rounded-[10px] flex items-center justify-center">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="10" width="3" height="8" rx="1" fill="#EC4899"/><rect x="8.5" y="6" width="3" height="12" rx="1" fill="#EC4899"/><rect x="14" y="2" width="3" height="16" rx="1" fill="#EC4899"/></svg>
               </div>
-              <div>
-                <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[24px] text-[#C30020]">58%</p>
-                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">دقة القواعد النحوية</p>
-              </div>
+              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A]">التنوع والدقة النحوية</p>
+            </div>
+            <div className="flex items-baseline gap-1">
+              <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#EC4899]">4.5</p>
+              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[16px] text-[#9CA3AF]">/9</p>
             </div>
           </div>
         </div>
 
         {/* Detailed Analysis Tabs */}
-        <Tabs.Root value={activeTab} onValueChange={setActiveTab} className="bg-white rounded-[16px] border border-[#EEEEEE] shadow-sm overflow-hidden">
+        <Tabs.Root value={activeTab} onValueChange={setActiveTab} className="bg-white rounded-[16px] border border-[#EEEEEE] shadow-sm">
           <Tabs.List className="flex border-b border-[#EEEEEE] bg-[#F9FAFB]">
             <Tabs.Trigger
               value="overview"
@@ -1021,12 +1210,6 @@ export function WritingTestResultPage() {
               المعايير التفصيلية
             </Tabs.Trigger>
             <Tabs.Trigger
-              value="improvements"
-              className="flex-1 px-3 sm:px-6 py-4 font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[12px] sm:text-[14px] text-[#374151] hover:bg-white transition-colors data-[state=active]:bg-white data-[state=active]:text-[#012269] data-[state=active]:border-b-2 data-[state=active]:border-[#012269] text-center"
-            >
-              اقتراحات التحسين
-            </Tabs.Trigger>
-            <Tabs.Trigger
               value="answer"
               className="flex-1 px-3 sm:px-6 py-4 font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[12px] sm:text-[14px] text-[#374151] hover:bg-white transition-colors data-[state=active]:bg-white data-[state=active]:text-[#012269] data-[state=active]:border-b-2 data-[state=active]:border-[#012269] text-center"
             >
@@ -1037,70 +1220,13 @@ export function WritingTestResultPage() {
           {/* Overview Tab */}
           <Tabs.Content value="overview" className="p-4 sm:p-8">
 
-            {/* Score + Chart in one row */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
-              {/* Score Card */}
-              <div className="bg-gradient-to-bl from-[#012269] via-[#1B2A4A] to-[#0f1d3d] rounded-[20px] p-6 relative overflow-hidden">
-                <div className="absolute top-[-40px] left-[-40px] w-[160px] h-[160px] rounded-full border-[30px] border-white opacity-[0.03]" />
-                <div className="absolute bottom-[-60px] right-[-60px] w-[200px] h-[200px] rounded-full border-[30px] border-white opacity-[0.03]" />
-
-                <div className="relative z-10">
-                  <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-white/50 mb-5">
-                    الدرجة الإجمالية
-                  </p>
-
-                  {/* Ring + Score */}
-                  <div className="flex items-center justify-center mb-6">
-                    <div className="relative w-[140px] h-[140px]">
-                      {(() => {
-                        const score = attemptData[selectedAttempt].score;
-                        const r = 60;
-                        const circ = 2 * Math.PI * r;
-                        const offset = circ - ((score / 9) * circ);
-                        return (
-                          <svg className="w-full h-full -rotate-90" viewBox="0 0 140 140">
-                            <circle cx="70" cy="70" r={r} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="10" />
-                            <circle cx="70" cy="70" r={r} fill="none" stroke="#fff" strokeWidth="10" strokeLinecap="round"
-                              strokeDasharray={circ} strokeDashoffset={offset}
-                              style={{ transition: 'stroke-dashoffset 0.8s ease' }}
-                            />
-                          </svg>
-                        );
-                      })()}
-                      <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[40px] text-white leading-none">
-                          {attemptData[selectedAttempt].score}
-                        </span>
-                        <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-white/35">من 9</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 4 Criteria - compact row */}
-                  <div className="grid grid-cols-2 gap-2">
-                    {(() => {
-                      const colors = ['#EF4444', '#F59E0B', '#3B82F6', '#EC4899'];
-                      const labels = ['إنجاز المهمة', 'الترابط', 'المفردات', 'النحو'];
-                      return attemptData[selectedAttempt].criteria.map((c, i) => (
-                        <div key={c.id} className="bg-white/8 rounded-[10px] px-3 py-2.5 flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: colors[i] }} />
-                            <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] text-white/60">{labels[i]}</span>
-                          </div>
-                          <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] text-white">{c.score}</span>
-                        </div>
-                      ));
-                    })()}
-                  </div>
-                </div>
-              </div>
-
-              {/* Progress Chart */}
+            {/* Progress Chart - Full Width */}
+            <div className="mb-8">
               <div className="bg-white rounded-[20px] p-5 sm:p-6 border border-[#EEEEEE] flex flex-col">
                 <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] sm:text-[18px] text-[#1B2A4A] mb-4">
                   تطور الدرجات
                 </h3>
-                <div className="flex-1 min-h-[250px]">
+                <div className="h-[280px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={attemptData} margin={{ top: 30, right: 40, left: 0, bottom: 10 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
@@ -1182,37 +1308,56 @@ export function WritingTestResultPage() {
                 🎯 خطة العمل الشخصية
               </h3>
               <div className="space-y-3">
-                {improvementsByPart.flatMap(p => p.tips.map(t => ({ ...t, completed: false }))).map((tip, idx) => (
-                  <div key={idx} className="flex items-start sm:items-center gap-3 sm:gap-4 p-4 bg-[#F9FAFB] rounded-[8px] border border-[#EEEEEE]">
-                    <div className="flex gap-1 flex-shrink-0">
-                      {[1, 2, 3].map((i) => (
-                        <div 
-                          key={i} 
-                          className={`w-2 h-6 rounded-full ${
-                            (tip.priority === 'عالية' && i <= 3) ||
-                            (tip.priority === 'متوسطة' && i <= 2) ||
-                            (tip.priority === 'منخفضة' && i <= 1)
-                              ? tip.completed ? 'bg-[#4CAF50]' : 'bg-[#C30020]'
-                              : 'bg-[#EEEEEE]'
-                          }`}
-                        />
-                      ))}
+                {(() => {
+                  const allTips = improvementsByPart.flatMap(p => p.tips.map(t => ({ ...t, completed: false })));
+                  // Sort: عالية first, then متوسطة, then by scoreImpact descending
+                  const sorted = [...allTips].sort((a, b) => {
+                    const priorityOrder: Record<string, number> = { 'عالية': 0, 'متوسطة': 1, 'منخفضة': 2 };
+                    const pA = priorityOrder[a.priority] ?? 2;
+                    const pB = priorityOrder[b.priority] ?? 2;
+                    if (pA !== pB) return pA - pB;
+                    return parseFloat(b.scoreImpact) - parseFloat(a.scoreImpact);
+                  });
+                  return sorted.map((tip, idx) => (
+                    <div key={idx} className="flex items-start gap-4 p-4 sm:p-5 bg-[#F9FAFB] rounded-[12px] border border-[#EEEEEE]">
+                      {/* Number */}
+                      <span className="w-8 h-8 rounded-full bg-[#1B2A4A] text-white text-[14px] font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] flex items-center justify-center flex-shrink-0">
+                        {idx + 1}
+                      </span>
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                          <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#1B2A4A]">
+                            {tip.title}
+                          </p>
+                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] ${
+                            tip.priority === 'عالية' ? 'bg-[#FEE2E2] text-[#991B1B]' : 'bg-[#FEF3C7] text-[#92400E]'
+                          }`}>
+                            {tip.priority === 'عالية' ? 'أولوية عالية' : 'أولوية متوسطة'}
+                          </span>
+                        </div>
+                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] sm:text-[13px] text-[#6B7280] mb-2">
+                          {tip.description}
+                        </p>
+                        <div className="flex flex-wrap items-center gap-3">
+                          <span className="flex items-center gap-1 text-[11px] font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[#6B7280]">
+                            <Target className="w-3.5 h-3.5 text-[#6B7280]" />
+                            {tip.criteria}
+                          </span>
+                        </div>
+                      </div>
+                      {/* Score Impact */}
+                      <div className="flex flex-col items-center flex-shrink-0">
+                        <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[18px] text-[#4CAF50]">
+                          {tip.scoreImpact}
+                        </span>
+                        <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[10px] text-[#6B7280]">
+                          درجة متوقعة
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] sm:text-[14px] text-[#1B2A4A] mb-1">
-                        {tip.title}
-                      </p>
-                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] sm:text-[12px] text-[#374151]">
-                        {tip.description}
-                      </p>
-                    </div>
-                    {tip.completed ? (
-                      <CheckCircle2 className="w-5 h-5 text-[#4CAF50] flex-shrink-0" />
-                    ) : (
-                      <AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0" />
-                    )}
-                  </div>
-                ))}
+                  ));
+                })()}
               </div>
             </div>
           </Tabs.Content>
@@ -1392,139 +1537,36 @@ export function WritingTestResultPage() {
           </Tabs.Content>
 
           {/* Improvements Tab */}
-          <Tabs.Content value="improvements" className="p-4 sm:p-8">
-            <div className="mb-6">
-              <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] sm:text-[18px] text-[#1B2A4A] mb-2">
-                💡 اقتراحات التحسين
-              </h3>
-              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] sm:text-[14px] text-[#6B7280]">
-                اضغط على أي جزء لعرض اقتراحات التحسين الخاصة به مع بدائل أفضل للعبارات المستخدمة
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              {improvementsByPart.map((part) => (
-                <div key={part.partId} className="rounded-[16px] border border-[#EEEEEE] overflow-hidden">
-                  {/* Part Header - Collapsible */}
-                  <button
-                    onClick={() => toggleImprovementPart(part.partId)}
-                    className="w-full bg-gradient-to-l from-[#012269] to-[#1B2A4A] px-6 py-5 flex items-center justify-between hover:opacity-95 transition-opacity"
-                  >
-                    <div className="flex items-center gap-3">
-                      <FileText className="w-6 h-6 text-white" />
-                      <div className="text-right">
-                        <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] text-white">
-                          {part.partTitle}
-                        </h4>
-                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-white/70">
-                          {part.partType} • {part.improvements.length} فئات تحسين • {part.tips.length} نصائح
-                        </p>
-                      </div>
-                    </div>
-                    {expandedImprovementParts.includes(part.partId) ? (
-                      <ChevronUp className="w-5 h-5 text-white" />
-                    ) : (
-                      <ChevronDown className="w-5 h-5 text-white" />
-                    )}
-                  </button>
-
-                  {/* Part Content */}
-                  {expandedImprovementParts.includes(part.partId) && (
-                    <div className="p-4 bg-white space-y-6">
-                      {/* Word Improvements */}
-                      <div>
-                        <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A] mb-4 flex items-center gap-2">
-                          <TrendingUp className="w-5 h-5 text-[#012269]" />
-                          كان بإمكانك استخدام عبارات أفضل
-                        </h4>
-                        <div className="space-y-4">
-                          {part.improvements.map((category, idx) => (
-                            <div key={idx} className="bg-white rounded-[12px] border border-[#EEEEEE] overflow-hidden">
-                              <div className="bg-[#F9FAFB] px-4 sm:px-6 py-3 border-b border-[#EEEEEE]">
-                                <h5 className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] sm:text-[15px] text-[#1B2A4A]">
-                                  {category.category}
-                                </h5>
-                              </div>
-                              <div className="p-4 sm:p-5">
-                                <div className="space-y-3">
-                                  {category.suggestions.map((suggestion, sIdx) => (
-                                    <div key={sIdx} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                      <div className="bg-[#FEF2F2] px-4 py-3 rounded-[8px] border border-[#FECACA]">
-                                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#6B7280] mb-1">استخدمت:</p>
-                                        <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#991B1B]">{suggestion.original}</p>
-                                      </div>
-                                      <div className="bg-[#ECFDF5] px-4 py-3 rounded-[8px] border border-[#A7F3D0]">
-                                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#6B7280] mb-1">يمكنك استخدام:</p>
-                                        <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#065F46]">{suggestion.improved}</p>
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Tips Checklist */}
-                      <div>
-                        <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A] mb-4 flex items-center gap-2">
-                          <Target className="w-5 h-5 text-[#FF8C00]" />
-                          نصائح للتحسين
-                        </h4>
-                        <div className="space-y-3">
-                          {part.tips.map((tip, idx) => (
-                            <div key={idx} className="bg-[#F9FAFB] rounded-[12px] p-4 border border-[#EEEEEE] flex items-start gap-3">
-                              <div className={`px-2.5 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] flex-shrink-0 mt-0.5 ${
-                                tip.priority === 'عالية' ? 'bg-[#FEE2E2] text-[#991B1B]' : 'bg-[#FEF3C7] text-[#92400E]'
-                              }`}>
-                                {tip.priority}
-                              </div>
-                              <div className="flex-1">
-                                <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#1B2A4A] mb-1">{tip.title}</p>
-                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280]">{tip.description}</p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </Tabs.Content>
-
           {/* Answer Tab */}
           <Tabs.Content value="answer" className="p-4 sm:p-8">
-            <div className="space-y-6">
-              {/* Task Information */}
-              <div className="bg-gradient-to-r from-[#F0F9FF] to-[#E0F2FE] rounded-[12px] p-4 sm:p-6 border border-[#BAE6FD]">
-                <div className="flex items-center justify-between flex-wrap gap-4 mb-4">
+            <div className="space-y-4">
+              {/* Task 1 Collapsible */}
+              <div className="rounded-[16px] border border-[#EEEEEE] overflow-hidden">
+                <button
+                  onClick={() => toggleAnswerTask('answer-task1')}
+                  className="w-full bg-gradient-to-bl from-[#012269] via-[#1B2A4A] to-[#0f1d3d] p-4 sm:p-5 flex items-center justify-between"
+                >
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-[#012269] rounded-[12px] flex items-center justify-center">
-                      <FileText className="w-6 h-6 text-white" />
+                    <div className="w-10 h-10 bg-white/10 rounded-[10px] flex items-center justify-center">
+                      <FileText className="w-5 h-5 text-white" />
                     </div>
-                    <div>
-                      <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] sm:text-[18px] text-[#012269]">
+                    <div className="text-right">
+                      <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] sm:text-[17px] text-white">
                         المهمة 1 - General Training Letter
                       </h4>
-                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] sm:text-[13px] text-[#6B7280]">
-                        رسالة شخصية - General Training
+                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] sm:text-[12px] text-white/60">
+                        رسالة شخصية • 150 كلمة • 33%
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <div className="text-center px-4 py-2 bg-white rounded-[8px] border border-[#BFDBFE]">
-                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] text-[#6B7280] mb-1">الحد الأدنى</p>
-                      <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] text-[#012269]">150 كلمة</p>
-                    </div>
-                    <div className="text-center px-4 py-2 bg-white rounded-[8px] border border-[#BFDBFE]">
-                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] text-[#6B7280] mb-1">الوزن</p>
-                      <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] text-[#012269]">33%</p>
-                    </div>
+                  <div className="flex items-center gap-3">
+                    <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-white">4<span className="text-[14px] text-white/50">/9</span></span>
+                    {expandedAnswerTasks.includes('answer-task1') ? <ChevronUp className="w-5 h-5 text-white/70" /> : <ChevronDown className="w-5 h-5 text-white/70" />}
                   </div>
-                </div>
+                </button>
+                {expandedAnswerTasks.includes('answer-task1') && (
+                <div className="p-4 sm:p-6 space-y-6">
+              <div className="bg-gradient-to-r from-[#F0F9FF] to-[#E0F2FE] rounded-[12px] p-4 sm:p-6 border border-[#BAE6FD]">
                 
                 <h5 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] sm:text-[15px] text-[#012269] mb-3">
                   السؤال:
@@ -1539,18 +1581,18 @@ export function WritingTestResultPage() {
               </div>
 
               {/* Task 1 Answer - Sub Tabs */}
-              <div className="bg-white rounded-[12px] border border-[#EEEEEE] overflow-hidden">
+              <div className="bg-white rounded-[12px] border border-[#EEEEEE]">
                 {/* Sub-tab switcher */}
                 <div className="flex border-b border-[#EEEEEE]">
                   <button
-                    onClick={() => setTask1AnswerTab('original')}
+                    onClick={() => setTask1AnswerTab('improvements')}
                     className={`flex-1 px-4 py-3 text-[13px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] transition-all ${
-                      task1AnswerTab === 'original'
-                        ? 'bg-white text-[#012269] border-b-2 border-[#012269]'
+                      task1AnswerTab === 'improvements'
+                        ? 'bg-white text-[#FF8C00] border-b-2 border-[#FF8C00]'
                         : 'bg-[#F9FAFB] text-[#6B7280] hover:bg-[#F3F4F6]'
                     }`}
                   >
-                    إجابتك الأصلية
+                    اقتراحات التحسين
                   </button>
                   <button
                     onClick={() => setTask1AnswerTab('model')}
@@ -1562,14 +1604,29 @@ export function WritingTestResultPage() {
                   >
                     النسخة المحسنة
                   </button>
+                  <button
+                    onClick={() => setTask1AnswerTab('original')}
+                    className={`flex-1 px-4 py-3 text-[13px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] transition-all ${
+                      task1AnswerTab === 'original'
+                        ? 'bg-white text-[#012269] border-b-2 border-[#012269]'
+                        : 'bg-[#F9FAFB] text-[#6B7280] hover:bg-[#F3F4F6]'
+                    }`}
+                  >
+                    إجابتك الأصلية
+                  </button>
                 </div>
 
                 {task1AnswerTab === 'original' ? (
                 <div className="p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
-                  <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] sm:text-[16px] text-[#1B2A4A]">
-                    إجابتك - المهمة 1
-                  </h4>
+                  <div className="flex items-center gap-3">
+                    <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] sm:text-[16px] text-[#1B2A4A]">
+                      إجابتك - المهمة 1
+                    </h4>
+                    <span className="px-2.5 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#D1FAE5] text-[#065F46] border border-[#A7F3D0]">
+                      155 كلمة ✅
+                    </span>
+                  </div>
                   <div className="flex gap-1.5">
                     {([
                       { key: 'all' as const, label: 'الكل', active: 'bg-[#1B2A4A] text-white border-[#1B2A4A]', dot: '' },
@@ -1607,10 +1664,10 @@ export function WritingTestResultPage() {
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 0 ? null : 0); }}>
                       Dear Sarah,
                       {activeTooltip === 0 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#4CAF50] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                        <SmartTooltip borderColor="#4CAF50">
                           <div className="flex items-start gap-2"><CheckCircle2 className="w-5 h-5 text-[#4CAF50] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">تحية مناسبة ⭐</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">بداية صحيحة للرسالة غير الرسمية</p></div></div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#4CAF50]"></div>
-                        </span>
+                          
+                        </SmartTooltip>
                       )}
                     </span>
                   </p>
@@ -1619,37 +1676,37 @@ export function WritingTestResultPage() {
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 1 ? null : 1); }}>
                       want tell you
                       {activeTooltip === 1 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                        <SmartTooltip borderColor="#C30020">
                           <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"want to tell" وليس "want tell" — يجب إضافة "to" بعد "want"</p></div></div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                        </span>
+                          
+                        </SmartTooltip>
                       )}
-                    </span> about <span className={`relative ann-warning ${highlightFilter !== 'all' && highlightFilter !== 'warning' ? 'ann-hidden' : ''}`}
+                    </span> about <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 2 ? null : 2); }}>
                       swimming class in our area
                       {activeTooltip === 2 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#FF8C00] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2"><AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">موضوع مناسب</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">ذكر الموضوع جيد لكن ينقص أداة التنكير: "a swimming class"</p></div></div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
-                        </span>
+                        <SmartTooltip borderColor="#C30020">
+                          <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"a swimming class" — ينقص أداة التنكير "a" قبل "swimming class"</p></div></div>
+                          
+                        </SmartTooltip>
                       )}
                     </span>. The <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 3 ? null : 3); }}>
                       comunity center have new class
                       {activeTooltip === 3 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                        <SmartTooltip borderColor="#C30020">
                           <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">إملائي + نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"community" وليس "comunity"، و"has" وليس "have" مع المفرد، وينقص "a" قبل "new class"</p></div></div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                        </span>
+                          
+                        </SmartTooltip>
                       )}
                     </span> for people who <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 4 ? null : 4); }}>
                       dont know swim
                       {activeTooltip === 4 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                        <SmartTooltip borderColor="#C30020">
                           <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">{`"don't know how to swim" — ينقص "how to" ولا تنسَ الفاصلة العليا في "don't"`}</p></div></div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                        </span>
+                          
+                        </SmartTooltip>
                       )}
                     </span>.
                   </p>
@@ -1658,55 +1715,64 @@ export function WritingTestResultPage() {
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 5 ? null : 5); }}>
                       in Tuesday and Thursday
                       {activeTooltip === 5 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                        <SmartTooltip borderColor="#C30020">
                           <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ حرف جر ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"on Tuesday and Thursday" — نستخدم "on" مع أيام الأسبوع وليس "in"</p></div></div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                        </span>
+                          
+                        </SmartTooltip>
                       )}
                     </span> <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 6 ? null : 6); }}>
                       in evening time
                       {activeTooltip === 6 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                        <SmartTooltip borderColor="#C30020">
                           <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">تعبير خاطئ ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"in the evening" هي العبارة الصحيحة — لا نقول "evening time"</p></div></div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                        </span>
+                          
+                        </SmartTooltip>
                       )}
-                    </span>. The teacher is good and he <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
+                    </span>. <span className={`relative ann-warning ${highlightFilter !== 'all' && highlightFilter !== 'warning' ? 'ann-hidden' : ''}`}
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 20 ? null : 20); }}>
+                      The teacher is good
+                      {activeTooltip === 20 && (
+                        <SmartTooltip borderColor="#FF8C00">
+                          <div className="flex items-start gap-2"><AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">مفردات بسيطة</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"good" مفردة بسيطة جداً — استخدم "experienced" أو "qualified" أو "skilled" لرفع مستوى الكتابة</p></div></div>
+
+                        </SmartTooltip>
+                      )}
+                    </span> and he <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 7 ? null : 7); }}>
                       teached many peoples before
                       {activeTooltip === 7 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                        <SmartTooltip borderColor="#C30020">
                           <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">فعل شاذ: "taught" وليس "teached"، و"people" لا تُجمع بإضافة s</p></div></div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                        </span>
+                          
+                        </SmartTooltip>
                       )}
                     </span>. <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 8 ? null : 8); }}>
                       It cost 50 dollar per month
                       {activeTooltip === 8 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                        <SmartTooltip borderColor="#C30020">
                           <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"It costs 50 dollars" — المفرد يتطلب "costs" مع s، و"dollars" جمع</p></div></div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                        </span>
+                          
+                        </SmartTooltip>
                       )}
-                    </span> and they give you <span className={`relative ann-warning ${highlightFilter !== 'all' && highlightFilter !== 'warning' ? 'ann-hidden' : ''}`}
+                    </span> and they give you <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 9 ? null : 9); }}>
                       all thing you need
                       {activeTooltip === 9 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#FF8C00] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex items-start gap-2"><AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">مفردات ضعيفة</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"everything you need" أو "all the things you need" — "thing" يجب أن تكون جمع "things"</p></div></div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
-                        </span>
+                        <SmartTooltip borderColor="#C30020">
+                          <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"everything you need" أو "all the things you need" — "thing" يجب أن تكون جمع "things"</p></div></div>
+                          
+                        </SmartTooltip>
                       )}
                     </span> like towel and cap. I think the price is <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 10 ? null : 10); }}>
                       not much expensif
                       {activeTooltip === 10 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                        <SmartTooltip borderColor="#C30020">
                           <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ إملائي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"expensive" وليس "expensif"، و"not very expensive" وليس "not much expensif"</p></div></div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                        </span>
+                          
+                        </SmartTooltip>
                       )}
                     </span>.
                   </p>
@@ -1715,90 +1781,66 @@ export function WritingTestResultPage() {
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 11 ? null : 11); }}>
                       maybe me and you can go togather
                       {activeTooltip === 11 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                        <SmartTooltip borderColor="#C30020">
                           <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي + إملائي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"you and I" وليس "me and you"، و"together" وليس "togather"</p></div></div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                        </span>
+                          
+                        </SmartTooltip>
                       )}
                     </span>. You said before you <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 12 ? null : 12); }}>
                       want learn swimming
                       {activeTooltip === 12 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                        <SmartTooltip borderColor="#C30020">
                           <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"want to learn" — يجب إضافة "to" بعد "want"</p></div></div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                        </span>
+                          
+                        </SmartTooltip>
                       )}
                     </span>. It will be very fun if we go <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 13 ? null : 13); }}>
                       same class
                       {activeTooltip === 13 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                        <SmartTooltip borderColor="#C30020">
                           <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"to the same class" — ينقص "to" و"the" قبل "same"</p></div></div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                        </span>
+                          
+                        </SmartTooltip>
                       )}
                     </span>. We can also <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 14 ? null : 14); }}>
                       do practise in weekend togather
                       {activeTooltip === 14 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                        <SmartTooltip borderColor="#C30020">
                           <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء متعددة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"practice on the weekend together" — "practice" (فعل)، "on the weekend"، و"together" وليس "togather"</p></div></div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                        </span>
+                          
+                        </SmartTooltip>
                       )}
                     </span>.
                   </p>
                   <p>
-                    Please tell me what you think about this. I hope you will come with me.
+                    <span className={`relative ann-warning ${highlightFilter !== 'all' && highlightFilter !== 'warning' ? 'ann-hidden' : ''}`}
+                      onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 21 ? null : 21); }}>
+                      Please tell me what you think about this. I hope you will come with me.
+                      {activeTooltip === 21 && (
+                        <SmartTooltip borderColor="#FF8C00">
+                          <div className="flex items-start gap-2"><AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أسلوب بسيط</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">الخاتمة مقبولة لكن بسيطة — يمكنك كتابة: "I would love to hear your thoughts" أو "Let me know if you are interested"</p></div></div>
+
+                        </SmartTooltip>
+                      )}
+                    </span>
                   </p>
                   <p>
                     <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                       onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 15 ? null : 15); }}>
                       Waiting your reply,
                       {activeTooltip === 15 && (
-                        <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                        <SmartTooltip borderColor="#C30020">
                           <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خاتمة خاطئة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"Awaiting your reply" أو "I await your reply" — "Waiting your reply" غير صحيح</p></div></div>
-                          <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                        </span>
+                          
+                        </SmartTooltip>
                       )}
                     </span><br />
                     Alex
                   </p>
                 </div>
-                </div>
-                ) : (
-                <div className="p-4 sm:p-6">
-                  <div className="flex items-center gap-2 mb-4">
-                    <CheckCircle2 className="w-5 h-5 text-[#4CAF50]" />
-                    <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#4CAF50]">
-                      إجابة نموذجية — Band {modelAnswers[0].bandScore}
-                    </span>
-                  </div>
-                  <div className="bg-[#FAFFFE] rounded-[12px] p-5 border border-[#E5E7EB]">
-                    <pre className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] leading-[1.8] whitespace-pre-wrap" style={{ direction: 'ltr', textAlign: 'left' }}>
-                      {modelAnswers[0].answer}
-                    </pre>
-                  </div>
-                  <div className="mt-4 flex items-start gap-2 bg-[#EFF6FF] rounded-[8px] p-3">
-                    <Lightbulb className="w-5 h-5 text-[#1E40AF] mt-0.5 flex-shrink-0" />
-                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#1E40AF]">
-                      قارن إجابتك بالإجابة النموذجية ولاحظ كيف تم تنظيم الأفكار واستخدام المفردات والروابط بشكل فعّال.
-                    </p>
-                  </div>
-                </div>
-                )}
-              </div>
-
-              {/* Word Count - Task 1 */}
-              <div className="flex justify-between items-center bg-[#F9FAFB] rounded-[8px] px-6 py-3 border border-[#EEEEEE]">
-                <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">
-                  عدد الكلمات
-                </span>
-                <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] text-[#1B2A4A]">
-                  155 كلمة <span className="text-[#4CAF50] text-[14px]">(الحد الأدنى: 150) ✅</span>
-                </span>
-              </div>
 
               {/* ═══════════════════════════════════════════════════════ */}
               {/* TASK 1 - Errors and Corrections */}
@@ -1820,20 +1862,13 @@ export function WritingTestResultPage() {
                       {task1Errors.map((error, idx) => (
                         <div key={idx} className="bg-[#F9FAFB] rounded-[12px] p-5 border border-[#EEEEEE]">
                           <div className="flex items-center gap-2 mb-3">
-                            <div className={`px-3 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] ${
-                              error.type === 'grammar' ? 'bg-[#FEE2E2] text-[#991B1B]' :
-                              error.type === 'vocabulary' ? 'bg-[#FEF3C7] text-[#92400E]' :
-                              error.type === 'spelling' ? 'bg-[#FCE7F3] text-[#9D174D]' :
-                              error.type === 'punctuation' ? 'bg-[#F3E8FF] text-[#6B21A8]' :
-                              error.type === 'task' ? 'bg-[#DBEAFE] text-[#1E40AF]' :
-                              'bg-[#E0E7FF] text-[#3730A3]'
-                            }`}>
+                            <span className="w-6 h-6 rounded-full bg-[#1B2A4A] text-white text-[11px] font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] flex items-center justify-center flex-shrink-0">{idx + 1}</span>
+                            <div className="px-3 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#FEE2E2] text-[#991B1B]">
                               {error.type === 'grammar' ? 'خطأ نحوي' :
                                error.type === 'vocabulary' ? 'استخدام المفردات' :
                                error.type === 'spelling' ? 'خطأ إملائي' :
                                error.type === 'punctuation' ? 'علامات الترقيم' :
-                               error.type === 'task' ? 'تحقيق المهمة' :
-                               'الترابط'}
+                               error.type === 'article' ? 'أدوات التعريف' : error.type}
                             </div>
                           </div>
                           <div className="space-y-3">
@@ -1866,37 +1901,164 @@ export function WritingTestResultPage() {
                 );
               })()}
 
-              {/* ═══════════════════════════════════════════════════════ */}
-              {/* TASK 2 - Essay */}
-              {/* ═══════════════════════════════════════════════════════ */}
-              <div className="mt-10 pt-8 border-t-2 border-[#E5E7EB]">
-                {/* Task 2 Information */}
-                <div className="bg-gradient-to-r from-[#F0F9FF] to-[#E0F2FE] rounded-[12px] p-4 sm:p-6 border border-[#BAE6FD]">
-                  <div className="flex items-center justify-between flex-wrap gap-4 mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-[#012269] rounded-[12px] flex items-center justify-center">
-                        <FileText className="w-6 h-6 text-white" />
+                </div>
+                ) : task1AnswerTab === 'model' ? (
+                <div className="p-4 sm:p-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    {/* Original Answer - Left */}
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-2 mb-3">
+                        <XCircle className="w-5 h-5 text-[#C30020]" />
+                        <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#C30020]">
+                          إجابتك الأصلية
+                        </span>
                       </div>
-                      <div>
-                        <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] sm:text-[18px] text-[#012269]">
-                          المهمة 2 - Essay
-                        </h4>
-                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] sm:text-[13px] text-[#6B7280]">
-                          مقال أكاديمي - Opinion Essay
-                        </p>
+                      <div className="bg-[#FFF5F5] rounded-[12px] p-5 border border-[#FEE2E2] flex-1">
+                        <pre className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] leading-[1.8] whitespace-pre-wrap" style={{ direction: 'ltr', textAlign: 'left' }}>
+                          {originalAnswers[0].answer}
+                        </pre>
                       </div>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <div className="text-center px-4 py-2 bg-white rounded-[8px] border border-[#BFDBFE]">
-                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] text-[#6B7280] mb-1">الحد الأدنى</p>
-                        <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] text-[#012269]">250 كلمة</p>
+                    {/* Model Answer - Right */}
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-2 mb-3">
+                        <CheckCircle2 className="w-5 h-5 text-[#4CAF50]" />
+                        <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#4CAF50]">
+                          إجابة نموذجية — Band {modelAnswers[0].bandScore}
+                        </span>
                       </div>
-                      <div className="text-center px-4 py-2 bg-white rounded-[8px] border border-[#BFDBFE]">
-                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] text-[#6B7280] mb-1">الوزن</p>
-                        <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] text-[#012269]">67%</p>
+                      <div className="bg-[#FAFFFE] rounded-[12px] p-5 border border-[#D1FAE5] flex-1">
+                        <pre className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] leading-[1.8] whitespace-pre-wrap" style={{ direction: 'ltr', textAlign: 'left' }}>
+                          {modelAnswers[0].answer}
+                        </pre>
                       </div>
                     </div>
                   </div>
+                  <div className="mt-4 flex items-start gap-2 bg-[#EFF6FF] rounded-[8px] p-3">
+                    <Lightbulb className="w-5 h-5 text-[#1E40AF] mt-0.5 flex-shrink-0" />
+                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#1E40AF]">
+                      قارن إجابتك بالإجابة النموذجية ولاحظ كيف تم تنظيم الأفكار واستخدام المفردات والروابط بشكل فعّال.
+                    </p>
+                  </div>
+                </div>
+                ) : (
+                <div className="p-4 sm:p-6 space-y-6">
+                  {(() => {
+                    const part = improvementsByPart.find(p => p.partId === 'task1');
+                    if (!part) return null;
+                    return (
+                      <div className="space-y-6">
+                        {part.criteriaImprovements.map((criteria, cIdx) => (
+                          <div key={cIdx} className="bg-white rounded-[16px] border border-[#EEEEEE] overflow-hidden">
+                            {/* Criteria Header */}
+                            <div className="px-4 sm:px-6 py-4 border-b border-[#EEEEEE] flex items-center justify-between" style={{ backgroundColor: criteria.bgColor }}>
+                              <div className="flex items-center gap-3">
+                                <div className="w-2 h-8 rounded-full" style={{ backgroundColor: criteria.color }}></div>
+                                <div>
+                                  <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A]">{criteria.criteriaNameAr}</h4>
+                                  <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#6B7280]">{criteria.criteriaName}</p>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[18px]" style={{ color: criteria.color }}>{criteria.score}</span>
+                                <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#9CA3AF]">/ 9.0</span>
+                              </div>
+                            </div>
+                            <div className="p-4 sm:p-6 space-y-4">
+                              {/* Tips for this criteria */}
+                              {criteria.tips.length > 0 && (
+                                <div className="space-y-3">
+                                  <h5 className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#6B7280] flex items-center gap-2">
+                                    <Target className="w-4 h-4 text-[#FF8C00]" />
+                                    نصائح للتحسين
+                                  </h5>
+                                  {criteria.tips.map((tip, tIdx) => (
+                                    <div key={tIdx} className="bg-[#F9FAFB] rounded-[10px] p-3 sm:p-4 border border-[#EEEEEE] flex items-start gap-3">
+                                      <div className={`px-2.5 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] flex-shrink-0 mt-0.5 ${
+                                        tip.priority === 'عالية' ? 'bg-[#FEE2E2] text-[#991B1B]' : 'bg-[#FEF3C7] text-[#92400E]'
+                                      }`}>
+                                        {tip.priority}
+                                      </div>
+                                      <div className="flex-1">
+                                        <div className="flex items-center justify-between mb-1">
+                                          <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#1B2A4A]">{tip.title}</p>
+                                          {tip.scoreImpact && (
+                                            <span className="px-2 py-0.5 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]">
+                                              {tip.scoreImpact} درجة
+                                            </span>
+                                          )}
+                                        </div>
+                                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280]">{tip.description}</p>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                              {/* Suggestions for this criteria */}
+                              {criteria.suggestions.length > 0 && (
+                                <div className="space-y-3">
+                                  <h5 className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#6B7280] flex items-center gap-2">
+                                    <TrendingUp className="w-4 h-4 text-[#012269]" />
+                                    بدائل مقترحة
+                                  </h5>
+                                  {criteria.suggestions.map((suggestion, sIdx) => (
+                                    <div key={sIdx} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                      <div className="bg-[#FEF2F2] px-4 py-3 rounded-[8px] border border-[#FECACA]">
+                                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#6B7280] mb-1">استخدمت:</p>
+                                        <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#991B1B]">{suggestion.original}</p>
+                                      </div>
+                                      <div className="bg-[#ECFDF5] px-4 py-3 rounded-[8px] border border-[#A7F3D0]">
+                                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#6B7280] mb-1">يمكنك استخدام:</p>
+                                        <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#065F46]">{suggestion.improved}</p>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                              {/* Empty state */}
+                              {criteria.tips.length === 0 && criteria.suggestions.length === 0 && (
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#9CA3AF] text-center py-2">لا توجد اقتراحات لهذا المعيار حالياً</p>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })()}
+                </div>
+                )}
+              </div>
+                </div>
+                )}
+              </div>
+
+              {/* Task 2 Collapsible */}
+              <div className="rounded-[16px] border border-[#EEEEEE] overflow-hidden">
+                <button
+                  onClick={() => toggleAnswerTask('answer-task2')}
+                  className="w-full bg-gradient-to-bl from-[#012269] via-[#1B2A4A] to-[#0f1d3d] p-4 sm:p-5 flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-white/10 rounded-[10px] flex items-center justify-center">
+                      <FileText className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="text-right">
+                      <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] sm:text-[17px] text-white">
+                        المهمة 2 - Essay
+                      </h4>
+                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] sm:text-[12px] text-white/60">
+                        مقال أكاديمي • 250 كلمة • 67%
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-white">4.5<span className="text-[14px] text-white/50">/9</span></span>
+                    {expandedAnswerTasks.includes('answer-task2') ? <ChevronUp className="w-5 h-5 text-white/70" /> : <ChevronDown className="w-5 h-5 text-white/70" />}
+                  </div>
+                </button>
+                {expandedAnswerTasks.includes('answer-task2') && (
+                <div className="p-4 sm:p-6 space-y-6">
+              <div className="bg-gradient-to-r from-[#F0F9FF] to-[#E0F2FE] rounded-[12px] p-4 sm:p-6 border border-[#BAE6FD]">
 
                   <h5 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] sm:text-[15px] text-[#012269] mb-3">
                     السؤال:
@@ -1911,18 +2073,18 @@ export function WritingTestResultPage() {
                 </div>
 
                 {/* Task 2 Answer - Sub Tabs */}
-                <div className="bg-white rounded-[12px] border border-[#EEEEEE] mt-6 overflow-hidden">
+                <div className="bg-white rounded-[12px] border border-[#EEEEEE] mt-6">
                   {/* Sub-tab switcher */}
                   <div className="flex border-b border-[#EEEEEE]">
                     <button
-                      onClick={() => setTask2AnswerTab('original')}
+                      onClick={() => setTask2AnswerTab('improvements')}
                       className={`flex-1 px-4 py-3 text-[13px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] transition-all ${
-                        task2AnswerTab === 'original'
-                          ? 'bg-white text-[#012269] border-b-2 border-[#012269]'
+                        task2AnswerTab === 'improvements'
+                          ? 'bg-white text-[#FF8C00] border-b-2 border-[#FF8C00]'
                           : 'bg-[#F9FAFB] text-[#6B7280] hover:bg-[#F3F4F6]'
                       }`}
                     >
-                      إجابتك الأصلية
+                      اقتراحات التحسين
                     </button>
                     <button
                       onClick={() => setTask2AnswerTab('model')}
@@ -1934,14 +2096,29 @@ export function WritingTestResultPage() {
                     >
                       النسخة المحسنة
                     </button>
+                    <button
+                      onClick={() => setTask2AnswerTab('original')}
+                      className={`flex-1 px-4 py-3 text-[13px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] transition-all ${
+                        task2AnswerTab === 'original'
+                          ? 'bg-white text-[#012269] border-b-2 border-[#012269]'
+                          : 'bg-[#F9FAFB] text-[#6B7280] hover:bg-[#F3F4F6]'
+                      }`}
+                    >
+                      إجابتك الأصلية
+                    </button>
                   </div>
 
                   {task2AnswerTab === 'original' ? (
                   <div className="p-4 sm:p-6">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
-                    <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] sm:text-[16px] text-[#1B2A4A]">
-                      إجابتك - المهمة 2
-                    </h4>
+                    <div className="flex items-center gap-3">
+                      <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] sm:text-[16px] text-[#1B2A4A]">
+                        إجابتك - المهمة 2
+                      </h4>
+                      <span className="px-2.5 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#D1FAE5] text-[#065F46] border border-[#A7F3D0]">
+                        258 كلمة ✅
+                      </span>
+                    </div>
                     <div className="flex gap-1.5">
                       {([
                         { key: 'all' as const, label: 'الكل', active: 'bg-[#1B2A4A] text-white border-[#1B2A4A]', dot: '' },
@@ -1968,133 +2145,160 @@ export function WritingTestResultPage() {
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 100 ? null : 100); }}>
                         have become very importent part
                         {activeTooltip === 100 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <SmartTooltip borderColor="#C30020">
                             <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء متعددة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"has become a very important part" — "has" مع المفرد، ينقص "a"، و"important" وليس "importent"</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                          </span>
+                            
+                          </SmartTooltip>
                         )}
                       </span> of our life. <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 101 ? null : 101); }}>
                         Some peoples think technology make life hard
                         {activeTooltip === 101 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <SmartTooltip borderColor="#C30020">
                             <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"people" لا تُجمع بـ s، و"technology makes" مع المفرد</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                          </span>
+                            
+                          </SmartTooltip>
                         )}
                       </span> and some think it make life easy. <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 102 ? null : 102); }}>
                         I will talk about both side
                         {activeTooltip === 102 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <SmartTooltip borderColor="#C30020">
                             <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"both sides" — "both" تتبعها كلمة جمع</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                          </span>
+                            
+                          </SmartTooltip>
                         )}
-                      </span> and give my opinion.
+                      </span> and <span className={`relative ann-warning ${highlightFilter !== 'all' && highlightFilter !== 'warning' ? 'ann-hidden' : ''}`}
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 120 ? null : 120); }}>
+                        give my opinion
+                        {activeTooltip === 120 && (
+                          <SmartTooltip borderColor="#FF8C00">
+                            <div className="flex items-start gap-2"><AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">مقدمة ضعيفة</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">أسلوب ضعيف للمقدمة — استخدم: "and present my perspective" أو "and share my viewpoint" لرفع الدرجة</p></div></div>
+
+                          </SmartTooltip>
+                        )}
+                      </span>.
                     </p>
                     <p>
                       First, some people <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 103 ? null : 103); }}>
                         belive technology is bad because it make people lazy
                         {activeTooltip === 103 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <SmartTooltip borderColor="#C30020">
                             <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">إملائي + نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"believe" وليس "belive"، و"it makes" مع المفرد</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                          </span>
+                            
+                          </SmartTooltip>
                         )}
                       </span>. For example <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 104 ? null : 104); }}>
                         many person spend all the time on there phone
                         {activeTooltip === 104 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <SmartTooltip borderColor="#C30020">
                             <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء متعددة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"many people" وليس "person"، "their" وليس "there"، و"phones" جمع</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                          </span>
+                            
+                          </SmartTooltip>
                         )}
                       </span> and <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 105 ? null : 105); }}>
                         dont do any exercice
                         {activeTooltip === 105 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <SmartTooltip borderColor="#C30020">
                             <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">إملاء + ترقيم ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">{`"don't" بفاصلة عليا، و"exercise" وليس "exercice"`}</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                          </span>
+                            
+                          </SmartTooltip>
                         )}
                       </span> or go outside. Also <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 106 ? null : 106); }}>
                         childs now play video game all day and dont study good
                         {activeTooltip === 106 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <SmartTooltip borderColor="#C30020">
                             <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء متعددة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">{`"children" وليس "childs"، "games" جمع، "don't study well" — "well" حال وليس "good"`}</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                          </span>
+                            
+                          </SmartTooltip>
                         )}
                       </span>. <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 107 ? null : 107); }}>
                         Another probleme is that people dont talk to each other becouse they always on social media
                         {activeTooltip === 107 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <SmartTooltip borderColor="#C30020">
                             <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء إملائية ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">{`"problem" وليس "probleme"، "don't" بفاصلة عليا، "because" وليس "becouse"، وينقص "are" — "they are always"`}</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                          </span>
+                            
+                          </SmartTooltip>
                         )}
                       </span>. <span className={`relative ann-warning ${highlightFilter !== 'all' && highlightFilter !== 'warning' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 108 ? null : 108); }}>
                         This is very bad for the society
                         {activeTooltip === 108 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#FF8C00] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                            <div className="flex items-start gap-2"><AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">مفردات ضعيفة</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"This is detrimental to society" أكاديمي أكثر — وبدون "the" قبل "society"</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
-                          </span>
+                          <SmartTooltip borderColor="#FF8C00">
+                            <div className="flex items-start gap-2"><AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">يمكن تحسينه</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"This is detrimental to society" أكاديمي أكثر — "very bad" مفردات بسيطة جداً للكتابة الأكاديمية</p></div></div>
+                            
+                          </SmartTooltip>
                         )}
                       </span>.
                     </p>
                     <p>
-                      On the other hand, technology is also very <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
+                      <span className={`relative ann-good ${highlightFilter !== 'all' && highlightFilter !== 'good' ? 'ann-hidden' : ''}`}
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 121 ? null : 121); }}>
+                        On the other hand,
+                        {activeTooltip === 121 && (
+                          <SmartTooltip borderColor="#4CAF50">
+                            <div className="flex items-start gap-2"><CheckCircle2 className="w-5 h-5 text-[#4CAF50] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">رابط ممتاز ⭐</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">استخدام جيد لرابط المقارنة — يُظهر قدرة على تنظيم الأفكار والانتقال بين الحجج</p></div></div>
+
+                          </SmartTooltip>
+                        )}
+                      </span> technology is also very <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 109 ? null : 109); }}>
                         usefull
                         {activeTooltip === 109 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <SmartTooltip borderColor="#C30020">
                             <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ إملائي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"useful" بحرف l واحد وليس "usefull"</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                          </span>
+                            
+                          </SmartTooltip>
                         )}
                       </span>. <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 110 ? null : 110); }}>
                         It help people to communecate with family who live in diffrent country
                         {activeTooltip === 110 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <SmartTooltip borderColor="#C30020">
                             <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء متعددة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"helps" مع المفرد، "communicate" بدون to، "different" و"countries" جمع</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                          </span>
+                            
+                          </SmartTooltip>
                         )}
                       </span>. Also <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 111 ? null : 111); }}>
                         student can learn many thing from internet
                         {activeTooltip === 111 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <SmartTooltip borderColor="#C30020">
                             <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"students" و"things" جمع، و"the internet" مع أداة التعريف</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                          </span>
+                            
+                          </SmartTooltip>
                         )}
-                      </span> and get informations easy. <span className={`relative ann-good ${highlightFilter !== 'all' && highlightFilter !== 'good' ? 'ann-hidden' : ''}`}
+                      </span> and <span className={`relative ann-warning ${highlightFilter !== 'all' && highlightFilter !== 'warning' ? 'ann-hidden' : ''}`}
+                        onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 122 ? null : 122); }}>
+                        get informations easy
+                        {activeTooltip === 122 && (
+                          <SmartTooltip borderColor="#FF8C00">
+                            <div className="flex items-start gap-2"><AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">نحوي + أسلوب</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"information" اسم غير معدود لا يُجمع، و"easily" (حال) وليس "easy" (صفة) — "obtain information easily"</p></div></div>
+
+                          </SmartTooltip>
+                        )}
+                      </span>. <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 112 ? null : 112); }}>
                         For exemple, I use technology for study english and it help me alot
                         {activeTooltip === 112 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#4CAF50] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                            <div className="flex items-start gap-2"><CheckCircle2 className="w-5 h-5 text-[#4CAF50] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">مثال شخصي جيد</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">محاولة جيدة لإعطاء مثال شخصي يدعم الحجة، رغم الأخطاء الإملائية: "example"، "helps"، "a lot"</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#4CAF50]"></div>
-                          </span>
+                          <SmartTooltip borderColor="#C30020">
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء متعددة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"example" وليس "exemple"، "to study/studying" وليس "for study"، "English" بحرف كبير، "helps" مع المفرد، "a lot" كلمتان</p></div></div>
+                            
+                          </SmartTooltip>
                         )}
                       </span>. Moreover, <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 113 ? null : 113); }}>
                         hospital use technology for help sick people and save lifes
                         {activeTooltip === 113 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <SmartTooltip borderColor="#C30020">
                             <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء متعددة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"hospitals" جمع، "to help" وليس "for help"، و"lives" وليس "lifes"</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                          </span>
+                            
+                          </SmartTooltip>
                         )}
                       </span>.
                     </p>
@@ -2103,19 +2307,19 @@ export function WritingTestResultPage() {
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 114 ? null : 114); }}>
                         openion, I think technology brung more good thing than bad thing
                         {activeTooltip === 114 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <SmartTooltip borderColor="#C30020">
                             <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء متعددة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"opinion" وليس "openion"، "brought" وليس "brung"، و"things" جمع</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                          </span>
+                            
+                          </SmartTooltip>
                         )}
                       </span>. But we should use it in a good way and not too much. If people use technology with balance it will be very <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 115 ? null : 115); }}>
                         helpfull for everyone. Goverments should also teach
                         {activeTooltip === 115 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <SmartTooltip borderColor="#C30020">
                             <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء إملائية ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"helpful" بحرف l واحد، و"Governments" وليس "Goverments"</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                          </span>
+                            
+                          </SmartTooltip>
                         )}
                       </span> people how to use technology in correct way.
                     </p>
@@ -2124,66 +2328,32 @@ export function WritingTestResultPage() {
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 116 ? null : 116); }}>
                         In conclution, technology have both good and bad side
                         {activeTooltip === 116 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <SmartTooltip borderColor="#C30020">
                             <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">أخطاء متعددة ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"conclusion" وليس "conclution"، "has" مع المفرد، و"sides" جمع</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                          </span>
+                            
+                          </SmartTooltip>
                         )}
-                      </span> but <span className={`relative ann-warning ${highlightFilter !== 'all' && highlightFilter !== 'warning' ? 'ann-hidden' : ''}`}
+                      </span> but <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 117 ? null : 117); }}>
                         I believe it is more good than bad
                         {activeTooltip === 117 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#FF8C00] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
-                            <div className="flex items-start gap-2"><AlertCircle className="w-5 h-5 text-[#FF8C00] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">مفردات ضعيفة</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"more good" غير صحيح — استخدم "better" أو "the benefits outweigh the drawbacks"</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FF8C00]"></div>
-                          </span>
+                          <SmartTooltip borderColor="#C30020">
+                            <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ نحوي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"more good" خطأ — الصفة الشاذة: "better" وليس "more good"</p></div></div>
+                            
+                          </SmartTooltip>
                         )}
                       </span>. We need to be <span className={`relative ann-error ${highlightFilter !== 'all' && highlightFilter !== 'error' ? 'ann-hidden' : ''}`}
                         onClick={(e) => { e.stopPropagation(); setActiveTooltip(activeTooltip === 118 ? null : 118); }}>
                         carefull
                         {activeTooltip === 118 && (
-                          <span className="absolute z-10 bottom-full right-0 mb-2 w-64 bg-white border-2 border-[#C30020] rounded-[12px] p-4 shadow-lg" onClick={(e) => e.stopPropagation()}>
+                          <SmartTooltip borderColor="#C30020">
                             <div className="flex items-start gap-2"><XCircle className="w-5 h-5 text-[#C30020] flex-shrink-0 mt-0.5" /><div><p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">خطأ إملائي ❌</p><p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151]">"careful" بحرف l واحد وليس "carefull"</p></div></div>
-                            <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#C30020]"></div>
-                          </span>
+                            
+                          </SmartTooltip>
                         )}
                       </span> and use it wisely.
                     </p>
                   </div>
-                  </div>
-                  ) : (
-                  <div className="p-4 sm:p-6">
-                    <div className="flex items-center gap-2 mb-4">
-                      <CheckCircle2 className="w-5 h-5 text-[#4CAF50]" />
-                      <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#4CAF50]">
-                        إجابة نموذجية — Band {modelAnswers[1].bandScore}
-                      </span>
-                    </div>
-                    <div className="bg-[#FAFFFE] rounded-[12px] p-5 border border-[#E5E7EB]">
-                      <pre className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] leading-[1.8] whitespace-pre-wrap" style={{ direction: 'ltr', textAlign: 'left' }}>
-                        {modelAnswers[1].answer}
-                      </pre>
-                    </div>
-                    <div className="mt-4 flex items-start gap-2 bg-[#EFF6FF] rounded-[8px] p-3">
-                      <Lightbulb className="w-5 h-5 text-[#1E40AF] mt-0.5 flex-shrink-0" />
-                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#1E40AF]">
-                        قارن إجابتك بالإجابة النموذجية ولاحظ كيف تم تنظيم الأفكار واستخدام المفردات والروابط بشكل فعّال.
-                      </p>
-                    </div>
-                  </div>
-                  )}
-                </div>
-
-                {/* Word Count - Task 2 */}
-                <div className="flex justify-between items-center bg-[#F9FAFB] rounded-[8px] px-6 py-3 border border-[#EEEEEE] mt-6">
-                  <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">
-                    عدد الكلمات
-                  </span>
-                  <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] text-[#1B2A4A]">
-                    258 كلمة <span className="text-[#4CAF50] text-[14px]">(الحد الأدنى: 250) ✅</span>
-                  </span>
-                </div>
-              </div>
 
               {/* ═══════════════════════════════════════════════════════ */}
               {/* TASK 2 - Errors and Corrections */}
@@ -2205,20 +2375,13 @@ export function WritingTestResultPage() {
                       {task2Errors.map((error, idx) => (
                         <div key={idx} className="bg-[#F9FAFB] rounded-[12px] p-5 border border-[#EEEEEE]">
                           <div className="flex items-center gap-2 mb-3">
-                            <div className={`px-3 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] ${
-                              error.type === 'grammar' ? 'bg-[#FEE2E2] text-[#991B1B]' :
-                              error.type === 'vocabulary' ? 'bg-[#FEF3C7] text-[#92400E]' :
-                              error.type === 'spelling' ? 'bg-[#FCE7F3] text-[#9D174D]' :
-                              error.type === 'punctuation' ? 'bg-[#F3E8FF] text-[#6B21A8]' :
-                              error.type === 'task' ? 'bg-[#DBEAFE] text-[#1E40AF]' :
-                              'bg-[#E0E7FF] text-[#3730A3]'
-                            }`}>
+                            <span className="w-6 h-6 rounded-full bg-[#1B2A4A] text-white text-[11px] font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] flex items-center justify-center flex-shrink-0">{idx + 1}</span>
+                            <div className="px-3 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#FEE2E2] text-[#991B1B]">
                               {error.type === 'grammar' ? 'خطأ نحوي' :
                                error.type === 'vocabulary' ? 'استخدام المفردات' :
                                error.type === 'spelling' ? 'خطأ إملائي' :
                                error.type === 'punctuation' ? 'علامات الترقيم' :
-                               error.type === 'task' ? 'تحقيق المهمة' :
-                               'الترابط'}
+                               error.type === 'article' ? 'أدوات التعريف' : error.type}
                             </div>
                           </div>
                           <div className="space-y-3">
@@ -2250,6 +2413,137 @@ export function WritingTestResultPage() {
                   </div>
                 );
               })()}
+
+                  </div>
+                  ) : task2AnswerTab === 'model' ? (
+                  <div className="p-4 sm:p-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                      {/* Original Answer - Left */}
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-2 mb-3">
+                          <XCircle className="w-5 h-5 text-[#C30020]" />
+                          <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#C30020]">
+                            إجابتك الأصلية
+                          </span>
+                        </div>
+                        <div className="bg-[#FFF5F5] rounded-[12px] p-5 border border-[#FEE2E2] flex-1">
+                          <pre className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] leading-[1.8] whitespace-pre-wrap" style={{ direction: 'ltr', textAlign: 'left' }}>
+                            {originalAnswers[1].answer}
+                          </pre>
+                        </div>
+                      </div>
+                      {/* Model Answer - Right */}
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-2 mb-3">
+                          <CheckCircle2 className="w-5 h-5 text-[#4CAF50]" />
+                          <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#4CAF50]">
+                            إجابة نموذجية — Band {modelAnswers[1].bandScore}
+                          </span>
+                        </div>
+                        <div className="bg-[#FAFFFE] rounded-[12px] p-5 border border-[#D1FAE5] flex-1">
+                          <pre className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] leading-[1.8] whitespace-pre-wrap" style={{ direction: 'ltr', textAlign: 'left' }}>
+                            {modelAnswers[1].answer}
+                          </pre>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-4 flex items-start gap-2 bg-[#EFF6FF] rounded-[8px] p-3">
+                      <Lightbulb className="w-5 h-5 text-[#1E40AF] mt-0.5 flex-shrink-0" />
+                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#1E40AF]">
+                        قارن إجابتك بالإجابة النموذجية ولاحظ كيف تم تنظيم الأفكار واستخدام المفردات والروابط بشكل فعّال.
+                      </p>
+                    </div>
+                  </div>
+                  ) : (
+                  <div className="p-4 sm:p-6 space-y-6">
+                    {(() => {
+                      const part = improvementsByPart.find(p => p.partId === 'task2');
+                      if (!part) return null;
+                      return (
+                        <div className="space-y-6">
+                          {part.criteriaImprovements.map((criteria, cIdx) => (
+                            <div key={cIdx} className="bg-white rounded-[16px] border border-[#EEEEEE] overflow-hidden">
+                              {/* Criteria Header */}
+                              <div className="px-4 sm:px-6 py-4 border-b border-[#EEEEEE] flex items-center justify-between" style={{ backgroundColor: criteria.bgColor }}>
+                                <div className="flex items-center gap-3">
+                                  <div className="w-2 h-8 rounded-full" style={{ backgroundColor: criteria.color }}></div>
+                                  <div>
+                                    <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A]">{criteria.criteriaNameAr}</h4>
+                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#6B7280]">{criteria.criteriaName}</p>
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[18px]" style={{ color: criteria.color }}>{criteria.score}</span>
+                                  <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#9CA3AF]">/ 9.0</span>
+                                </div>
+                              </div>
+                              <div className="p-4 sm:p-6 space-y-4">
+                                {/* Tips for this criteria */}
+                                {criteria.tips.length > 0 && (
+                                  <div className="space-y-3">
+                                    <h5 className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#6B7280] flex items-center gap-2">
+                                      <Target className="w-4 h-4 text-[#FF8C00]" />
+                                      نصائح للتحسين
+                                    </h5>
+                                    {criteria.tips.map((tip, tIdx) => (
+                                      <div key={tIdx} className="bg-[#F9FAFB] rounded-[10px] p-3 sm:p-4 border border-[#EEEEEE] flex items-start gap-3">
+                                        <div className={`px-2.5 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] flex-shrink-0 mt-0.5 ${
+                                          tip.priority === 'عالية' ? 'bg-[#FEE2E2] text-[#991B1B]' : 'bg-[#FEF3C7] text-[#92400E]'
+                                        }`}>
+                                          {tip.priority}
+                                        </div>
+                                        <div className="flex-1">
+                                          <div className="flex items-center justify-between mb-1">
+                                            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#1B2A4A]">{tip.title}</p>
+                                            {tip.scoreImpact && (
+                                              <span className="px-2 py-0.5 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]">
+                                                {tip.scoreImpact} درجة
+                                              </span>
+                                            )}
+                                          </div>
+                                          <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280]">{tip.description}</p>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                                {/* Suggestions for this criteria */}
+                                {criteria.suggestions.length > 0 && (
+                                  <div className="space-y-3">
+                                    <h5 className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#6B7280] flex items-center gap-2">
+                                      <TrendingUp className="w-4 h-4 text-[#012269]" />
+                                      بدائل مقترحة
+                                    </h5>
+                                    {criteria.suggestions.map((suggestion, sIdx) => (
+                                      <div key={sIdx} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <div className="bg-[#FEF2F2] px-4 py-3 rounded-[8px] border border-[#FECACA]">
+                                          <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#6B7280] mb-1">استخدمت:</p>
+                                          <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#991B1B]">{suggestion.original}</p>
+                                        </div>
+                                        <div className="bg-[#ECFDF5] px-4 py-3 rounded-[8px] border border-[#A7F3D0]">
+                                          <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#6B7280] mb-1">يمكنك استخدام:</p>
+                                          <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#065F46]">{suggestion.improved}</p>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                                {/* Empty state */}
+                                {criteria.tips.length === 0 && criteria.suggestions.length === 0 && (
+                                  <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#9CA3AF] text-center py-2">لا توجد اقتراحات لهذا المعيار حالياً</p>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    })()}
+                  </div>
+                  )}
+                </div>
+                </div>
+                )}
+              </div>
             </div>
           </Tabs.Content>
 
