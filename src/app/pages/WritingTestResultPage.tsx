@@ -665,9 +665,13 @@ const improvementsByPart = [
         score: 4.0,
         color: '#EF4444',
         bgColor: '#FEF2F2',
+        goodPoints: [
+          { text: 'ذكرت اسم الرياضة (Swimming) بشكل واضح', example: '"I am writing to you because I want tell you about swimming class in our area"' },
+          { text: 'حاولت اقتراح التعلم معاً', example: '"maybe me and you can go togather"' },
+        ],
         tips: [
-          { title: 'زيادة عدد الكلمات', priority: 'عالية', description: 'اكتب 150 كلمة على الأقل لـ Task 1 — عدد الكلمات الحالي أقل من المطلوب', scoreImpact: '+0.5' },
-          { title: 'تناول جميع أجزاء السؤال', priority: 'عالية', description: 'لم يتم تغطية جميع متطلبات المهمة — تأكد من الإجابة على كل نقطة', scoreImpact: '+0.5' },
+          { title: 'زيادة عدد الكلمات', priority: 'عالية', description: 'اكتب 150 كلمة على الأقل لـ Task 1 — عدد الكلمات الحالي أقل من المطلوب', scoreImpact: '+0.5', examples: [{ fromAnswer: 'الإجابة بأكملها 155 كلمة فقط وهي على الحد الأدنى — حاول إضافة تفاصيل أكثر عن الرياضة وفوائدها', suggestion: 'أضف جملتين عن فوائد السباحة الصحية وجملة عن تجربتك الشخصية' }] },
+          { title: 'تناول جميع أجزاء السؤال', priority: 'عالية', description: 'لم يتم تغطية جميع متطلبات المهمة — تأكد من الإجابة على كل نقطة', scoreImpact: '+0.5', examples: [{ fromAnswer: '"Explain how your friend could learn this sport" — ذكرت فقط أوقات الدرس لكن لم تشرح كيف سيتعلم صديقك', suggestion: 'أضف: "The instructor will start with basic techniques like floating and breathing, so beginners can learn step by step"' }] },
         ],
         suggestions: []
       },
@@ -677,8 +681,12 @@ const improvementsByPart = [
         score: 4.5,
         color: '#F59E0B',
         bgColor: '#FEF3C7',
+        goodPoints: [
+          { text: 'بنية الرسالة موجودة (تحية + محتوى + خاتمة)', example: '"Dear Sarah," ... "Waiting your reply, Alex"' },
+          { text: 'تقسيم الأفكار إلى فقرات', example: 'فقرة للمقدمة، فقرة لتفاصيل الصف، فقرة للاقتراح' },
+        ],
         tips: [
-          { title: 'تحسين التماسك باستخدام الروابط', priority: 'عالية', description: 'استخدم روابط مناسبة: However, Moreover, Therefore بين الجمل', scoreImpact: '+0.5' },
+          { title: 'تحسين التماسك باستخدام الروابط', priority: 'عالية', description: 'استخدم روابط مناسبة: However, Moreover, Therefore بين الجمل', scoreImpact: '+0.5', examples: [{ fromAnswer: '"The class is in Tuesday and Thursday in evening time. The teacher is good and he teached many peoples before."', suggestion: 'بدلاً من ذلك: "The classes are held on Tuesdays and Thursdays in the evening. Moreover, the teacher is experienced and has taught many students before."' }] },
         ],
         suggestions: [
           { original: 'and', improved: 'moreover, furthermore, in addition' },
@@ -692,8 +700,12 @@ const improvementsByPart = [
         score: 5.0,
         color: '#3B82F6',
         bgColor: '#DBEAFE',
+        goodPoints: [
+          { text: 'استخدمت مفردات مناسبة لموضوع الرياضة', example: '"swimming class", "towel and cap", "practise"' },
+          { text: 'النبرة مناسبة لرسالة شخصية', example: '"I was thinking maybe me and you can go togather"' },
+        ],
         tips: [
-          { title: 'تنويع المفردات', priority: 'متوسطة', description: 'تجنب تكرار نفس الكلمات واستخدم مرادفات أكثر تقدماً', scoreImpact: '+0.5' },
+          { title: 'تنويع المفردات', priority: 'متوسطة', description: 'تجنب تكرار نفس الكلمات واستخدم مرادفات أكثر تقدماً', scoreImpact: '+0.5', examples: [{ fromAnswer: '"The teacher is good" — كلمة "good" عامة جداً', suggestion: 'استخدم: "The instructor is highly experienced" أو "The coach is excellent"' }] },
         ],
         suggestions: [
           { original: 'good', improved: 'excellent, beneficial, advantageous' },
@@ -707,9 +719,12 @@ const improvementsByPart = [
         score: 4.5,
         color: '#EC4899',
         bgColor: '#FCE7F3',
+        goodPoints: [
+          { text: 'بعض الجمل البسيطة مبنية بشكل صحيح', example: '"I think the price is not much expensive" — الهيكل صحيح رغم وجود خطأ في المفردات' },
+        ],
         tips: [
-          { title: 'تصحيح الأخطاء النحوية الأساسية', priority: 'عالية', description: 'راجع subject-verb agreement والأزمنة الأساسية — هذا سيرفع درجتك بشكل كبير', scoreImpact: '+1.0' },
-          { title: 'تنويع التراكيب النحوية', priority: 'متوسطة', description: 'استخدم جمل مركبة ومعقدة بجانب الجمل البسيطة', scoreImpact: '+0.5' },
+          { title: 'تصحيح الأخطاء النحوية الأساسية', priority: 'عالية', description: 'راجع subject-verb agreement والأزمنة الأساسية — هذا سيرفع درجتك بشكل كبير', scoreImpact: '+1.0', examples: [{ fromAnswer: '"comunity center have new class" — المفرد يتطلب "has" وليس "have"', suggestion: '"The community center has a new class"' }, { fromAnswer: '"he teached many peoples before" — فعل شاذ', suggestion: '"he has taught many people before"' }] },
+          { title: 'تنويع التراكيب النحوية', priority: 'متوسطة', description: 'استخدم جمل مركبة ومعقدة بجانب الجمل البسيطة', scoreImpact: '+0.5', examples: [{ fromAnswer: '"It cost 50 dollar per month and they give you all thing you need like towel and cap." — جملة بسيطة متصلة بـ "and"', suggestion: '"The monthly fee is only 50 dollars, which includes all the equipment you need, such as towels and swimming caps."' }] },
         ],
         suggestions: []
       }
@@ -732,9 +747,13 @@ const improvementsByPart = [
         score: 4.0,
         color: '#EF4444',
         bgColor: '#FEF2F2',
+        goodPoints: [
+          { text: 'تناولت الجانبين (مع وضد التكنولوجيا)', example: '"First, technology help us alot" ... "On the other hand, some people think technology is bad"' },
+          { text: 'ذكرت رأيك الشخصي في النهاية', example: '"I believe it is more good than bad"' },
+        ],
         tips: [
-          { title: 'تطوير الأفكار بشكل كامل', priority: 'عالية', description: 'اشرح كل فكرة بجملتين أو ثلاث مع أمثلة داعمة', scoreImpact: '+1.0' },
-          { title: 'كتابة 250 كلمة على الأقل', priority: 'عالية', description: 'Task 2 يمثل 67% من الدرجة — تأكد من كتابة العدد المطلوب', scoreImpact: '+0.5' },
+          { title: 'تطوير الأفكار بشكل كامل', priority: 'عالية', description: 'اشرح كل فكرة بجملتين أو ثلاث مع أمثلة داعمة', scoreImpact: '+1.0', examples: [{ fromAnswer: '"technology help us alot in many thing. For exemple, I use technology for study english and it help me alot." — الفكرة غير مطورة بشكل كافٍ', suggestion: '"Technology has significantly improved access to education. For instance, online platforms such as Coursera and Khan Academy allow millions of students worldwide to learn new skills from the comfort of their homes, which was previously impossible."' }] },
+          { title: 'كتابة 250 كلمة على الأقل', priority: 'عالية', description: 'Task 2 يمثل 67% من الدرجة — تأكد من كتابة العدد المطلوب', scoreImpact: '+0.5', examples: [{ fromAnswer: 'الإجابة الحالية قصيرة وكل فقرة تحتوي على أفكار غير مطورة', suggestion: 'طور كل فقرة بإضافة: سبب + مثال + نتيجة — هذا سيزيد عدد الكلمات بشكل طبيعي' }] },
         ],
         suggestions: [
           { original: 'I think', improved: 'In my opinion, From my perspective, I firmly believe' },
@@ -747,8 +766,12 @@ const improvementsByPart = [
         score: 4.5,
         color: '#F59E0B',
         bgColor: '#FEF3C7',
+        goodPoints: [
+          { text: 'بنية المقال واضحة (مقدمة + فقرتين + خاتمة)', example: 'فقرة أولى (مع)، فقرة ثانية (ضد)، خاتمة برأي شخصي' },
+          { text: 'استخدمت بعض الروابط الأساسية', example: '"First,", "On the other hand,", "In conclusion,"' },
+        ],
         tips: [
-          { title: 'استخدام روابط متنوعة', priority: 'عالية', description: 'لا تكرر نفس الروابط — نوّع بين الروابط المختلفة', scoreImpact: '+0.5' },
+          { title: 'استخدام روابط متنوعة', priority: 'عالية', description: 'لا تكرر نفس الروابط — نوّع بين الروابط المختلفة', scoreImpact: '+0.5', examples: [{ fromAnswer: '"Also childs use technology too much and this is not good for there health. Also..." — تكرار "Also"', suggestion: 'بدلاً من ذلك: "Furthermore, children tend to overuse technology, which negatively impacts their health. Moreover,..."' }] },
         ],
         suggestions: [
           { original: 'Also', improved: 'Furthermore, Moreover, In addition to this' },
@@ -762,8 +785,12 @@ const improvementsByPart = [
         score: 5.0,
         color: '#3B82F6',
         bgColor: '#DBEAFE',
+        goodPoints: [
+          { text: 'حاولت استخدام كلمات أكاديمية', example: '"society", "communicate", "conclusion"' },
+          { text: 'تنويع بسيط في المفردات', example: '"helpful", "useful", "benefit"' },
+        ],
         tips: [
-          { title: 'توسيع الثروة اللغوية', priority: 'متوسطة', description: 'تعلم 10 كلمات أكاديمية جديدة يومياً وتجنب تكرار نفس الكلمات', scoreImpact: '+0.5' },
+          { title: 'توسيع الثروة اللغوية', priority: 'متوسطة', description: 'تعلم 10 كلمات أكاديمية جديدة يومياً وتجنب تكرار نفس الكلمات', scoreImpact: '+0.5', examples: [{ fromAnswer: '"technology is very importent" ... "technology have become very importent part" — تكرار "very important"', suggestion: 'نوّع: "technology plays a crucial role" أو "technology has become an integral part" أو "technology is indispensable"' }] },
         ],
         suggestions: [
           { original: 'important', improved: 'crucial, significant, vital, paramount' },
@@ -778,8 +805,11 @@ const improvementsByPart = [
         score: 4.5,
         color: '#EC4899',
         bgColor: '#FCE7F3',
+        goodPoints: [
+          { text: 'حاولت استخدام جمل مركبة', example: '"If people use technology with balance it will be very helpful for everyone"' },
+        ],
         tips: [
-          { title: 'تصحيح الأخطاء النحوية المتكررة', priority: 'عالية', description: 'راجع subject-verb agreement و أزمنة الأفعال والأخطاء الإملائية', scoreImpact: '+1.0' },
+          { title: 'تصحيح الأخطاء النحوية المتكررة', priority: 'عالية', description: 'راجع subject-verb agreement و أزمنة الأفعال والأخطاء الإملائية', scoreImpact: '+1.0', examples: [{ fromAnswer: '"Some peoples think technology make life hard" — "people" لا تُجمع، و"make" يجب أن تكون "makes"', suggestion: '"Some people think technology makes life difficult"' }, { fromAnswer: '"many person spend all the time on there phone" — أخطاء متعددة', suggestion: '"many people spend all their time on their phones"' }] },
         ],
         suggestions: []
       }
@@ -875,6 +905,9 @@ export function WritingTestResultPage() {
   const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
   const [expandedCriteria, setExpandedCriteria] = useState<string[]>(['task-achievement']);
   const [activeErrorFilter, setActiveErrorFilter] = useState('all');
+  const [task1ErrorFilter, setTask1ErrorFilter] = useState<'all' | 'grammar' | 'spelling' | 'vocabulary'>('all');
+  const [task2ErrorFilter, setTask2ErrorFilter] = useState<'all' | 'grammar' | 'spelling' | 'vocabulary'>('all');
+  const [expandedExamples, setExpandedExamples] = useState<string[]>([]);
   const [expandedParts, setExpandedParts] = useState<string[]>(['task1']);
   const [expandedImprovementParts, setExpandedImprovementParts] = useState<string[]>(['task1']);
   const [highlightFilter, setHighlightFilter] = useState<'all' | 'error' | 'warning' | 'good'>('all');
@@ -1666,17 +1699,43 @@ export function WritingTestResultPage() {
               {/* TASK 1 - Errors and Corrections */}
               {/* ═══════════════════════════════════════════════════════ */}
               {(() => {
-                const task1Errors = errorExamples.filter(e => e.task === 'task1');
+                const task1AllErrors = errorExamples.filter(e => e.task === 'task1');
+                const task1Errors = task1ErrorFilter === 'all' ? task1AllErrors : task1AllErrors.filter(e => e.type === task1ErrorFilter);
+                const task1GrammarCount = task1AllErrors.filter(e => e.type === 'grammar').length;
+                const task1SpellingCount = task1AllErrors.filter(e => e.type === 'spelling').length;
+                const task1VocabCount = task1AllErrors.filter(e => e.type === 'vocabulary').length;
                 return (
                   <div className="mt-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <XCircle className="w-5 h-5 text-[#C30020]" />
-                      <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A]">
-                        الأخطاء وتصحيحها - المهمة 1
-                      </h4>
-                      <span className="px-3 py-1 rounded-full text-[12px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#FEE2E2] text-[#991B1B]">
-                        {task1Errors.length} أخطاء
-                      </span>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+                      <div className="flex items-center gap-3">
+                        <XCircle className="w-5 h-5 text-[#C30020]" />
+                        <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A]">
+                          الأخطاء وتصحيحها - المهمة 1
+                        </h4>
+                        <span className="px-3 py-1 rounded-full text-[12px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#FEE2E2] text-[#991B1B]">
+                          {task1Errors.length} أخطاء
+                        </span>
+                      </div>
+                      <div className="flex gap-1.5 flex-wrap">
+                        {([
+                          { key: 'all' as const, label: 'الكل', count: task1AllErrors.length, active: 'bg-[#1B2A4A] text-white border-[#1B2A4A]', dot: '' },
+                          { key: 'grammar' as const, label: 'خطأ نحوي', count: task1GrammarCount, active: 'bg-[#C30020] text-white border-[#C30020]', dot: 'bg-[#FEE2E2] border-[#C30020]' },
+                          { key: 'spelling' as const, label: 'خطأ إملائي', count: task1SpellingCount, active: 'bg-[#3B82F6] text-white border-[#3B82F6]', dot: 'bg-[#DBEAFE] border-[#3B82F6]' },
+                          { key: 'vocabulary' as const, label: 'استخدام المفردات', count: task1VocabCount, active: 'bg-[#FF8C00] text-white border-[#FF8C00]', dot: 'bg-[#FEF3C7] border-[#FF8C00]' },
+                        ] as const).filter(f => f.key === 'all' || f.count > 0).map((f) => (
+                          <button
+                            key={f.key}
+                            onClick={() => setTask1ErrorFilter(f.key)}
+                            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] transition-all ${
+                              task1ErrorFilter === f.key ? f.active : 'bg-white text-[#6B7280] border-[#D1D5DB] hover:bg-[#F3F4F6]'
+                            }`}
+                          >
+                            {f.dot && <div className={`w-2 h-2 rounded-full border ${task1ErrorFilter === f.key ? 'bg-white/40 border-white/60' : f.dot}`}></div>}
+                            {f.label}
+                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${task1ErrorFilter === f.key ? 'bg-white/20' : 'bg-[#F3F4F6]'}`}>{f.count}</span>
+                          </button>
+                        ))}
+                      </div>
                     </div>
                     <div className="space-y-3">
                       {task1Errors.map((error, idx) => (
@@ -1785,6 +1844,26 @@ export function WritingTestResultPage() {
                               </div>
                             </div>
                             <div className="p-4 sm:p-6 space-y-4">
+                              {/* Good Points */}
+                              {criteria.goodPoints && criteria.goodPoints.length > 0 && (
+                                <div className="space-y-3">
+                                  <h5 className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#065F46] flex items-center gap-2">
+                                    <CheckCircle2 className="w-4 h-4 text-[#4CAF50]" />
+                                    ما أجدته
+                                  </h5>
+                                  {criteria.goodPoints.map((point: { text: string; example: string }, gIdx: number) => (
+                                    <div key={gIdx} className="bg-[#F0FDF4] rounded-[10px] p-3 sm:p-4 border border-[#BBF7D0]">
+                                      <div className="flex items-start gap-2.5">
+                                        <div className="w-5 h-5 rounded-full bg-[#4CAF50] text-white text-[10px] font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] flex items-center justify-center flex-shrink-0 mt-0.5">✓</div>
+                                        <div className="flex-1">
+                                          <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">{point.text}</p>
+                                          <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#4B5563] bg-[#ECFDF5] px-3 py-2 rounded-[6px] border border-[#D1FAE5]" style={{ direction: 'ltr', textAlign: 'left' }}>{point.example}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
                               {/* Tips for this criteria */}
                               {criteria.tips.length > 0 && (
                                 <div className="space-y-3">
@@ -1792,26 +1871,63 @@ export function WritingTestResultPage() {
                                     <Target className="w-4 h-4 text-[#FF8C00]" />
                                     نصائح للتحسين
                                   </h5>
-                                  {criteria.tips.map((tip, tIdx) => (
-                                    <div key={tIdx} className="bg-[#F9FAFB] rounded-[10px] p-3 sm:p-4 border border-[#EEEEEE] flex items-start gap-3">
-                                      <div className={`px-2.5 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] flex-shrink-0 mt-0.5 ${
-                                        tip.priority === 'عالية' ? 'bg-[#FEE2E2] text-[#991B1B]' : 'bg-[#FEF3C7] text-[#92400E]'
-                                      }`}>
-                                        {tip.priority}
-                                      </div>
-                                      <div className="flex-1">
-                                        <div className="flex items-center justify-between mb-1">
-                                          <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#1B2A4A]">{tip.title}</p>
-                                          {tip.scoreImpact && (
-                                            <span className="px-2 py-0.5 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]">
-                                              {tip.scoreImpact} درجة
-                                            </span>
-                                          )}
+                                  {criteria.tips.map((tip: any, tIdx: number) => {
+                                    const exampleKey = `task1-${cIdx}-${tIdx}`;
+                                    const isExpanded = expandedExamples.includes(exampleKey);
+                                    return (
+                                    <div key={tIdx} className="bg-[#F9FAFB] rounded-[10px] border border-[#EEEEEE] overflow-hidden">
+                                      <div className="p-3 sm:p-4 flex items-start gap-3">
+                                        <div className={`px-2.5 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] flex-shrink-0 mt-0.5 ${
+                                          tip.priority === 'عالية' ? 'bg-[#FEE2E2] text-[#991B1B]' : 'bg-[#FEF3C7] text-[#92400E]'
+                                        }`}>
+                                          {tip.priority}
                                         </div>
-                                        <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280]">{tip.description}</p>
+                                        <div className="flex-1">
+                                          <div className="flex items-center justify-between mb-1">
+                                            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#1B2A4A]">{tip.title}</p>
+                                            {tip.scoreImpact && (
+                                              <span className="px-2 py-0.5 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]">
+                                                {tip.scoreImpact} درجة
+                                              </span>
+                                            )}
+                                          </div>
+                                          <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280]">{tip.description}</p>
+                                        </div>
                                       </div>
+                                      {/* Collapsible examples from answer */}
+                                      {tip.examples && tip.examples.length > 0 && (
+                                        <>
+                                          <button
+                                            onClick={() => setExpandedExamples(prev => prev.includes(exampleKey) ? prev.filter(k => k !== exampleKey) : [...prev, exampleKey])}
+                                            className="w-full flex items-center justify-center gap-2 py-2 bg-[#F3F4F6] hover:bg-[#E5E7EB] transition-colors border-t border-[#EEEEEE] cursor-pointer"
+                                          >
+                                            <BookOpen className="w-3.5 h-3.5 text-[#6B7280]" />
+                                            <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[11px] text-[#6B7280]">
+                                              {isExpanded ? 'إخفاء الأمثلة من إجابتك' : 'عرض أمثلة من إجابتك'}
+                                            </span>
+                                            {isExpanded ? <ChevronUp className="w-3.5 h-3.5 text-[#6B7280]" /> : <ChevronDown className="w-3.5 h-3.5 text-[#6B7280]" />}
+                                          </button>
+                                          {isExpanded && (
+                                            <div className="px-3 sm:px-4 pb-3 sm:pb-4 pt-2 space-y-2.5 bg-[#FFFBEB] border-t border-[#FEF3C7]">
+                                              {tip.examples.map((ex: any, eIdx: number) => (
+                                                <div key={eIdx} className="space-y-2">
+                                                  <div className="bg-[#FEF2F2] px-3 py-2.5 rounded-[8px] border border-[#FECACA]">
+                                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] text-[#991B1B] mb-1">من إجابتك:</p>
+                                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#374151]" style={{ direction: 'ltr', textAlign: 'left' }}>{ex.fromAnswer}</p>
+                                                  </div>
+                                                  <div className="bg-[#ECFDF5] px-3 py-2.5 rounded-[8px] border border-[#A7F3D0]">
+                                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] text-[#065F46] mb-1">الاقتراح:</p>
+                                                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#374151]" style={{ direction: 'ltr', textAlign: 'left' }}>{ex.suggestion}</p>
+                                                  </div>
+                                                </div>
+                                              ))}
+                                            </div>
+                                          )}
+                                        </>
+                                      )}
                                     </div>
-                                  ))}
+                                    );
+                                  })}
                                 </div>
                               )}
                               {/* Suggestions for this criteria */}
@@ -1821,7 +1937,7 @@ export function WritingTestResultPage() {
                                     <TrendingUp className="w-4 h-4 text-[#012269]" />
                                     بدائل مقترحة
                                   </h5>
-                                  {criteria.suggestions.map((suggestion, sIdx) => (
+                                  {criteria.suggestions.map((suggestion: any, sIdx: number) => (
                                     <div key={sIdx} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                       <div className="bg-[#FEF2F2] px-4 py-3 rounded-[8px] border border-[#FECACA]">
                                         <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#6B7280] mb-1">استخدمت:</p>
@@ -1836,7 +1952,7 @@ export function WritingTestResultPage() {
                                 </div>
                               )}
                               {/* Empty state */}
-                              {criteria.tips.length === 0 && criteria.suggestions.length === 0 && (
+                              {criteria.tips.length === 0 && criteria.suggestions.length === 0 && (!criteria.goodPoints || criteria.goodPoints.length === 0) && (
                                 <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#9CA3AF] text-center py-2">لا توجد اقتراحات لهذا المعيار حالياً</p>
                               )}
                             </div>
@@ -2179,17 +2295,43 @@ export function WritingTestResultPage() {
               {/* TASK 2 - Errors and Corrections */}
               {/* ═══════════════════════════════════════════════════════ */}
               {(() => {
-                const task2Errors = errorExamples.filter(e => e.task === 'task2');
+                const task2AllErrors = errorExamples.filter(e => e.task === 'task2');
+                const task2Errors = task2ErrorFilter === 'all' ? task2AllErrors : task2AllErrors.filter(e => e.type === task2ErrorFilter);
+                const task2GrammarCount = task2AllErrors.filter(e => e.type === 'grammar').length;
+                const task2SpellingCount = task2AllErrors.filter(e => e.type === 'spelling').length;
+                const task2VocabCount = task2AllErrors.filter(e => e.type === 'vocabulary').length;
                 return (
                   <div className="mt-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <XCircle className="w-5 h-5 text-[#C30020]" />
-                      <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A]">
-                        الأخطاء وتصحيحها - المهمة 2
-                      </h4>
-                      <span className="px-3 py-1 rounded-full text-[12px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#FEE2E2] text-[#991B1B]">
-                        {task2Errors.length} أخطاء
-                      </span>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+                      <div className="flex items-center gap-3">
+                        <XCircle className="w-5 h-5 text-[#C30020]" />
+                        <h4 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] text-[#1B2A4A]">
+                          الأخطاء وتصحيحها - المهمة 2
+                        </h4>
+                        <span className="px-3 py-1 rounded-full text-[12px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#FEE2E2] text-[#991B1B]">
+                          {task2Errors.length} أخطاء
+                        </span>
+                      </div>
+                      <div className="flex gap-1.5 flex-wrap">
+                        {([
+                          { key: 'all' as const, label: 'الكل', count: task2AllErrors.length, active: 'bg-[#1B2A4A] text-white border-[#1B2A4A]', dot: '' },
+                          { key: 'grammar' as const, label: 'خطأ نحوي', count: task2GrammarCount, active: 'bg-[#C30020] text-white border-[#C30020]', dot: 'bg-[#FEE2E2] border-[#C30020]' },
+                          { key: 'spelling' as const, label: 'خطأ إملائي', count: task2SpellingCount, active: 'bg-[#3B82F6] text-white border-[#3B82F6]', dot: 'bg-[#DBEAFE] border-[#3B82F6]' },
+                          { key: 'vocabulary' as const, label: 'استخدام المفردات', count: task2VocabCount, active: 'bg-[#FF8C00] text-white border-[#FF8C00]', dot: 'bg-[#FEF3C7] border-[#FF8C00]' },
+                        ] as const).filter(f => f.key === 'all' || f.count > 0).map((f) => (
+                          <button
+                            key={f.key}
+                            onClick={() => setTask2ErrorFilter(f.key)}
+                            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] transition-all ${
+                              task2ErrorFilter === f.key ? f.active : 'bg-white text-[#6B7280] border-[#D1D5DB] hover:bg-[#F3F4F6]'
+                            }`}
+                          >
+                            {f.dot && <div className={`w-2 h-2 rounded-full border ${task2ErrorFilter === f.key ? 'bg-white/40 border-white/60' : f.dot}`}></div>}
+                            {f.label}
+                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${task2ErrorFilter === f.key ? 'bg-white/20' : 'bg-[#F3F4F6]'}`}>{f.count}</span>
+                          </button>
+                        ))}
+                      </div>
                     </div>
                     <div className="space-y-3">
                       {task2Errors.map((error, idx) => (
@@ -2298,6 +2440,26 @@ export function WritingTestResultPage() {
                                 </div>
                               </div>
                               <div className="p-4 sm:p-6 space-y-4">
+                                {/* Good Points */}
+                                {criteria.goodPoints && criteria.goodPoints.length > 0 && (
+                                  <div className="space-y-3">
+                                    <h5 className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#065F46] flex items-center gap-2">
+                                      <CheckCircle2 className="w-4 h-4 text-[#4CAF50]" />
+                                      ما أجدته
+                                    </h5>
+                                    {criteria.goodPoints.map((point: { text: string; example: string }, gIdx: number) => (
+                                      <div key={gIdx} className="bg-[#F0FDF4] rounded-[10px] p-3 sm:p-4 border border-[#BBF7D0]">
+                                        <div className="flex items-start gap-2.5">
+                                          <div className="w-5 h-5 rounded-full bg-[#4CAF50] text-white text-[10px] font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] flex items-center justify-center flex-shrink-0 mt-0.5">✓</div>
+                                          <div className="flex-1">
+                                            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A] mb-1">{point.text}</p>
+                                            <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#4B5563] bg-[#ECFDF5] px-3 py-2 rounded-[6px] border border-[#D1FAE5]" style={{ direction: 'ltr', textAlign: 'left' }}>{point.example}</p>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
                                 {/* Tips for this criteria */}
                                 {criteria.tips.length > 0 && (
                                   <div className="space-y-3">
@@ -2305,26 +2467,63 @@ export function WritingTestResultPage() {
                                       <Target className="w-4 h-4 text-[#FF8C00]" />
                                       نصائح للتحسين
                                     </h5>
-                                    {criteria.tips.map((tip, tIdx) => (
-                                      <div key={tIdx} className="bg-[#F9FAFB] rounded-[10px] p-3 sm:p-4 border border-[#EEEEEE] flex items-start gap-3">
-                                        <div className={`px-2.5 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] flex-shrink-0 mt-0.5 ${
-                                          tip.priority === 'عالية' ? 'bg-[#FEE2E2] text-[#991B1B]' : 'bg-[#FEF3C7] text-[#92400E]'
-                                        }`}>
-                                          {tip.priority}
-                                        </div>
-                                        <div className="flex-1">
-                                          <div className="flex items-center justify-between mb-1">
-                                            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#1B2A4A]">{tip.title}</p>
-                                            {tip.scoreImpact && (
-                                              <span className="px-2 py-0.5 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]">
-                                                {tip.scoreImpact} درجة
-                                              </span>
-                                            )}
+                                    {criteria.tips.map((tip: any, tIdx: number) => {
+                                      const exampleKey = `task2-${cIdx}-${tIdx}`;
+                                      const isExpanded = expandedExamples.includes(exampleKey);
+                                      return (
+                                      <div key={tIdx} className="bg-[#F9FAFB] rounded-[10px] border border-[#EEEEEE] overflow-hidden">
+                                        <div className="p-3 sm:p-4 flex items-start gap-3">
+                                          <div className={`px-2.5 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] flex-shrink-0 mt-0.5 ${
+                                            tip.priority === 'عالية' ? 'bg-[#FEE2E2] text-[#991B1B]' : 'bg-[#FEF3C7] text-[#92400E]'
+                                          }`}>
+                                            {tip.priority}
                                           </div>
-                                          <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280]">{tip.description}</p>
+                                          <div className="flex-1">
+                                            <div className="flex items-center justify-between mb-1">
+                                              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#1B2A4A]">{tip.title}</p>
+                                              {tip.scoreImpact && (
+                                                <span className="px-2 py-0.5 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]">
+                                                  {tip.scoreImpact} درجة
+                                                </span>
+                                              )}
+                                            </div>
+                                            <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280]">{tip.description}</p>
+                                          </div>
                                         </div>
+                                        {/* Collapsible examples from answer */}
+                                        {tip.examples && tip.examples.length > 0 && (
+                                          <>
+                                            <button
+                                              onClick={() => setExpandedExamples(prev => prev.includes(exampleKey) ? prev.filter(k => k !== exampleKey) : [...prev, exampleKey])}
+                                              className="w-full flex items-center justify-center gap-2 py-2 bg-[#F3F4F6] hover:bg-[#E5E7EB] transition-colors border-t border-[#EEEEEE] cursor-pointer"
+                                            >
+                                              <BookOpen className="w-3.5 h-3.5 text-[#6B7280]" />
+                                              <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[11px] text-[#6B7280]">
+                                                {isExpanded ? 'إخفاء الأمثلة من إجابتك' : 'عرض أمثلة من إجابتك'}
+                                              </span>
+                                              {isExpanded ? <ChevronUp className="w-3.5 h-3.5 text-[#6B7280]" /> : <ChevronDown className="w-3.5 h-3.5 text-[#6B7280]" />}
+                                            </button>
+                                            {isExpanded && (
+                                              <div className="px-3 sm:px-4 pb-3 sm:pb-4 pt-2 space-y-2.5 bg-[#FFFBEB] border-t border-[#FEF3C7]">
+                                                {tip.examples.map((ex: any, eIdx: number) => (
+                                                  <div key={eIdx} className="space-y-2">
+                                                    <div className="bg-[#FEF2F2] px-3 py-2.5 rounded-[8px] border border-[#FECACA]">
+                                                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] text-[#991B1B] mb-1">من إجابتك:</p>
+                                                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#374151]" style={{ direction: 'ltr', textAlign: 'left' }}>{ex.fromAnswer}</p>
+                                                    </div>
+                                                    <div className="bg-[#ECFDF5] px-3 py-2.5 rounded-[8px] border border-[#A7F3D0]">
+                                                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] text-[#065F46] mb-1">الاقتراح:</p>
+                                                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#374151]" style={{ direction: 'ltr', textAlign: 'left' }}>{ex.suggestion}</p>
+                                                    </div>
+                                                  </div>
+                                                ))}
+                                              </div>
+                                            )}
+                                          </>
+                                        )}
                                       </div>
-                                    ))}
+                                      );
+                                    })}
                                   </div>
                                 )}
                                 {/* Suggestions for this criteria */}
@@ -2334,7 +2533,7 @@ export function WritingTestResultPage() {
                                       <TrendingUp className="w-4 h-4 text-[#012269]" />
                                       بدائل مقترحة
                                     </h5>
-                                    {criteria.suggestions.map((suggestion, sIdx) => (
+                                    {criteria.suggestions.map((suggestion: any, sIdx: number) => (
                                       <div key={sIdx} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                         <div className="bg-[#FEF2F2] px-4 py-3 rounded-[8px] border border-[#FECACA]">
                                           <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#6B7280] mb-1">استخدمت:</p>
@@ -2349,7 +2548,7 @@ export function WritingTestResultPage() {
                                   </div>
                                 )}
                                 {/* Empty state */}
-                                {criteria.tips.length === 0 && criteria.suggestions.length === 0 && (
+                                {criteria.tips.length === 0 && criteria.suggestions.length === 0 && (!criteria.goodPoints || criteria.goodPoints.length === 0) && (
                                   <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#9CA3AF] text-center py-2">لا توجد اقتراحات لهذا المعيار حالياً</p>
                                 )}
                               </div>
