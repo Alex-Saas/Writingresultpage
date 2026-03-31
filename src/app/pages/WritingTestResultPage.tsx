@@ -5,6 +5,7 @@ import * as Tabs from '@radix-ui/react-tabs';
 import svgPaths from '../../imports/svg-kef88hpn4e';
 
 // Figma asset URLs
+const imgTrophy = "https://www.figma.com/api/mcp/asset/d029ba19-fcd6-4ba5-815a-668727f1b152";
 const imgLogo = "https://www.figma.com/api/mcp/asset/3c3922ed-23e0-4b00-91bd-13a9319e72c8";
 const imgArrowLeftOutline = "https://www.figma.com/api/mcp/asset/546fecda-a787-4a46-b443-e23be9134dbe";
 const imgCaretDownSolid = "https://www.figma.com/api/mcp/asset/84187bd0-1dc9-43ab-9bd5-48dae4503f40";
@@ -970,8 +971,10 @@ export function WritingTestResultPage() {
           {/* Top Navigation Bar */}
           <div className="flex items-center justify-between mb-6">
             {/* Logo - first in DOM = rightmost in RTL */}
-            <div className="h-[42px] w-[118px] overflow-hidden relative shrink-0">
-              <img alt="GoIELTS" className="h-full w-full object-contain" src={imgLogo} />
+            <div className="h-[42px] w-[118px] relative shrink-0 mix-blend-darken">
+              <div className="absolute inset-0 overflow-hidden">
+                <img alt="GoIELTS" className="absolute left-0 w-full max-w-none" style={{ height: '268.21%', top: '-35.49%' }} src={imgLogo} />
+              </div>
             </div>
 
             {/* Share Link + Copy - second in DOM = leftmost in RTL */}
@@ -1062,11 +1065,9 @@ export function WritingTestResultPage() {
           {/* Progress to Goal */}
           <div className="bg-white rounded-[8px] p-4 shadow-[0px_2px_0px_0px_#c90f2e]">
             <div className="flex items-center gap-4">
-              {/* Icon — first in DOM = rightmost in RTL */}
+              {/* Trophy Icon — first in DOM = rightmost in RTL */}
               <div className="w-10 h-10 shrink-0">
-                <svg className="w-full h-full" viewBox="0 0 40 40" fill="none">
-                  <path d={svgPaths.p123ef3f0} fill="#4CAF50" />
-                </svg>
+                <img alt="" className="w-full h-full" src={imgTrophy} />
               </div>
               <div className="flex-1 min-w-0 text-right">
                 <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#023196] mb-1">
