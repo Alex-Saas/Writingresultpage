@@ -1,8 +1,24 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Award, Clock, FileText, TrendingUp, CheckCircle2, XCircle, AlertCircle, BookOpen, ArrowLeft, Share2, Download, ChevronDown, ChevronUp, Lightbulb, Target, BarChart3 } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
+import { FileText, TrendingUp, CheckCircle2, XCircle, AlertCircle, BookOpen, ChevronDown, ChevronUp, Lightbulb, Target } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import * as Tabs from '@radix-ui/react-tabs';
 import svgPaths from '../../imports/svg-kef88hpn4e';
+
+// Figma asset URLs
+const imgLogo = "https://www.figma.com/api/mcp/asset/17490dbb-16f8-451d-870d-a7cdf494757b";
+const imgArrowLeftOutline = "https://www.figma.com/api/mcp/asset/054f9482-b193-4952-bc98-ccd94ad6c582";
+const imgCaretDownSolid = "https://www.figma.com/api/mcp/asset/b2546f7e-c47d-43eb-a824-4fdca4af1a4a";
+const imgIconSetFilled = "https://www.figma.com/api/mcp/asset/b6a8a6a6-dc72-4748-ac19-a031df9ec221";
+const imgGroup2147223679 = "https://www.figma.com/api/mcp/asset/c83026df-7b4d-4ed8-b1fa-75c1532810c5";
+const imgGroup2147223680 = "https://www.figma.com/api/mcp/asset/9f210f0e-b358-4664-8d54-3998cd8b867b";
+const imgEllipse = "https://www.figma.com/api/mcp/asset/6a1e62e9-f12e-46fd-a416-25af7a693dc2";
+const imgEllipse1 = "https://www.figma.com/api/mcp/asset/c14d169a-4429-48c9-b192-8f66d82a8610";
+const imgEllipse2 = "https://www.figma.com/api/mcp/asset/183f5029-62a2-46f6-a69b-6fd3c7398ead";
+const imgEllipse3 = "https://www.figma.com/api/mcp/asset/185c6b4d-62cd-4e77-afe3-a1608f64a9db";
+const imgEllipse4 = "https://www.figma.com/api/mcp/asset/7f310801-2d04-4b96-b308-c5e43073b2e2";
+const imgFrame = "https://www.figma.com/api/mcp/asset/5a2dce07-5ab7-49cf-94a9-31f84f76a7eb";
+const imgFrame1 = "https://www.figma.com/api/mcp/asset/d3ffcc60-3522-4dde-8c79-f4fa888251de";
+const imgFrame2 = "https://www.figma.com/api/mcp/asset/fab2c226-bcad-4c8a-8d8e-9bbfc85aed88";
 
 // بيانات تجريبية للرسم البياني - كل محاولة مع بيانات المعايير
 const attemptData = [
@@ -953,54 +969,54 @@ export function WritingTestResultPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
           {/* Top Navigation Bar */}
           <div className="flex items-center justify-between mb-6">
-            {/* Logo */}
-            <div className="flex items-center gap-2">
-              <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] sm:text-[24px]">
-                <span className="text-[#C30020]">GO</span>
-                <span className="text-[#012269]">IELTS</span>
-                <span className="text-[#4A4A4A]">.ai</span>
-              </span>
-            </div>
-
-            {/* Share Link */}
-            <div className="hidden md:flex items-center gap-3 bg-[#F9FAFB] border border-[#EEEEEE] rounded-[8px] px-4 py-2">
-              <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#1B2A4A]">
-                شارك درجتك
-              </span>
-              <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#6B7280]">
+            {/* Share Link + Copy */}
+            <div className="flex items-center gap-0 bg-[#f2f2f2] rounded-[7px] overflow-hidden">
+              <div className="bg-[#012269] px-4 py-2 rounded-[7px]">
+                <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] text-white">نسخ</span>
+              </div>
+              <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#6B7280] px-4 py-2">
                 app.goielts.ai/score/1063
               </span>
+              <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#0a0a0a] px-4 py-2 hidden md:block">
+                شارك درجتك
+              </span>
             </div>
 
-            {/* Copy Button */}
-            <button className="flex items-center gap-2 bg-[#012269] text-white px-3 sm:px-4 py-2 rounded-[8px] hover:bg-[#1B2A4A] transition-colors">
-              <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[12px] sm:text-[14px]">نسخ</span>
-            </button>
+            {/* Logo */}
+            <div className="h-[42px] w-[118px] overflow-hidden relative shrink-0">
+              <img alt="GoIELTS" className="h-full w-full object-contain" src={imgLogo} />
+            </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-3 mb-6">
-            <button className="flex items-center gap-2 bg-[#012269] text-white px-4 py-2 rounded-[8px] hover:bg-[#1B2A4A] transition-colors">
-              <ArrowLeft className="w-4 h-4" />
-              <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px]">رجوع</span>
-            </button>
-            <button className="flex items-center gap-2 bg-white border border-[#EEEEEE] px-4 py-2 rounded-[8px] hover:bg-gray-50 transition-colors">
-              <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#374151]">الاختبارات</span>
-            </button>
-            <button className="flex items-center gap-2 bg-white border border-[#EEEEEE] px-4 py-2 rounded-[8px] hover:bg-gray-50 transition-colors">
-              <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#374151]">إعادة الاختبار</span>
-            </button>
-          </div>
-
-          {/* Success Message */}
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <h1 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] sm:text-[24px] lg:text-[28px] text-[#1B2A4A]">
-              مبروك! خَلَّصت الاختبار بنجاح
-            </h1>
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#4CAF50] rounded-full flex items-center justify-center">
-              <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <button className="flex items-center gap-1 bg-[#012269] text-white px-3 py-2 rounded-[6px] hover:bg-[#011a50] transition-colors h-[40px]">
+                <img alt="" className="w-6 h-6" src={imgArrowLeftOutline} />
+                <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px]">رجوع</span>
+              </button>
+              <button className="bg-white border border-[#d1d5db] px-4 py-2 rounded-[6px] hover:bg-gray-50 transition-colors opacity-70 h-[40px]">
+                <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[16px] text-[#374151]">إعادة الاختبار</span>
+              </button>
+              <button className="bg-white border border-[#d1d5db] px-4 py-2 rounded-[6px] hover:bg-gray-50 transition-colors opacity-70 h-[40px]">
+                <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[16px] text-[#374151]">الاختبارات</span>
+              </button>
+              <button className="flex items-center gap-1 bg-white border border-[#d1d5db] px-3 py-2 rounded-[6px] hover:bg-gray-50 transition-colors h-[40px]">
+                <img alt="" className="w-6 h-6" src={imgCaretDownSolid} />
+                <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#374151]">الكتابة</span>
+              </button>
+            </div>
+            {/* Success Message */}
+            <div className="flex items-center gap-3">
+              <h1 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] sm:text-[24px] lg:text-[32px] text-[#012269]">
+                مبروك! خلّصت الاختبار بنجاح
+              </h1>
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden">
+                <svg viewBox="0 0 36 36" fill="none" className="w-full h-full"><circle cx="18" cy="18" r="18" fill="#4CAF50"/><path d="M10 18l6 6 10-12" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
             </div>
           </div>
+
 
           {/* Test Info Grid */}
           <div className="bg-[#F9FAFB] rounded-[16px] border border-[#EEEEEE] p-6 mb-6">
@@ -1041,32 +1057,34 @@ export function WritingTestResultPage() {
           </div>
 
           {/* Progress to Goal */}
-          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-6">
-            <div className="text-center mb-4">
-              <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] sm:text-[18px] text-[#1B2A4A] mb-2">
-                تحتاج مزيد من التدريب 📚 باقي 0.5 درجة للوصول لـ 5.0
-              </h3>
-              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] sm:text-[14px] text-[#6B7280]">
-                ركز على تصحيح الأخطاء النحوية وزيادة عدد الكلمات - يمكنك التحسن!
-              </p>
-            </div>
-            
-            {/* Progress Bar */}
-            <div className="relative">
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#6B7280]">الدرجة الحالية 7.5</span>
-                <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#6B7280]">الدرجة السابقة 8.0</span>
-              </div>
-              <div className="w-full h-3 bg-[#E5E7EB] rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-[#4CAF50] to-[#8BC34A] rounded-full" style={{ width: '93.75%' }}></div>
-              </div>
-            </div>
-
-            {/* Action Button */}
-            <div className="text-center mt-6">
-              <button className="bg-[#C30020] text-white px-6 py-3 rounded-[8px] font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] hover:bg-[#991B1B] transition-colors">
-                اضرب الآن!
+          <div className="bg-white rounded-[8px] p-4 shadow-[0px_2px_0px_0px_#c90f2e]">
+            <div className="flex items-center gap-4">
+              <button className="bg-[#c90f2e] text-white px-3 py-2.5 rounded-[6px] font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[14px] hover:bg-[#a80d27] transition-colors whitespace-nowrap shrink-0">
+                اشترك الآن
               </button>
+              <div className="flex-1 min-w-0 text-right">
+                <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#023196] mb-1">
+                  أداء رهيب! 🔥 باقي 4.0 بس وتوصل لهدفك!
+                </h3>
+                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[16px] text-[#46484c]">
+                  أنت قريب بـ 4.0 درجة فقط من الدرجة 8! جرب باقة التدريب السريع عشان ترفع درجتك
+                </p>
+              </div>
+              <div className="w-10 h-10 shrink-0">
+                <svg className="w-full h-full" viewBox="0 0 40 40" fill="none">
+                  <path d={svgPaths.p123ef3f0} fill="#4CAF50" />
+                </svg>
+              </div>
+            </div>
+            {/* Progress Bar */}
+            <div className="mt-4">
+              <div className="w-full h-[6px] bg-[#e0e7ff] rounded-[30px] overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-[#2c277f] to-[#22c55e] rounded-[30px]" style={{ width: '51.79%' }}></div>
+              </div>
+              <div className="flex items-center justify-between mt-1">
+                <span className="font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[12px] text-black opacity-60">الدرجة المستهدفة  8.0</span>
+                <span className="font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[12px] text-black opacity-60">الدرجة الحالية  7.5</span>
+              </div>
             </div>
           </div>
         </div>
@@ -1076,153 +1094,116 @@ export function WritingTestResultPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         
         {/* Score Hero Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-4 sm:mb-8">
+        <div className="flex gap-4 sm:gap-6 mb-4 sm:mb-8 flex-wrap">
           {/* Overall Score */}
-          <div className="col-span-1 bg-white rounded-[16px] border border-[#EEEEEE] p-6 shadow-sm">
-            <div className="text-center">
-              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269] mb-4">
-                الدرجة الكلية
+          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-5 shadow-sm flex flex-col items-center gap-3 min-w-[140px]">
+            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">
+              الدرجة الكلية
+            </p>
+            <div className="relative w-[120px] h-[120px]">
+              <img alt="" className="absolute inset-0 w-full h-full" src={imgEllipse} />
+              <div className="absolute inset-0" style={{ left: '50%', right: 0, top: 0, bottom: 0 }}>
+                <img alt="" className="block w-full h-full" src={imgEllipse1} />
+              </div>
+              <span className="absolute font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#c30020]"
+                style={{ left: '42px', top: '44px' }}>4.5</span>
+            </div>
+            <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#4A4A4A]">4.5 / 9.0</p>
+          </div>
+
+          {/* Task 1 + Task 2 + Achievement */}
+          <div className="flex flex-1 gap-4 sm:gap-6 flex-wrap">
+            {/* Achievement Badge */}
+            <div className="bg-white border border-[#e5e5e5] rounded-[8px] p-6 flex flex-col items-center justify-center gap-2 min-w-[160px] flex-1">
+              <div className="w-[60px] h-[60px] overflow-hidden">
+                <img alt="" className="w-full h-full object-contain" src={imgIconSetFilled} />
+              </div>
+              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[16px] text-[#4caf50]">تقدم ممتاز</p>
+              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#4B5563] text-center">
+                لقد اقتربت كثيرًا من النتيجة المستهدفة! استمر في العمل الرائع!
               </p>
-              <div className="relative w-28 h-28 sm:w-32 sm:h-32 mx-auto mb-4">
-                <svg className="w-full h-full -rotate-90">
-                  <circle
-                    cx="64"
-                    cy="64"
-                    r="56"
-                    stroke="#E2E8F0"
-                    strokeWidth="12"
-                    fill="none"
-                  />
-                  <circle
-                    cx="64"
-                    cy="64"
-                    r="56"
-                    stroke="#FF8C00"
-                    strokeWidth="12"
-                    fill="none"
-                    strokeDasharray={`${(4.5 / 9.0) * 352} 352`}
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#C30020]">4.5</span>
+            </div>
+
+            {/* Task 2 Score */}
+            <div className="bg-white rounded-[8px] p-6 flex flex-col items-end gap-8 flex-1 relative min-w-[120px]">
+              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">المهمة 2</p>
+              <div className="relative w-[100px] h-[100px] mx-auto">
+                <div className="absolute inset-[-6.5%]">
+                  <img alt="" className="block w-full h-full" src={imgGroup2147223679} />
                 </div>
               </div>
-              <div className="text-[12px] text-[#4A4A4A] font-['IBM_Plex_Sans_Arabic:Regular',sans-serif]">
-                4.5 / 9.0
-              </div>
+              <span className="absolute font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#ff8c00] left-1/2 -translate-x-1/2 top-[125px]">4.5</span>
             </div>
-          </div>
 
-          {/* Task 1 Score */}
-          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-6 shadow-sm">
-            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269] mb-4 text-center">
-              المهمة 1
-            </p>
-            <div className="relative w-20 h-20 sm:w-24 sm:h-24 mx-auto">
-              <svg className="w-full h-full -rotate-90">
-                <circle cx="48" cy="48" r="42" stroke="#E2E8F0" strokeWidth="10" fill="none" />
-                <circle
-                  cx="48" cy="48" r="42"
-                  stroke="#FF8C00" strokeWidth="10" fill="none"
-                  strokeDasharray={`${(6.5 / 9.0) * 264} 264`}
-                  strokeLinecap="round"
-                />
-              </svg>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#FF8C00]">6.5</span>
+            {/* Task 1 Score */}
+            <div className="bg-white rounded-[8px] p-6 flex flex-col items-end gap-8 flex-1 relative min-w-[120px]">
+              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">المهمة 1</p>
+              <div className="relative w-[100px] h-[100px] mx-auto">
+                <div className="absolute inset-[-6.5%]">
+                  <img alt="" className="block w-full h-full" src={imgGroup2147223679} />
+                </div>
               </div>
+              <span className="absolute font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#ff8c00] left-1/2 -translate-x-1/2 top-[125px]">6.5</span>
             </div>
-          </div>
 
-          {/* Task 2 Score */}
-          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-6 shadow-sm">
-            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269] mb-4 text-center">
-              المهمة 2
-            </p>
-            <div className="relative w-20 h-20 sm:w-24 sm:h-24 mx-auto">
-              <svg className="w-full h-full -rotate-90">
-                <circle cx="48" cy="48" r="42" stroke="#E2E8F0" strokeWidth="10" fill="none" />
-                <circle
-                  cx="48" cy="48" r="42"
-                  stroke="#C30020" strokeWidth="10" fill="none"
-                  strokeDasharray={`${(4.5 / 9.0) * 264} 264`}
-                  strokeLinecap="round"
-                />
-              </svg>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#C30020]">4.5</span>
+            {/* Overall Score (big gauge) */}
+            <div className="bg-white border border-[#e5e5e5] rounded-[8px] p-6 flex flex-col items-end gap-2 flex-1 relative min-w-[160px]">
+              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">الدرجة الكلية</p>
+              <div className="w-full flex flex-col items-center gap-4">
+                <div className="relative w-[140px] h-[140px]">
+                  <div className="absolute inset-[-4.64%]">
+                    <img alt="" className="block w-full h-full" src={imgGroup2147223680} />
+                  </div>
+                </div>
+                <div className="flex gap-1 items-center">
+                  <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#4a4a4a]">7.0 / 9.0</p>
+                  <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#4a4a4a]">الدرجة</p>
+                </div>
               </div>
+              <span className="absolute font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#c8102e] left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">4.5</span>
             </div>
-          </div>
-
-          {/* Achievement Badge */}
-          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-6 shadow-sm flex flex-col items-center justify-center">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 mb-3">
-              <svg className="w-full h-full" viewBox="0 0 60 60" fill="none">
-                <path d={svgPaths.p123ef3f0} fill="#4CAF50" />
-              </svg>
-            </div>
-            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] sm:text-[16px] text-[#4CAF50] mb-2">
-              تقدم ممتاز
-            </p>
-            <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] sm:text-[12px] text-[#4B5563] text-center">
-              لقد اقتربت كثيراً من النتيجة المستهدفة!
-            </p>
           </div>
         </div>
 
         {/* Criteria Summary Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-4 sm:mb-8">
-          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-5 shadow-sm">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-[#C3002015] rounded-[10px] flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="10" width="3" height="8" rx="1" fill="#C30020"/><rect x="8.5" y="6" width="3" height="12" rx="1" fill="#C30020"/><rect x="14" y="2" width="3" height="16" rx="1" fill="#C30020"/></svg>
-              </div>
-              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A]">إنجاز المهمة</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-4 sm:mb-8">
+          <div className="bg-white rounded-[16px] border border-[#EEEEEE] px-5 py-4 overflow-hidden">
+            <div className="flex items-center overflow-hidden mb-2">
+              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">انجاز المهمة</p>
             </div>
-            <div className="flex items-baseline gap-1">
-              <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#C30020]">4</p>
-              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[16px] text-[#9CA3AF]">/9</p>
+            <div className="flex items-end gap-1">
+              <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#c30020]">4</p>
+              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[16px] text-[#4a4a4a] mb-1">/9</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-5 shadow-sm">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-[#F59E0B15] rounded-[10px] flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="10" width="3" height="8" rx="1" fill="#F59E0B"/><rect x="8.5" y="6" width="3" height="12" rx="1" fill="#F59E0B"/><rect x="14" y="2" width="3" height="16" rx="1" fill="#F59E0B"/></svg>
-              </div>
-              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A]">التماسك والترابط</p>
+          <div className="bg-white rounded-[16px] border border-[#EEEEEE] px-5 py-4 overflow-hidden">
+            <div className="flex items-center overflow-hidden mb-2">
+              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">التماسك والترابط</p>
             </div>
-            <div className="flex items-baseline gap-1">
-              <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#F59E0B]">4.5</p>
-              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[16px] text-[#9CA3AF]">/9</p>
+            <div className="flex items-end gap-1">
+              <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#f59e0b]">4.5</p>
+              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[16px] text-[#4a4a4a] mb-1">/9</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-5 shadow-sm">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-[#3B82F615] rounded-[10px] flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="10" width="3" height="8" rx="1" fill="#3B82F6"/><rect x="8.5" y="6" width="3" height="12" rx="1" fill="#3B82F6"/><rect x="14" y="2" width="3" height="16" rx="1" fill="#3B82F6"/></svg>
-              </div>
-              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A]">الثروة اللغوية</p>
+          <div className="bg-white rounded-[16px] border border-[#EEEEEE] px-5 py-4 overflow-hidden">
+            <div className="flex items-center overflow-hidden mb-2">
+              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">الثروة اللغوية</p>
             </div>
-            <div className="flex items-baseline gap-1">
-              <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#3B82F6]">5</p>
-              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[16px] text-[#9CA3AF]">/9</p>
+            <div className="flex items-end gap-1">
+              <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#ff8c00]">5</p>
+              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[16px] text-[#4a4a4a] mb-1">/9</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-5 shadow-sm">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-[#EC489915] rounded-[10px] flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="10" width="3" height="8" rx="1" fill="#EC4899"/><rect x="8.5" y="6" width="3" height="12" rx="1" fill="#EC4899"/><rect x="14" y="2" width="3" height="16" rx="1" fill="#EC4899"/></svg>
-              </div>
-              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] text-[#1B2A4A]">التنوع والدقة النحوية</p>
+          <div className="bg-white rounded-[16px] border border-[#EEEEEE] px-5 py-4 overflow-hidden">
+            <div className="flex items-center overflow-hidden mb-2">
+              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">التنوع والدقة النحوية</p>
             </div>
-            <div className="flex items-baseline gap-1">
-              <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#EC4899]">4.5</p>
-              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[16px] text-[#9CA3AF]">/9</p>
+            <div className="flex items-end gap-1">
+              <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#c90f2e]">4.5</p>
+              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[16px] text-[#4a4a4a] mb-1">/9</p>
             </div>
           </div>
         </div>
@@ -1502,11 +1483,11 @@ export function WritingTestResultPage() {
                 </div>
                 {/* Annotation highlight styles based on filter */}
                 <style>{`
-                  .ann-error { background: #FEE2E2; border-bottom: 2px solid #C30020; padding: 0 4px; cursor: pointer; transition: background 0.2s; }
+                  .ann-error { background: #FEE2E2; border-bottom: 2px solid #C30020; padding: 0 3px; cursor: pointer; display: inline-flex; flex-direction: column; }
                   .ann-error:hover { background: #FCA5A5; }
-                  .ann-warning { background: #FEF3C7; border-bottom: 2px solid #FF8C00; padding: 0 4px; cursor: pointer; transition: background 0.2s; }
+                  .ann-warning { background: #FEF3C7; border-bottom: 2px solid #FF8C00; padding: 0 3px; cursor: pointer; display: inline-flex; flex-direction: column; }
                   .ann-warning:hover { background: #FDE68A; }
-                  .ann-good { background: #D1FAE5; border-bottom: 2px solid #4CAF50; padding: 0 4px; cursor: pointer; transition: background 0.2s; }
+                  .ann-good { background: #D1FAE5; border-bottom: 2px solid #4CAF50; padding: 0 3px; cursor: pointer; display: inline-flex; flex-direction: column; }
                   .ann-good:hover { background: #BBF7D0; }
                   .ann-hidden { background: transparent !important; border-bottom: none !important; cursor: default !important; padding: 0 !important; }
                   .ann-dimmed { opacity: 0.4; }
@@ -1718,30 +1699,32 @@ export function WritingTestResultPage() {
                       </div>
                       <div className="flex gap-1.5 flex-wrap">
                         {([
-                          { key: 'all' as const, label: 'الكل', count: task1AllErrors.length, active: 'bg-[#1B2A4A] text-white border-[#1B2A4A]', dot: '' },
-                          { key: 'grammar' as const, label: 'خطأ نحوي', count: task1GrammarCount, active: 'bg-[#C30020] text-white border-[#C30020]', dot: 'bg-[#FEE2E2] border-[#C30020]' },
-                          { key: 'spelling' as const, label: 'خطأ إملائي', count: task1SpellingCount, active: 'bg-[#3B82F6] text-white border-[#3B82F6]', dot: 'bg-[#DBEAFE] border-[#3B82F6]' },
-                          { key: 'vocabulary' as const, label: 'استخدام المفردات', count: task1VocabCount, active: 'bg-[#FF8C00] text-white border-[#FF8C00]', dot: 'bg-[#FEF3C7] border-[#FF8C00]' },
+                          { key: 'all' as const, label: 'الكل', count: task1AllErrors.length, active: 'bg-[#1b2a4a] text-white border-[#1b2a4a]', dotImg: null },
+                          { key: 'grammar' as const, label: 'خطأ نحوي', count: task1GrammarCount, active: 'bg-[#C30020] text-white border-[#C30020]', dotImg: imgEllipse2 },
+                          { key: 'spelling' as const, label: 'خطأ إملائي', count: task1SpellingCount, active: 'bg-[#3B82F6] text-white border-[#3B82F6]', dotImg: imgEllipse3 },
+                          { key: 'vocabulary' as const, label: 'استخدام المفردات', count: task1VocabCount, active: 'bg-[#FF8C00] text-white border-[#FF8C00]', dotImg: imgEllipse4 },
                         ] as const).filter(f => f.key === 'all' || f.count > 0).map((f) => (
                           <button
                             key={f.key}
                             onClick={() => setTask1ErrorFilter(f.key)}
                             className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] transition-all ${
-                              task1ErrorFilter === f.key ? f.active : 'bg-white text-[#6B7280] border-[#D1D5DB] hover:bg-[#F3F4F6]'
+                              task1ErrorFilter === f.key ? f.active : 'bg-white text-[#4a4a4a] border-[#d1d5da] hover:bg-[#F3F4F6]'
                             }`}
                           >
-                            {f.dot && <div className={`w-2 h-2 rounded-full border ${task1ErrorFilter === f.key ? 'bg-white/40 border-white/60' : f.dot}`}></div>}
+                            {f.dotImg && <img alt="" src={f.dotImg} className="w-2 h-2 rounded-full" />}
                             {f.label}
-                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${task1ErrorFilter === f.key ? 'bg-white/20' : 'bg-[#F3F4F6]'}`}>{f.count}</span>
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-[10px] bg-[#f3f4f6] text-[#6b7280]">{f.count}</span>
                           </button>
                         ))}
                       </div>
                     </div>
                     <div className="space-y-3">
                       {task1Errors.map((error, idx) => (
-                        <div key={idx} className="bg-[#F9FAFB] rounded-[12px] p-5 border border-[#EEEEEE]">
-                          <div className="flex items-center gap-2 mb-3">
-                            <span className="w-6 h-6 rounded-full bg-[#1B2A4A] text-white text-[11px] font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] flex items-center justify-center flex-shrink-0">{idx + 1}</span>
+                        <div key={idx} className="bg-[#F9FAFB] rounded-[12px] px-5 py-4 border border-[#EEEEEE] flex flex-col gap-3">
+                          <div className="flex items-center gap-2">
+                            <div className="bg-[#1b2a4a] w-6 h-6 rounded-[12px] flex items-center justify-center flex-shrink-0">
+                              <span className="text-white text-[11px] font-bold">{idx + 1}</span>
+                            </div>
                             <div className="px-3 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#FEE2E2] text-[#991B1B]">
                               {error.type === 'grammar' ? 'خطأ نحوي' :
                                error.type === 'vocabulary' ? 'استخدام المفردات' :
@@ -1750,27 +1733,29 @@ export function WritingTestResultPage() {
                                error.type === 'article' ? 'أدوات التعريف' : error.type}
                             </div>
                           </div>
-                          <div className="space-y-3">
-                            <div className="flex items-start gap-3">
-                              <XCircle className="w-5 h-5 text-[#C30020] mt-1 flex-shrink-0" />
-                              <div className="flex-1">
-                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">جملتك:</p>
-                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] bg-[#FEE2E2] px-3 py-2 rounded-[8px]">{error.original}</p>
+                          <div className="flex items-start gap-3">
+                            <img alt="" src={imgFrame} className="w-6 h-6 shrink-0" />
+                            <div className="flex-1">
+                              <p className="font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[13px] text-[#4a4a4a] mb-1">جملتك:</p>
+                              <div className="bg-[#FEE2E2] px-3 py-2 rounded-[8px]">
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">{error.original}</p>
                               </div>
                             </div>
-                            <div className="flex items-start gap-3">
-                              <CheckCircle2 className="w-5 h-5 text-[#4CAF50] mt-1 flex-shrink-0" />
-                              <div className="flex-1">
-                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">التصحيح:</p>
-                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] bg-[#D1FAE5] px-3 py-2 rounded-[8px]">{error.corrected}</p>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <img alt="" src={imgFrame1} className="w-6 h-6 shrink-0" />
+                            <div className="flex-1">
+                              <p className="font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[13px] text-[#4a4a4a] mb-1">التصحيح:</p>
+                              <div className="bg-[#D1FAE5] px-3 py-2 rounded-[8px]">
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">{error.corrected}</p>
                               </div>
                             </div>
-                            <div className="flex items-start gap-3">
-                              <BookOpen className="w-5 h-5 text-[#FF8C00] mt-1 flex-shrink-0" />
-                              <div className="flex-1">
-                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">الشرح:</p>
-                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">{error.explanation}</p>
-                              </div>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <img alt="" src={imgFrame2} className="w-6 h-6 shrink-0" />
+                            <div className="flex-1">
+                              <p className="font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[13px] text-[#4a4a4a] mb-1">الشرح:</p>
+                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">{error.explanation}</p>
                             </div>
                           </div>
                         </div>
@@ -2314,30 +2299,32 @@ export function WritingTestResultPage() {
                       </div>
                       <div className="flex gap-1.5 flex-wrap">
                         {([
-                          { key: 'all' as const, label: 'الكل', count: task2AllErrors.length, active: 'bg-[#1B2A4A] text-white border-[#1B2A4A]', dot: '' },
-                          { key: 'grammar' as const, label: 'خطأ نحوي', count: task2GrammarCount, active: 'bg-[#C30020] text-white border-[#C30020]', dot: 'bg-[#FEE2E2] border-[#C30020]' },
-                          { key: 'spelling' as const, label: 'خطأ إملائي', count: task2SpellingCount, active: 'bg-[#3B82F6] text-white border-[#3B82F6]', dot: 'bg-[#DBEAFE] border-[#3B82F6]' },
-                          { key: 'vocabulary' as const, label: 'استخدام المفردات', count: task2VocabCount, active: 'bg-[#FF8C00] text-white border-[#FF8C00]', dot: 'bg-[#FEF3C7] border-[#FF8C00]' },
+                          { key: 'all' as const, label: 'الكل', count: task2AllErrors.length, active: 'bg-[#1b2a4a] text-white border-[#1b2a4a]', dotImg: null },
+                          { key: 'grammar' as const, label: 'خطأ نحوي', count: task2GrammarCount, active: 'bg-[#C30020] text-white border-[#C30020]', dotImg: imgEllipse2 },
+                          { key: 'spelling' as const, label: 'خطأ إملائي', count: task2SpellingCount, active: 'bg-[#3B82F6] text-white border-[#3B82F6]', dotImg: imgEllipse3 },
+                          { key: 'vocabulary' as const, label: 'استخدام المفردات', count: task2VocabCount, active: 'bg-[#FF8C00] text-white border-[#FF8C00]', dotImg: imgEllipse4 },
                         ] as const).filter(f => f.key === 'all' || f.count > 0).map((f) => (
                           <button
                             key={f.key}
                             onClick={() => setTask2ErrorFilter(f.key)}
                             className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] transition-all ${
-                              task2ErrorFilter === f.key ? f.active : 'bg-white text-[#6B7280] border-[#D1D5DB] hover:bg-[#F3F4F6]'
+                              task2ErrorFilter === f.key ? f.active : 'bg-white text-[#4a4a4a] border-[#d1d5da] hover:bg-[#F3F4F6]'
                             }`}
                           >
-                            {f.dot && <div className={`w-2 h-2 rounded-full border ${task2ErrorFilter === f.key ? 'bg-white/40 border-white/60' : f.dot}`}></div>}
+                            {f.dotImg && <img alt="" src={f.dotImg} className="w-2 h-2 rounded-full" />}
                             {f.label}
-                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${task2ErrorFilter === f.key ? 'bg-white/20' : 'bg-[#F3F4F6]'}`}>{f.count}</span>
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-[10px] bg-[#f3f4f6] text-[#6b7280]">{f.count}</span>
                           </button>
                         ))}
                       </div>
                     </div>
                     <div className="space-y-3">
                       {task2Errors.map((error, idx) => (
-                        <div key={idx} className="bg-[#F9FAFB] rounded-[12px] p-5 border border-[#EEEEEE]">
-                          <div className="flex items-center gap-2 mb-3">
-                            <span className="w-6 h-6 rounded-full bg-[#1B2A4A] text-white text-[11px] font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] flex items-center justify-center flex-shrink-0">{idx + 1}</span>
+                        <div key={idx} className="bg-[#F9FAFB] rounded-[12px] px-5 py-4 border border-[#EEEEEE] flex flex-col gap-3">
+                          <div className="flex items-center gap-2">
+                            <div className="bg-[#1b2a4a] w-6 h-6 rounded-[12px] flex items-center justify-center flex-shrink-0">
+                              <span className="text-white text-[11px] font-bold">{idx + 1}</span>
+                            </div>
                             <div className="px-3 py-1 rounded-full text-[11px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] bg-[#FEE2E2] text-[#991B1B]">
                               {error.type === 'grammar' ? 'خطأ نحوي' :
                                error.type === 'vocabulary' ? 'استخدام المفردات' :
@@ -2346,27 +2333,29 @@ export function WritingTestResultPage() {
                                error.type === 'article' ? 'أدوات التعريف' : error.type}
                             </div>
                           </div>
-                          <div className="space-y-3">
-                            <div className="flex items-start gap-3">
-                              <XCircle className="w-5 h-5 text-[#C30020] mt-1 flex-shrink-0" />
-                              <div className="flex-1">
-                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">جملتك:</p>
-                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] bg-[#FEE2E2] px-3 py-2 rounded-[8px]">{error.original}</p>
+                          <div className="flex items-start gap-3">
+                            <img alt="" src={imgFrame} className="w-6 h-6 shrink-0" />
+                            <div className="flex-1">
+                              <p className="font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[13px] text-[#4a4a4a] mb-1">جملتك:</p>
+                              <div className="bg-[#FEE2E2] px-3 py-2 rounded-[8px]">
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">{error.original}</p>
                               </div>
                             </div>
-                            <div className="flex items-start gap-3">
-                              <CheckCircle2 className="w-5 h-5 text-[#4CAF50] mt-1 flex-shrink-0" />
-                              <div className="flex-1">
-                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">التصحيح:</p>
-                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151] bg-[#D1FAE5] px-3 py-2 rounded-[8px]">{error.corrected}</p>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <img alt="" src={imgFrame1} className="w-6 h-6 shrink-0" />
+                            <div className="flex-1">
+                              <p className="font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[13px] text-[#4a4a4a] mb-1">التصحيح:</p>
+                              <div className="bg-[#D1FAE5] px-3 py-2 rounded-[8px]">
+                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">{error.corrected}</p>
                               </div>
                             </div>
-                            <div className="flex items-start gap-3">
-                              <BookOpen className="w-5 h-5 text-[#FF8C00] mt-1 flex-shrink-0" />
-                              <div className="flex-1">
-                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-1">الشرح:</p>
-                                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">{error.explanation}</p>
-                              </div>
+                          </div>
+                          <div className="flex items-start gap-3">
+                            <img alt="" src={imgFrame2} className="w-6 h-6 shrink-0" />
+                            <div className="flex-1">
+                              <p className="font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[13px] text-[#4a4a4a] mb-1">الشرح:</p>
+                              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#374151]">{error.explanation}</p>
                             </div>
                           </div>
                         </div>
