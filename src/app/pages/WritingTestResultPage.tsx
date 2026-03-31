@@ -5,20 +5,20 @@ import * as Tabs from '@radix-ui/react-tabs';
 import svgPaths from '../../imports/svg-kef88hpn4e';
 
 // Figma asset URLs
-const imgLogo = "https://www.figma.com/api/mcp/asset/17490dbb-16f8-451d-870d-a7cdf494757b";
-const imgArrowLeftOutline = "https://www.figma.com/api/mcp/asset/054f9482-b193-4952-bc98-ccd94ad6c582";
-const imgCaretDownSolid = "https://www.figma.com/api/mcp/asset/b2546f7e-c47d-43eb-a824-4fdca4af1a4a";
-const imgIconSetFilled = "https://www.figma.com/api/mcp/asset/b6a8a6a6-dc72-4748-ac19-a031df9ec221";
-const imgGroup2147223679 = "https://www.figma.com/api/mcp/asset/c83026df-7b4d-4ed8-b1fa-75c1532810c5";
-const imgGroup2147223680 = "https://www.figma.com/api/mcp/asset/9f210f0e-b358-4664-8d54-3998cd8b867b";
-const imgEllipse = "https://www.figma.com/api/mcp/asset/6a1e62e9-f12e-46fd-a416-25af7a693dc2";
-const imgEllipse1 = "https://www.figma.com/api/mcp/asset/c14d169a-4429-48c9-b192-8f66d82a8610";
-const imgEllipse2 = "https://www.figma.com/api/mcp/asset/183f5029-62a2-46f6-a69b-6fd3c7398ead";
-const imgEllipse3 = "https://www.figma.com/api/mcp/asset/185c6b4d-62cd-4e77-afe3-a1608f64a9db";
-const imgEllipse4 = "https://www.figma.com/api/mcp/asset/7f310801-2d04-4b96-b308-c5e43073b2e2";
-const imgFrame = "https://www.figma.com/api/mcp/asset/5a2dce07-5ab7-49cf-94a9-31f84f76a7eb";
-const imgFrame1 = "https://www.figma.com/api/mcp/asset/d3ffcc60-3522-4dde-8c79-f4fa888251de";
-const imgFrame2 = "https://www.figma.com/api/mcp/asset/fab2c226-bcad-4c8a-8d8e-9bbfc85aed88";
+const imgLogo = "https://www.figma.com/api/mcp/asset/3c3922ed-23e0-4b00-91bd-13a9319e72c8";
+const imgArrowLeftOutline = "https://www.figma.com/api/mcp/asset/546fecda-a787-4a46-b443-e23be9134dbe";
+const imgCaretDownSolid = "https://www.figma.com/api/mcp/asset/84187bd0-1dc9-43ab-9bd5-48dae4503f40";
+const imgIconSetFilled = "https://www.figma.com/api/mcp/asset/35b90242-1562-4430-bb80-fc8599169fc4";
+const imgGroup2147223679 = "https://www.figma.com/api/mcp/asset/91efb245-fde4-4cdb-807b-698b2a7afcfc";
+const imgGroup2147223680 = "https://www.figma.com/api/mcp/asset/5ee5fb82-9404-4bce-89f7-9cb153b8aebf";
+const imgEllipse = "https://www.figma.com/api/mcp/asset/a1bbbe08-1b54-4748-bad4-b45be59337e3";
+const imgEllipse1 = "https://www.figma.com/api/mcp/asset/900288a6-af52-4726-b9b1-a66cfe6ba07c";
+const imgEllipse2 = "https://www.figma.com/api/mcp/asset/1979b781-f164-4438-bab8-9d2dc8b28296";
+const imgEllipse3 = "https://www.figma.com/api/mcp/asset/76880041-a4ad-44bf-8227-339c744dc363";
+const imgEllipse4 = "https://www.figma.com/api/mcp/asset/79f53ac4-0550-427f-a33b-8e0c0ec6cf24";
+const imgFrame = "https://www.figma.com/api/mcp/asset/f35f9870-0995-412e-8d0d-449881c23078";
+const imgFrame1 = "https://www.figma.com/api/mcp/asset/25072425-0b59-48dd-872a-fff6c8c6e2dc";
+const imgFrame2 = "https://www.figma.com/api/mcp/asset/8851b6bc-d321-41e3-9474-1386c8569b5d";
 
 // بيانات تجريبية للرسم البياني - كل محاولة مع بيانات المعايير
 const attemptData = [
@@ -969,27 +969,39 @@ export function WritingTestResultPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
           {/* Top Navigation Bar */}
           <div className="flex items-center justify-between mb-6">
-            {/* Share Link + Copy */}
-            <div className="flex items-center gap-0 bg-[#f2f2f2] rounded-[7px] overflow-hidden">
-              <div className="bg-[#012269] px-4 py-2 rounded-[7px]">
-                <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] text-white">نسخ</span>
-              </div>
-              <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#6B7280] px-4 py-2">
-                app.goielts.ai/score/1063
-              </span>
-              <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#0a0a0a] px-4 py-2 hidden md:block">
-                شارك درجتك
-              </span>
-            </div>
-
-            {/* Logo */}
+            {/* Logo - first in DOM = rightmost in RTL */}
             <div className="h-[42px] w-[118px] overflow-hidden relative shrink-0">
               <img alt="GoIELTS" className="h-full w-full object-contain" src={imgLogo} />
+            </div>
+
+            {/* Share Link + Copy - second in DOM = leftmost in RTL */}
+            <div className="flex items-center gap-4">
+              <div className="relative bg-[#f2f2f2] h-[36px] rounded-[7px] w-[258px]">
+                <span className="absolute right-[19px] top-1/2 -translate-y-1/2 font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#6b7280] whitespace-nowrap">
+                  app.goielts.ai/score/1063
+                </span>
+                <div className="absolute left-0 top-0 h-[36px] w-[57px] bg-[#012269] rounded-[7px] flex items-center justify-center shadow-sm">
+                  <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] text-white">نسخ</span>
+                </div>
+              </div>
+              <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#0a0a0a] whitespace-nowrap hidden md:block">
+                شارك درجتك
+              </span>
             </div>
           </div>
 
           {/* Action Buttons */}
           <div className="flex items-center justify-between mb-6">
+            {/* Success Message — first in DOM = rightmost in RTL */}
+            <div className="flex items-center gap-3">
+              <h1 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] sm:text-[24px] lg:text-[32px] text-[#012269]">
+                مبروك! خلّصت الاختبار بنجاح
+              </h1>
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden">
+                <svg viewBox="0 0 36 36" fill="none" className="w-full h-full"><circle cx="18" cy="18" r="18" fill="#4CAF50"/><path d="M10 18l6 6 10-12" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
+            </div>
+            {/* Nav Buttons — last in DOM = leftmost in RTL */}
             <div className="flex items-center gap-3">
               <button className="flex items-center gap-1 bg-[#012269] text-white px-3 py-2 rounded-[6px] hover:bg-[#011a50] transition-colors h-[40px]">
                 <img alt="" className="w-6 h-6" src={imgArrowLeftOutline} />
@@ -1005,15 +1017,6 @@ export function WritingTestResultPage() {
                 <img alt="" className="w-6 h-6" src={imgCaretDownSolid} />
                 <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#374151]">الكتابة</span>
               </button>
-            </div>
-            {/* Success Message */}
-            <div className="flex items-center gap-3">
-              <h1 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] sm:text-[24px] lg:text-[32px] text-[#012269]">
-                مبروك! خلّصت الاختبار بنجاح
-              </h1>
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden">
-                <svg viewBox="0 0 36 36" fill="none" className="w-full h-full"><circle cx="18" cy="18" r="18" fill="#4CAF50"/><path d="M10 18l6 6 10-12" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </div>
             </div>
           </div>
 
@@ -1059,9 +1062,12 @@ export function WritingTestResultPage() {
           {/* Progress to Goal */}
           <div className="bg-white rounded-[8px] p-4 shadow-[0px_2px_0px_0px_#c90f2e]">
             <div className="flex items-center gap-4">
-              <button className="bg-[#c90f2e] text-white px-3 py-2.5 rounded-[6px] font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[14px] hover:bg-[#a80d27] transition-colors whitespace-nowrap shrink-0">
-                اشترك الآن
-              </button>
+              {/* Icon — first in DOM = rightmost in RTL */}
+              <div className="w-10 h-10 shrink-0">
+                <svg className="w-full h-full" viewBox="0 0 40 40" fill="none">
+                  <path d={svgPaths.p123ef3f0} fill="#4CAF50" />
+                </svg>
+              </div>
               <div className="flex-1 min-w-0 text-right">
                 <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#023196] mb-1">
                   أداء رهيب! 🔥 باقي 4.0 بس وتوصل لهدفك!
@@ -1070,11 +1076,10 @@ export function WritingTestResultPage() {
                   أنت قريب بـ 4.0 درجة فقط من الدرجة 8! جرب باقة التدريب السريع عشان ترفع درجتك
                 </p>
               </div>
-              <div className="w-10 h-10 shrink-0">
-                <svg className="w-full h-full" viewBox="0 0 40 40" fill="none">
-                  <path d={svgPaths.p123ef3f0} fill="#4CAF50" />
-                </svg>
-              </div>
+              {/* Button — last in DOM = leftmost in RTL */}
+              <button className="bg-[#c90f2e] text-white px-3 py-2.5 rounded-[6px] font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[14px] hover:bg-[#a80d27] transition-colors whitespace-nowrap shrink-0">
+                اشترك الآن
+              </button>
             </div>
             {/* Progress Bar */}
             <div className="mt-4">
@@ -1095,58 +1100,9 @@ export function WritingTestResultPage() {
         
         {/* Score Hero Section */}
         <div className="flex gap-4 sm:gap-6 mb-4 sm:mb-8 flex-wrap">
-          {/* Overall Score */}
-          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-5 shadow-sm flex flex-col items-center gap-3 min-w-[140px]">
-            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">
-              الدرجة الكلية
-            </p>
-            <div className="relative w-[120px] h-[120px]">
-              <img alt="" className="absolute inset-0 w-full h-full" src={imgEllipse} />
-              <div className="absolute inset-0" style={{ left: '50%', right: 0, top: 0, bottom: 0 }}>
-                <img alt="" className="block w-full h-full" src={imgEllipse1} />
-              </div>
-              <span className="absolute font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#c30020]"
-                style={{ left: '42px', top: '44px' }}>4.5</span>
-            </div>
-            <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#4A4A4A]">4.5 / 9.0</p>
-          </div>
-
-          {/* Task 1 + Task 2 + Achievement */}
+          {/* Task 1 + Task 2 + Achievement + Overall big — first in outer DOM = rightmost in RTL */}
           <div className="flex flex-1 gap-4 sm:gap-6 flex-wrap">
-            {/* Achievement Badge */}
-            <div className="bg-white border border-[#e5e5e5] rounded-[8px] p-6 flex flex-col items-center justify-center gap-2 min-w-[160px] flex-1">
-              <div className="w-[60px] h-[60px] overflow-hidden">
-                <img alt="" className="w-full h-full object-contain" src={imgIconSetFilled} />
-              </div>
-              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[16px] text-[#4caf50]">تقدم ممتاز</p>
-              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#4B5563] text-center">
-                لقد اقتربت كثيرًا من النتيجة المستهدفة! استمر في العمل الرائع!
-              </p>
-            </div>
-
-            {/* Task 2 Score */}
-            <div className="bg-white rounded-[8px] p-6 flex flex-col items-end gap-8 flex-1 relative min-w-[120px]">
-              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">المهمة 2</p>
-              <div className="relative w-[100px] h-[100px] mx-auto">
-                <div className="absolute inset-[-6.5%]">
-                  <img alt="" className="block w-full h-full" src={imgGroup2147223679} />
-                </div>
-              </div>
-              <span className="absolute font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#ff8c00] left-1/2 -translate-x-1/2 top-[125px]">4.5</span>
-            </div>
-
-            {/* Task 1 Score */}
-            <div className="bg-white rounded-[8px] p-6 flex flex-col items-end gap-8 flex-1 relative min-w-[120px]">
-              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">المهمة 1</p>
-              <div className="relative w-[100px] h-[100px] mx-auto">
-                <div className="absolute inset-[-6.5%]">
-                  <img alt="" className="block w-full h-full" src={imgGroup2147223679} />
-                </div>
-              </div>
-              <span className="absolute font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#ff8c00] left-1/2 -translate-x-1/2 top-[125px]">6.5</span>
-            </div>
-
-            {/* Overall Score (big gauge) */}
+            {/* Overall Score big gauge — first in inner DOM = rightmost in RTL */}
             <div className="bg-white border border-[#e5e5e5] rounded-[8px] p-6 flex flex-col items-end gap-2 flex-1 relative min-w-[160px]">
               <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">الدرجة الكلية</p>
               <div className="w-full flex flex-col items-center gap-4">
@@ -1162,6 +1118,55 @@ export function WritingTestResultPage() {
               </div>
               <span className="absolute font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#c8102e] left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">4.5</span>
             </div>
+
+            {/* Task 1 Score */}
+            <div className="bg-white rounded-[8px] p-6 flex flex-col items-end gap-8 flex-1 relative min-w-[120px]">
+              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">المهمة 1</p>
+              <div className="relative w-[100px] h-[100px] mx-auto">
+                <div className="absolute inset-[-6.5%]">
+                  <img alt="" className="block w-full h-full" src={imgGroup2147223679} />
+                </div>
+              </div>
+              <span className="absolute font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#ff8c00] left-1/2 -translate-x-1/2 top-[125px]">6.5</span>
+            </div>
+
+            {/* Task 2 Score */}
+            <div className="bg-white rounded-[8px] p-6 flex flex-col items-end gap-8 flex-1 relative min-w-[120px]">
+              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">المهمة 2</p>
+              <div className="relative w-[100px] h-[100px] mx-auto">
+                <div className="absolute inset-[-6.5%]">
+                  <img alt="" className="block w-full h-full" src={imgGroup2147223679} />
+                </div>
+              </div>
+              <span className="absolute font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#ff8c00] left-1/2 -translate-x-1/2 top-[125px]">4.5</span>
+            </div>
+
+            {/* Achievement Badge — last in inner DOM = leftmost in RTL */}
+            <div className="bg-white border border-[#e5e5e5] rounded-[8px] p-6 flex flex-col items-center justify-center gap-2 min-w-[160px] flex-1">
+              <div className="w-[60px] h-[60px] overflow-hidden">
+                <img alt="" className="w-full h-full object-contain" src={imgIconSetFilled} />
+              </div>
+              <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[16px] text-[#4caf50]">تقدم ممتاز</p>
+              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#4B5563] text-center">
+                لقد اقتربت كثيرًا من النتيجة المستهدفة! استمر في العمل الرائع!
+              </p>
+            </div>
+          </div>
+
+          {/* Small Overall Score — last in outer DOM = leftmost in RTL */}
+          <div className="bg-white rounded-[16px] border border-[#EEEEEE] p-5 shadow-sm flex flex-col items-center gap-3 min-w-[140px]">
+            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">
+              الدرجة الكلية
+            </p>
+            <div className="relative w-[120px] h-[120px]">
+              <img alt="" className="absolute inset-0 w-full h-full" src={imgEllipse} />
+              <div className="absolute inset-0" style={{ left: '50%', right: 0, top: 0, bottom: 0 }}>
+                <img alt="" className="block w-full h-full" src={imgEllipse1} />
+              </div>
+              <span className="absolute font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[28px] text-[#c30020]"
+                style={{ left: '42px', top: '44px' }}>4.5</span>
+            </div>
+            <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#4A4A4A]">4.5 / 9.0</p>
           </div>
         </div>
 
