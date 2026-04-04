@@ -1297,6 +1297,104 @@ export function WritingTestResultPage() {
               </div>
             </div>
 
+            {/* Time Management Section */}
+            <div className="mt-6 sm:mt-8 bg-white rounded-[20px] border border-[#EEEEEE] p-5 sm:p-6">
+              <div className="flex items-center gap-2 mb-5">
+                <span className="text-[22px]">⏱️</span>
+                <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] sm:text-[18px] text-[#1B2A4A]">
+                  إدارة الوقت في الاختبار
+                </h3>
+              </div>
+
+              {/* Time Bar */}
+              <div className="mb-6">
+                <div className="flex items-center gap-1 mb-2">
+                  <div className="flex-1 h-[36px] bg-[#dbeafe] rounded-r-[8px] flex items-center justify-center relative overflow-hidden" style={{ flex: '20' }}>
+                    <div className="absolute inset-0 bg-[#3b82f6] opacity-20" />
+                    <span className="relative font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[12px] text-[#1d4ed8]">المهمة 1 · 20 دقيقة</span>
+                  </div>
+                  <div className="flex-1 h-[36px] bg-[#fef3c7] flex items-center justify-center relative overflow-hidden" style={{ flex: '35' }}>
+                    <div className="absolute inset-0 bg-[#f59e0b] opacity-20" />
+                    <span className="relative font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[12px] text-[#92400e]">المهمة 2 · 35 دقيقة</span>
+                  </div>
+                  <div className="h-[36px] bg-[#f3f4f6] rounded-l-[8px] flex items-center justify-center relative overflow-hidden" style={{ flex: '5' }}>
+                    <div className="absolute inset-0 bg-[#9ca3af] opacity-20" />
+                    <span className="relative font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[10px] text-[#6b7280]">5د</span>
+                  </div>
+                </div>
+                <div className="flex justify-between text-[11px] font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[#9ca3af]">
+                  <span>الوقت المستهدف: 20 + 40 دقيقة</span>
+                  <span>المجموع: 60 دقيقة</span>
+                </div>
+              </div>
+
+              {/* What went well / What to improve */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+                {/* What went well */}
+                <div className="bg-[#f0fdf4] border border-[#bbf7d0] rounded-[12px] p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="w-6 h-6 rounded-full bg-[#22c55e] flex items-center justify-center text-white text-[12px]">✓</span>
+                    <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] text-[#15803d]">ما اشتغل معاك</p>
+                  </div>
+                  <ul className="space-y-2">
+                    {[
+                      'أكملت المهمتين قبل انتهاء الوقت',
+                      'وصلت للحد الأدنى من الكلمات في المهمة 1',
+                      'لم تترك أي جزء فارغاً',
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className="text-[#22c55e] text-[13px] mt-0.5">•</span>
+                        <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#166534]">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* What to improve */}
+                <div className="bg-[#fff7ed] border border-[#fed7aa] rounded-[12px] p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="w-6 h-6 rounded-full bg-[#f97316] flex items-center justify-center text-white text-[12px]">!</span>
+                    <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] text-[#c2410c]">ما تحتاج تحسنه</p>
+                  </div>
+                  <ul className="space-y-2">
+                    {[
+                      'وقت المراجعة كان قصير جداً (أقل من 5 دقائق)',
+                      'المهمة 2 احتاجت وقت أكثر من المخصص لها',
+                      'لم تُخصص وقت للتخطيط قبل الكتابة',
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className="text-[#f97316] text-[13px] mt-0.5">•</span>
+                        <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#9a3412]">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Recommendations */}
+              <div className="bg-[#eff6ff] border border-[#bfdbfe] rounded-[12px] p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-[18px]">💡</span>
+                  <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] text-[#1d4ed8]">توصيات للمرة القادمة</p>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {[
+                    { time: '20 دقيقة', label: 'المهمة 1', tip: 'اكتب 150–180 كلمة واترك وقتاً للمراجعة', color: '#3b82f6' },
+                    { time: '40 دقيقة', label: 'المهمة 2', tip: 'خصص 5 دقائق للتخطيط و30 للكتابة و5 للمراجعة', color: '#8b5cf6' },
+                    { time: '5 دقائق', label: 'المراجعة', tip: 'راجع الأخطاء الإملائية والنحوية في كل مهمة', color: '#059669' },
+                  ].map((rec, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <div className="shrink-0 w-[48px] h-[48px] rounded-[10px] flex flex-col items-center justify-center" style={{ background: `${rec.color}18`, border: `1px solid ${rec.color}40` }}>
+                        <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[11px] leading-none" style={{ color: rec.color }}>{rec.time}</span>
+                        <span className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[9px] mt-0.5 text-[#6b7280]">{rec.label}</span>
+                      </div>
+                      <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#374151] leading-relaxed pt-0.5">{rec.tip}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
             {/* Improvement Plan */}
             <div className="mt-6 sm:mt-8">
               <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] sm:text-[18px] text-[#1B2A4A] mb-4">
