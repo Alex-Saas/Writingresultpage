@@ -969,22 +969,22 @@ export function WritingTestResultPage() {
       <div className="bg-white border-b border-[#EEEEEE]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
           {/* Top Navigation Bar */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
             {/* Logo - first in DOM = rightmost in RTL */}
-            <div className="h-[42px] w-[118px] relative shrink-0 mix-blend-darken">
+            <div className="h-[32px] w-[90px] sm:h-[42px] sm:w-[118px] relative shrink-0 mix-blend-darken">
               <div className="absolute inset-0 overflow-hidden">
                 <img alt="GoIELTS" className="absolute left-0 w-full max-w-none" style={{ height: '268.21%', top: '-35.49%' }} src={imgLogo} />
               </div>
             </div>
 
             {/* Share Link + Copy - second in DOM = leftmost in RTL */}
-            <div className="flex items-center gap-4">
-              <div className="relative bg-[#f2f2f2] h-[36px] rounded-[7px] w-[258px]">
-                <span className="absolute right-[19px] top-1/2 -translate-y-1/2 font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[14px] text-[#6b7280] whitespace-nowrap">
+            <div className="flex items-center gap-2 sm:gap-4">
+              <div className="relative bg-[#f2f2f2] h-[36px] rounded-[7px] w-[160px] sm:w-[258px]">
+                <span className="absolute right-[12px] sm:right-[19px] top-1/2 -translate-y-1/2 font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] sm:text-[14px] text-[#6b7280] whitespace-nowrap">
                   app.goielts.ai/score/1063
                 </span>
-                <div className="absolute left-0 top-0 h-[36px] w-[57px] bg-[#012269] rounded-[7px] flex items-center justify-center shadow-sm">
-                  <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] text-white">نسخ</span>
+                <div className="absolute left-0 top-0 h-[36px] w-[50px] sm:w-[57px] bg-[#012269] rounded-[7px] flex items-center justify-center shadow-sm">
+                  <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[13px] sm:text-[14px] text-white">نسخ</span>
                 </div>
               </div>
               <span className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#0a0a0a] whitespace-nowrap hidden md:block">
@@ -994,39 +994,39 @@ export function WritingTestResultPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between gap-3 mb-4 sm:mb-6 flex-wrap">
             {/* Success Message — first in DOM = rightmost in RTL */}
-            <div className="flex items-center gap-3">
-              <h1 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] sm:text-[24px] lg:text-[32px] text-[#012269]">
+            <div className="flex items-center gap-2">
+              <h1 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] sm:text-[20px] lg:text-[28px] text-[#012269] leading-tight">
                 مبروك! خلّصت الاختبار بنجاح
               </h1>
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden">
+              <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full overflow-hidden shrink-0">
                 <svg viewBox="0 0 36 36" fill="none" className="w-full h-full"><circle cx="18" cy="18" r="18" fill="#4CAF50"/><path d="M10 18l6 6 10-12" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </div>
             </div>
             {/* Nav Buttons — last in DOM = leftmost in RTL */}
-            <div className="flex items-center gap-3">
-              <button className="flex items-center gap-1 bg-[#012269] text-white px-3 py-2 rounded-[6px] hover:bg-[#011a50] transition-colors h-[40px]">
-                <img alt="" className="w-6 h-6" src={imgArrowLeftOutline} />
-                <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px]">رجوع</span>
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              <button className="flex items-center gap-1 bg-[#012269] text-white px-2 sm:px-3 py-2 rounded-[6px] hover:bg-[#011a50] transition-colors h-[36px] sm:h-[40px]">
+                <img alt="" className="w-4 h-4 sm:w-6 sm:h-6" src={imgArrowLeftOutline} />
+                <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] sm:text-[14px]">رجوع</span>
               </button>
-              <button className="bg-white border border-[#d1d5db] px-4 py-2 rounded-[6px] hover:bg-gray-50 transition-colors opacity-70 h-[40px]">
-                <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[16px] text-[#374151]">إعادة الاختبار</span>
+              <button className="hidden sm:block bg-white border border-[#d1d5db] px-4 py-2 rounded-[6px] hover:bg-gray-50 transition-colors opacity-70 h-[40px] whitespace-nowrap">
+                <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] sm:text-[16px] text-[#374151]">إعادة الاختبار</span>
               </button>
-              <button className="bg-white border border-[#d1d5db] px-4 py-2 rounded-[6px] hover:bg-gray-50 transition-colors opacity-70 h-[40px]">
-                <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[16px] text-[#374151]">الاختبارات</span>
+              <button className="hidden sm:block bg-white border border-[#d1d5db] px-4 py-2 rounded-[6px] hover:bg-gray-50 transition-colors opacity-70 h-[40px] whitespace-nowrap">
+                <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] sm:text-[16px] text-[#374151]">الاختبارات</span>
               </button>
-              <button className="flex items-center gap-1 bg-white border border-[#d1d5db] px-3 py-2 rounded-[6px] hover:bg-gray-50 transition-colors h-[40px]">
-                <img alt="" className="w-6 h-6" src={imgCaretDownSolid} />
-                <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#374151]">الكتابة</span>
+              <button className="flex items-center gap-1 bg-white border border-[#d1d5db] px-2 sm:px-3 py-2 rounded-[6px] hover:bg-gray-50 transition-colors h-[36px] sm:h-[40px]">
+                <img alt="" className="w-4 h-4 sm:w-6 sm:h-6" src={imgCaretDownSolid} />
+                <span className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] sm:text-[14px] text-[#374151]">الكتابة</span>
               </button>
             </div>
           </div>
 
 
           {/* Test Info Grid */}
-          <div className="bg-[#F9FAFB] rounded-[16px] border border-[#EEEEEE] p-6 mb-6">
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-6 text-center">
+          <div className="bg-[#F9FAFB] rounded-[16px] border border-[#EEEEEE] p-4 sm:p-6 mb-4 sm:mb-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 sm:gap-6 text-center">
               <div>
                 <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#6B7280] mb-2">اسم المتدرب</p>
                 <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#1B2A4A]">أحمد علي</p>
@@ -1063,22 +1063,22 @@ export function WritingTestResultPage() {
           </div>
 
           {/* Progress to Goal */}
-          <div className="bg-white rounded-[8px] p-4 shadow-[0px_2px_0px_0px_#c90f2e]">
-            <div className="flex items-center gap-4">
+          <div className="bg-white rounded-[8px] p-3 sm:p-4 shadow-[0px_2px_0px_0px_#c90f2e]">
+            <div className="flex items-center gap-2 sm:gap-4">
               {/* Trophy Icon — first in DOM = rightmost in RTL */}
-              <div className="w-10 h-10 shrink-0">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 shrink-0">
                 <img alt="" className="w-full h-full" src={imgTrophy} />
               </div>
               <div className="flex-1 min-w-0 text-right">
-                <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#023196] mb-1">
+                <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] sm:text-[18px] lg:text-[20px] text-[#023196] mb-1 leading-snug">
                   أداء رهيب! 🔥 باقي 4.0 بس وتوصل لهدفك!
                 </h3>
-                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[16px] text-[#46484c]">
+                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] sm:text-[14px] lg:text-[16px] text-[#46484c] leading-snug">
                   أنت قريب بـ 4.0 درجة فقط من الدرجة 8! جرب باقة التدريب السريع عشان ترفع درجتك
                 </p>
               </div>
               {/* Button — last in DOM = leftmost in RTL */}
-              <button className="bg-[#c90f2e] text-white px-3 py-2.5 rounded-[6px] font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[14px] hover:bg-[#a80d27] transition-colors whitespace-nowrap shrink-0">
+              <button className="bg-[#c90f2e] text-white px-2 sm:px-3 py-2 sm:py-2.5 rounded-[6px] font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[12px] sm:text-[14px] hover:bg-[#a80d27] transition-colors whitespace-nowrap shrink-0">
                 اشترك الآن
               </button>
             </div>
@@ -1100,53 +1100,53 @@ export function WritingTestResultPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         
         {/* Score Hero Section */}
-        <div className="flex gap-4 sm:gap-6 mb-4 sm:mb-8 flex-wrap">
+        <div className="grid grid-cols-2 sm:flex sm:flex-row gap-3 sm:gap-6 mb-4 sm:mb-8">
           {/* Overall Score big gauge — first in DOM = rightmost in RTL */}
-          <div className="bg-white border border-[#e5e5e5] rounded-[8px] p-6 flex flex-col items-end gap-2 flex-1 relative min-w-[160px]">
-            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">الدرجة الكلية</p>
-            <div className="w-full flex flex-col items-center gap-4">
-              <div className="relative w-[140px] h-[140px]">
+          <div className="bg-white border border-[#e5e5e5] rounded-[8px] p-4 sm:p-6 flex flex-col items-end gap-2 sm:flex-1 relative">
+            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] sm:text-[14px] text-[#012269]">الدرجة الكلية</p>
+            <div className="w-full flex flex-col items-center gap-2 sm:gap-4">
+              <div className="relative w-[100px] h-[100px] sm:w-[140px] sm:h-[140px]">
                 <div className="absolute inset-[-4.64%]">
                   <img alt="" className="block w-full h-full" src={imgGroup2147223680} />
                 </div>
-                <span className="absolute inset-0 flex items-center justify-center font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#c8102e]">4.5</span>
+                <span className="absolute inset-0 flex items-center justify-center font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[18px] sm:text-[20px] text-[#c8102e]">4.5</span>
               </div>
               <div className="flex gap-1 items-center">
-                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#4a4a4a]">7.0 / 9.0</p>
-                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#4a4a4a]">الدرجة</p>
+                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] sm:text-[12px] text-[#4a4a4a]">7.0 / 9.0</p>
+                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] sm:text-[12px] text-[#4a4a4a]">الدرجة</p>
               </div>
             </div>
           </div>
 
           {/* Task 1 Score */}
-          <div className="bg-white rounded-[8px] p-6 flex flex-col items-end gap-8 flex-1 relative min-w-[120px]">
-            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">المهمة 1</p>
-            <div className="relative w-[100px] h-[100px] mx-auto">
+          <div className="bg-white rounded-[8px] p-4 sm:p-6 flex flex-col items-end gap-4 sm:gap-8 sm:flex-1 relative">
+            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] sm:text-[14px] text-[#012269]">المهمة 1</p>
+            <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] mx-auto">
               <div className="absolute inset-[-6.5%]">
                 <img alt="" className="block w-full h-full" src={imgGroup2147223679} />
               </div>
-              <span className="absolute inset-0 flex items-center justify-center font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#ff8c00]">6.5</span>
+              <span className="absolute inset-0 flex items-center justify-center font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[18px] sm:text-[20px] text-[#ff8c00]">6.5</span>
             </div>
           </div>
 
           {/* Task 2 Score */}
-          <div className="bg-white rounded-[8px] p-6 flex flex-col items-end gap-8 flex-1 relative min-w-[120px]">
-            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] text-[#012269]">المهمة 2</p>
-            <div className="relative w-[100px] h-[100px] mx-auto">
+          <div className="bg-white rounded-[8px] p-4 sm:p-6 flex flex-col items-end gap-4 sm:gap-8 sm:flex-1 relative">
+            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[13px] sm:text-[14px] text-[#012269]">المهمة 2</p>
+            <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] mx-auto">
               <div className="absolute inset-[-6.5%]">
                 <img alt="" className="block w-full h-full" src={imgGroup2147223679} />
               </div>
-              <span className="absolute inset-0 flex items-center justify-center font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[20px] text-[#ff8c00]">4.5</span>
+              <span className="absolute inset-0 flex items-center justify-center font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[18px] sm:text-[20px] text-[#ff8c00]">4.5</span>
             </div>
           </div>
 
           {/* Achievement Badge — last in DOM = leftmost in RTL */}
-          <div className="bg-white border border-[#e5e5e5] rounded-[8px] p-6 flex flex-col items-center justify-center gap-2 min-w-[160px] flex-1">
-            <div className="w-[60px] h-[60px] overflow-hidden">
+          <div className="bg-white border border-[#e5e5e5] rounded-[8px] p-4 sm:p-6 flex flex-col items-center justify-center gap-2 sm:flex-1">
+            <div className="w-[44px] h-[44px] sm:w-[60px] sm:h-[60px] overflow-hidden">
               <img alt="" className="w-full h-full object-contain" src={imgIconSetFilled} />
             </div>
-            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[16px] text-[#4caf50]">تقدم ممتاز</p>
-            <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-[#4B5563] text-center">
+            <p className="font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] sm:text-[16px] text-[#4caf50]">تقدم ممتاز</p>
+            <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[11px] sm:text-[12px] text-[#4B5563] text-center">
               لقد اقتربت كثيرًا من النتيجة المستهدفة! استمر في العمل الرائع!
             </p>
           </div>
