@@ -1005,8 +1005,7 @@ function SmartTooltip({ borderColor, children }: { borderColor: string; children
   );
 }
 
-export function WritingTestResultPage() {
-  const [userState, setUserState] = useState<UserState>('paid');
+export function WritingResultContent({ userState }: { userState: UserState }) {
   const [activeTab, setActiveTab] = useState('answer');
   const [selectedAttempt, setSelectedAttempt] = useState(2); // index of current attempt (latest)
   const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
@@ -2821,8 +2820,9 @@ export function WritingTestResultPage() {
 
       </div>
 
-      {/* ── User State Switcher (dev/preview tool) ── */}
-      <UserStateSwitcher value={userState} onChange={setUserState} />
     </div>
   );
 }
+
+// Backwards-compatible re-export so existing route still works during migration
+export { WritingResultContent as WritingTestResultPage };
