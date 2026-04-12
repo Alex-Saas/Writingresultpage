@@ -4,6 +4,95 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import * as Tabs from '@radix-ui/react-tabs';
 import svgPaths from '../../imports/svg-kef88hpn4e';
 
+// ── User state switcher ──────────────────────────────────────────────────────
+type UserState = 'paid' | 'free' | 'unverified' | 'no-goal';
+
+const USER_STATE_LABELS: Record<UserState, string> = {
+  paid: 'Paid User',
+  free: 'Free User (partial)',
+  unverified: 'Unverified User',
+  'no-goal': 'User without Goal',
+};
+
+function UserStateSwitcher({
+  value,
+  onChange,
+}: {
+  value: UserState;
+  onChange: (s: UserState) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div
+      className="fixed bottom-6 left-6 z-50"
+      onClick={(e) => e.stopPropagation()}
+    >
+      {open && (
+        <div className="mb-2 bg-white rounded-2xl shadow-2xl border border-[#EEEEEE] p-3 w-52">
+          <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-2">
+            Preview as user
+          </p>
+          <div className="flex flex-col gap-1">
+            {(Object.keys(USER_STATE_LABELS) as UserState[]).map((state) => (
+              <button
+                key={state}
+                onClick={() => { onChange(state); setOpen(false); }}
+                className={`text-left px-3 py-2 rounded-lg text-[13px] font-medium transition-colors ${
+                  value === state
+                    ? 'bg-[#012269] text-white'
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                {USER_STATE_LABELS[state]}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="flex items-center gap-2 bg-[#012269] text-white px-4 py-2.5 rounded-full shadow-lg text-[13px] font-semibold hover:bg-[#011a50] transition-colors"
+      >
+        <span>👤</span>
+        <span>{USER_STATE_LABELS[value]}</span>
+        <span className="opacity-70">{open ? '▲' : '▼'}</span>
+      </button>
+    </div>
+  );
+}
+
+// Wraps a section with a blur+overlay for locked states
+function LockedSection({
+  children,
+  message,
+  ctaLabel,
+  ctaColor = '#012269',
+}: {
+  children: React.ReactNode;
+  message: string;
+  ctaLabel: string;
+  ctaColor?: string;
+}) {
+  return (
+    <div className="relative">
+      <div className="pointer-events-none select-none" style={{ filter: 'blur(6px)', opacity: 0.5 }}>
+        {children}
+      </div>
+      <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/60 rounded-[16px] z-10">
+        <div className="bg-white rounded-2xl shadow-lg border border-[#EEEEEE] p-6 mx-4 text-center max-w-sm">
+          <p className="text-[15px] font-semibold text-[#1B2A4A] mb-3">{message}</p>
+          <button
+            style={{ backgroundColor: ctaColor }}
+            className="text-white px-5 py-2 rounded-lg text-[14px] font-medium hover:opacity-90 transition-opacity"
+          >
+            {ctaLabel}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Figma asset URLs
 const imgTrophy = "https://www.figma.com/api/mcp/asset/d029ba19-fcd6-4ba5-815a-668727f1b152";
 const imgLogo = "https://www.figma.com/api/mcp/asset/3c3922ed-23e0-4b00-91bd-13a9319e72c8";
@@ -917,6 +1006,7 @@ function SmartTooltip({ borderColor, children }: { borderColor: string; children
 }
 
 export function WritingTestResultPage() {
+  const [userState, setUserState] = useState<UserState>('paid');
   const [activeTab, setActiveTab] = useState('answer');
   const [selectedAttempt, setSelectedAttempt] = useState(2); // index of current attempt (latest)
   const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
@@ -1063,36 +1153,53 @@ export function WritingTestResultPage() {
           </div>
 
           {/* Progress to Goal */}
-          <div className="bg-white rounded-[8px] p-3 sm:p-4 shadow-[0px_2px_0px_0px_#c90f2e]">
-            <div className="flex items-center gap-2 sm:gap-4">
-              {/* Trophy Icon — first in DOM = rightmost in RTL */}
-              <div className="w-8 h-8 sm:w-10 sm:h-10 shrink-0">
-                <img alt="" className="w-full h-full" src={imgTrophy} />
-              </div>
-              <div className="flex-1 min-w-0 text-right">
-                <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] sm:text-[18px] lg:text-[20px] text-[#023196] mb-1 leading-snug">
-                  أداء رهيب! 🔥 باقي 4.0 بس وتوصل لهدفك!
+          {userState === 'no-goal' ? (
+            <div className="bg-white rounded-[8px] p-3 sm:p-4 border border-dashed border-[#C90F2E] flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
+              <div className="w-10 h-10 shrink-0 bg-[#FEF3C7] rounded-full flex items-center justify-center text-xl">🎯</div>
+              <div className="flex-1 text-center sm:text-right">
+                <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] sm:text-[18px] text-[#023196] mb-1">
+                  لم تحدد هدفًا بعد!
                 </h3>
-                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] sm:text-[14px] lg:text-[16px] text-[#46484c] leading-snug">
-                  أنت قريب بـ 4.0 درجة فقط من الدرجة 8! جرب باقة التدريب السريع عشان ترفع درجتك
+                <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] sm:text-[14px] text-[#46484c]">
+                  حدد درجتك المستهدفة لتتبع تقدمك ومعرفة كم تبقى للوصول إلى هدفك.
                 </p>
               </div>
-              {/* Button — last in DOM = leftmost in RTL */}
-              <button className="bg-[#c90f2e] text-white px-2 sm:px-3 py-2 sm:py-2.5 rounded-[6px] font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[12px] sm:text-[14px] hover:bg-[#a80d27] transition-colors whitespace-nowrap shrink-0">
-                اشترك الآن
+              <button className="bg-[#012269] text-white px-4 py-2 rounded-[6px] font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[13px] sm:text-[14px] hover:bg-[#011a50] transition-colors whitespace-nowrap shrink-0">
+                حدد هدفك الآن
               </button>
             </div>
-            {/* Progress Bar */}
-            <div className="mt-4">
-              <div className="w-full h-[6px] bg-[#e0e7ff] rounded-[30px] overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-[#2c277f] to-[#22c55e] rounded-[30px]" style={{ width: '51.79%' }}></div>
+          ) : (
+            <div className="bg-white rounded-[8px] p-3 sm:p-4 shadow-[0px_2px_0px_0px_#c90f2e]">
+              <div className="flex items-center gap-2 sm:gap-4">
+                {/* Trophy Icon — first in DOM = rightmost in RTL */}
+                <div className="w-8 h-8 sm:w-10 sm:h-10 shrink-0">
+                  <img alt="" className="w-full h-full" src={imgTrophy} />
+                </div>
+                <div className="flex-1 min-w-0 text-right">
+                  <h3 className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[15px] sm:text-[18px] lg:text-[20px] text-[#023196] mb-1 leading-snug">
+                    أداء رهيب! 🔥 باقي 4.0 بس وتوصل لهدفك!
+                  </h3>
+                  <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] sm:text-[14px] lg:text-[16px] text-[#46484c] leading-snug">
+                    أنت قريب بـ 4.0 درجة فقط من الدرجة 8! جرب باقة التدريب السريع عشان ترفع درجتك
+                  </p>
+                </div>
+                {/* Button — last in DOM = leftmost in RTL */}
+                <button className="bg-[#c90f2e] text-white px-2 sm:px-3 py-2 sm:py-2.5 rounded-[6px] font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[12px] sm:text-[14px] hover:bg-[#a80d27] transition-colors whitespace-nowrap shrink-0">
+                  اشترك الآن
+                </button>
               </div>
-              <div className="flex items-center justify-between mt-1">
-                <span className="font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[12px] text-black opacity-60">الدرجة المستهدفة  8.0</span>
-                <span className="font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[12px] text-black opacity-60">الدرجة الحالية  7.5</span>
+              {/* Progress Bar */}
+              <div className="mt-4">
+                <div className="w-full h-[6px] bg-[#e0e7ff] rounded-[30px] overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-[#2c277f] to-[#22c55e] rounded-[30px]" style={{ width: '51.79%' }}></div>
+                </div>
+                <div className="flex items-center justify-between mt-1">
+                  <span className="font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[12px] text-black opacity-60">الدرجة المستهدفة  8.0</span>
+                  <span className="font-['IBM_Plex_Sans_Arabic:Medium',sans-serif] text-[12px] text-black opacity-60">الدرجة الحالية  7.5</span>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
@@ -1151,6 +1258,36 @@ export function WritingTestResultPage() {
             </p>
           </div>
         </div>
+
+        {/* Unverified user: full-page lock banner */}
+        {userState === 'unverified' && (
+          <div className="mb-4 bg-amber-50 border border-amber-300 rounded-[12px] p-4 flex items-center gap-3">
+            <span className="text-2xl">📧</span>
+            <div className="flex-1 text-right">
+              <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[14px] text-amber-800">
+                يرجى تأكيد بريدك الإلكتروني للوصول إلى النتائج الكاملة
+              </p>
+              <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[12px] text-amber-700">
+                تم إرسال رابط التحقق إلى بريدك الإلكتروني.
+              </p>
+            </div>
+            <button className="bg-amber-500 text-white px-4 py-2 rounded-[6px] text-[13px] font-medium hover:bg-amber-600 transition-colors whitespace-nowrap">
+              إعادة الإرسال
+            </button>
+          </div>
+        )}
+
+        {/* ── Lock wrapper: free & unverified users see blurred content ── */}
+        <div className="relative">
+          <div
+            style={{
+              filter: (userState === 'free' || userState === 'unverified') ? 'blur(5px)' : 'none',
+              opacity: (userState === 'free' || userState === 'unverified') ? 0.45 : 1,
+              pointerEvents: (userState === 'free' || userState === 'unverified') ? 'none' : 'auto',
+              userSelect: (userState === 'free' || userState === 'unverified') ? 'none' : 'auto',
+              transition: 'filter 0.2s, opacity 0.2s',
+            }}
+          >
 
         {/* Criteria Summary Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-4 sm:mb-8">
@@ -2644,7 +2781,48 @@ export function WritingTestResultPage() {
           {/* Model Answer tab removed — now inline with answer tab */}
         </Tabs.Root>
 
+          </div>{/* end blur inner wrapper */}
+
+          {/* Lock overlay for free / unverified states */}
+          {(userState === 'free' || userState === 'unverified') && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center" style={{ minHeight: '300px' }}>
+              <div className="bg-white rounded-2xl shadow-xl border border-[#EEEEEE] p-8 text-center max-w-sm mx-4">
+                {userState === 'free' ? (
+                  <>
+                    <div className="text-4xl mb-4">🔒</div>
+                    <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] text-[#1B2A4A] mb-2">
+                      التحليل التفصيلي متاح للمشتركين فقط
+                    </p>
+                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-5">
+                      اشترك للاطلاع على التحليل الكامل للأخطاء والتصحيحات والتوصيات
+                    </p>
+                    <button className="bg-[#c90f2e] text-white px-6 py-2.5 rounded-[8px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] hover:bg-[#a80d27] transition-colors">
+                      اشترك الآن
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="text-4xl mb-4">📧</div>
+                    <p className="font-['IBM_Plex_Sans_Arabic:Bold',sans-serif] text-[16px] text-[#1B2A4A] mb-2">
+                      تحقق من بريدك الإلكتروني
+                    </p>
+                    <p className="font-['IBM_Plex_Sans_Arabic:Regular',sans-serif] text-[13px] text-[#6B7280] mb-5">
+                      أكد بريدك الإلكتروني للوصول إلى التحليل التفصيلي لنتيجتك
+                    </p>
+                    <button className="bg-amber-500 text-white px-6 py-2.5 rounded-[8px] font-['IBM_Plex_Sans_Arabic:SemiBold',sans-serif] text-[14px] hover:bg-amber-600 transition-colors">
+                      إعادة إرسال رابط التحقق
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+        </div>{/* end relative lock wrapper */}
+
       </div>
+
+      {/* ── User State Switcher (dev/preview tool) ── */}
+      <UserStateSwitcher value={userState} onChange={setUserState} />
     </div>
   );
 }
