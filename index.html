@@ -1,15 +1,1338 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نتائج الكتابة - GoIELTS</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* ══ TOKENS (exact Figma) ══ */
+:root {
+  --blue: #012269;        /* brand primary */
+  --blue-dk: #011a50;
+  --blue-title: #023196;
+  --red: #C90F2E;         /* brand accent */
+  --red2: #C30020;        /* error underline */
+  --orange: #FF8C00;
+  --yellow: #F59E0B;
+  --green: #4CAF50;
+  --page-bg: #F9FAFB;
+  --white: #ffffff;
+  --bdr: #EEEEEE;
+  --bdr2: #E5E5E5;
+  --bdr-inp: #D1D5DB;
+  --txt: #374151;
+  --txt-dark: #1B2A4A;
+  --txt-grey: #4A4A4A;
+  --txt-muted: #6B7280;
+  --txt-light: #9CA3AF;
+  --txt-black: #000000;
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'IBM Plex Sans Arabic', sans-serif; background: var(--page-bg); direction: rtl; color: var(--txt); font-size: 14px; min-height: 100vh; }
+button, input { font-family: 'IBM Plex Sans Arabic', sans-serif; cursor: pointer; border: none; outline: none; }
 
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Writing - Result page</title>
-    </head>
+/* ══ HEADER ══ */
+.hdr { background: var(--white); border-bottom: 1px solid var(--bdr2); position: sticky; top: 0; z-index: 40; }
+.hdr-in { max-width: 1250px; margin: 0 auto; padding: 32px 0 0; }
 
-    <body>
-      <div id="root"></div>
-      <script type="module" src="/src/main.tsx"></script>
-    </body>
-  </html>
-  
+.hdr-r1 { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; direction: rtl; }
+
+.logo { display: flex; align-items: center; gap: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; flex-shrink: 0; }
+.logo img { height: 42px; width: 118px; object-fit: contain; }
+
+.share-grp { display: flex; align-items: center; gap: 16px; direction: rtl; }
+.share-lbl { font-size: 20px; font-weight: 700; color: #0A0A0A; white-space: nowrap; flex-shrink: 0; }
+.share-pill { display: flex; align-items: center; height: 36px; width: 258px; background: #F2F2F2; border-radius: 7px; position: relative; overflow: hidden; flex-shrink: 0; }
+.share-pill-url { position: absolute; right: 19px; font-size: 14px; color: var(--txt-muted); white-space: nowrap; }
+.share-copy { position: absolute; left: 0; height: 36px; width: 57px; background: var(--blue); border-radius: 7px; font-size: 14px; font-weight: 700; color: #FAFAFA; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,.1); transition: background .15s; }
+.share-copy:hover { background: var(--blue-dk); }
+
+.hdr-r2 { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; direction: rtl; }
+
+.page-ttl { display: flex; align-items: center; gap: 12px; font-size: 32px; font-weight: 700; color: var(--blue); line-height: 1.4; direction: rtl; }
+.page-ttl-icon { width: 32px; height: 32px; flex-shrink: 0; }
+.page-ttl-check { width: 26px; height: 26px; flex-shrink: 0; }
+
+.nav-row { display: flex; align-items: center; gap: 8px; direction: rtl; }
+.btn-back { display: flex; align-items: center; justify-content: center; height: 40px; width: 80px; background: var(--blue); color: white; border-radius: 6px; font-size: 14px; font-weight: 600; gap: 4px; padding: 0 8px; transition: background .15s; }
+.btn-back:hover { background: var(--blue-dk); }
+.btn-back svg { transform: scaleX(-1); }
+.btn-ghost { height: 40px; min-width: 120px; padding: 0 12px; background: white; border: 1px solid var(--bdr-inp); border-radius: 6px; font-size: 16px; font-weight: 600; color: #374151; opacity: .7; }
+.btn-skill { display: flex; align-items: center; justify-content: center; gap: 4px; height: 40px; width: 112px; padding: 0 8px; border: 1px solid var(--bdr-inp); border-radius: 6px; font-size: 14px; font-weight: 600; color: #374151; background: white; direction: rtl; }
+
+.info-bar { background: #F9FAFB; border-radius: 12px; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 0; position: relative; direction: rtl; }
+.info-bar::after { content: ''; position: absolute; left: 24px; right: 24px; top: 45px; height: 2px; background: #F3F4F6; }
+.info-col { display: flex; flex-direction: column; gap: 24px; align-items: flex-end; height: 67px; justify-content: center; }
+.info-lbl { font-size: 14px; color: var(--txt-grey); text-align: right; }
+.info-val { font-size: 16px; font-weight: 600; color: var(--txt-black); text-align: right; }
+
+/* ══ MAIN ══ */
+.main { max-width: 1250px; margin: 0 auto; padding: 32px 0 48px; display: flex; flex-direction: column; gap: 24px; }
+
+body.no-goal-active .main { padding-bottom: 0; }
+body.no-goal-active { overflow-x: hidden; }
+
+/* ── GOAL CARD ── */
+.goal-card { background: white; border-radius: 12px; padding: 12px; box-shadow: 0 2px 0 0 var(--red); display: flex; flex-direction: column; gap: 12px; }
+.goal-r1 { display: flex; align-items: center; gap: 10px; direction: rtl; }
+.btn-sub { background: var(--red); color: white; border-radius: 6px; padding: 10px 12px; font-size: 14px; font-weight: 500; white-space: nowrap; flex-shrink: 0; transition: background .15s; }
+.btn-sub:hover { background: #a80d25; }
+.goal-txt-grp { flex: 1; display: flex; gap: 10px; align-items: flex-start; justify-content: flex-end; min-width: 0; direction: rtl; }
+.goal-ico { width: 40px; height: 40px; flex-shrink: 0; object-fit: contain; }
+.goal-txts { flex: 1; display: flex; flex-direction: column; gap: 8px; text-align: right; }
+.goal-title { font-size: 20px; font-weight: 700; color: var(--blue-title); letter-spacing: -0.5px; line-height: normal; }
+.goal-sub { font-size: 16px; color: #46484C; line-height: 1.5; }
+.prog-grp { display: flex; flex-direction: column; gap: 4px; }
+.prog-track { width: 100%; height: 6px; background: #E0E7FF; border-radius: 30px; overflow: hidden; }
+.prog-fill { height: 100%; background: linear-gradient(to left, #22C55E, #2C277F); border-radius: 30px; }
+.prog-lbls { display: flex; justify-content: space-between; font-size: 12px; font-weight: 500; color: rgba(0,0,0,.6); direction: rtl; }
+
+/* ── NO-GOAL CARD ── */
+.no-goal-card {
+  background: white;
+  border-radius: 8px;
+  border-bottom: 3px solid var(--red);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 149px;
+  direction: rtl;
+}
+.ng-ico { width: 40px; height: 40px; flex-shrink: 0; object-fit: contain; }
+.ng-txts { flex: 1; text-align: right; }
+.ng-title { font-size: 20px; font-weight: 700; color: var(--blue-title); letter-spacing: -0.23px; line-height: 1.4; }
+.ng-sub { font-size: 16px; color: rgba(0,0,0,.7); font-weight: 500; line-height: 1.4; margin-top: 6px; }
+.ng-btn { background: var(--red); color: white; border-radius: 6px; padding: 10px 12px; font-size: 14px; font-weight: 500; white-space: nowrap; flex-shrink: 0; cursor: pointer; border: none; font-family: 'IBM Plex Sans Arabic', sans-serif; width: 160px; height: 40px; transition: background .15s; }
+.ng-btn:hover { background: #a80d25; }
+
+/* ── SCORE CARDS ── */
+.score-row { display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 20px; align-items: stretch; direction: rtl; }
+.score-card { background: white; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 32px; align-items: flex-end; position: relative; }
+.sc-lbl { font-size: 14px; font-weight: 600; color: var(--blue); text-align: center; width: 100%; white-space: nowrap; }
+.sc-gauge { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.gauge-wrap { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+.gauge-wrap svg { display: block; overflow: visible; }
+.gauge-num {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px; font-weight: 700;
+  color: #FF8C00; text-align: center;
+  white-space: nowrap; line-height: 1;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  pointer-events: none;
+}
+.gauge-num.overall { color: #C8102E; }
+.score-card.overall { gap: 8px; justify-content: center; }
+.sc-sub { display: flex; gap: 4px; font-size: 12px; color: var(--txt-grey); margin-top: 16px; }
+
+/* ── CRITERIA ROW ── */
+.crit-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; direction: rtl; }
+.crit-card { background: white; border-radius: 12px; padding: 16px 24px; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.crit-lbl { font-size: 14px; font-weight: 600; color: var(--blue); white-space: nowrap; }
+.crit-score { display: flex; align-items: baseline; gap: 4px; }
+.crit-n { font-size: 28px; font-weight: 700; line-height: 1; }
+.crit-d { font-size: 16px; color: var(--txt-grey); }
+
+/* ── TABS ── */
+.tabs-box { background: white; border: 1px solid var(--bdr); border-radius: 12px; overflow: hidden; }
+.tab-list { display: flex; background: #F9FAFB; border-bottom: 1px solid var(--bdr); direction: rtl; }
+.tab-btn { flex: 1; padding: 16px 20px; font-size: 14px; font-weight: 600; color: #374151; background: none; border-bottom: 2px solid transparent; transition: all .15s; white-space: nowrap; }
+.tab-btn.on { background: white; color: var(--blue); border-bottom-color: var(--blue); }
+.tab-pane { display: none; }
+.tab-pane.on { display: block; }
+
+/* ── UNVERIFIED gate ── */
+.main { position: relative; }
+#unverGate {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  backdrop-filter: blur(7px);
+  background: rgba(255,255,255,.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+}
+#unverGate.on { display: flex; }
+.uv-card {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 24px; text-align: center; width: 520px; max-width: 90vw;
+}
+.uv-icon { width: 56px; height: 56px; object-fit: contain; }
+.uv-title { font-size: 24px; font-weight: 700; color: #012169; line-height: 1.4; }
+.uv-desc { font-size: 16px; color: rgba(0,0,0,.7); line-height: normal; max-width: 476px; }
+.uv-btn { background: #C90F2E; color: white; border-radius: 7px; height: 40px; width: 160px; font-size: 14px; font-weight: 500; font-family: 'IBM Plex Sans Arabic', sans-serif; cursor: pointer; border: none; box-shadow: 0 1px 3px rgba(0,0,0,.1); transition: background .15s; }
+.uv-btn:hover { background: #a80d25; }
+
+/* ── NO-GOAL frosted gate ── */
+#ngGate {
+  display: none;
+  width: 100vw;
+  margin-right: calc(-50vw + 50%);
+  height: 557px;
+  backdrop-filter: blur(7px);
+  background: rgba(255,255,255,.85);
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 24px;
+}
+#ngGate.on { display: flex; }
+.ng-cta-card {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 24px; text-align: center; width: 318px;
+}
+.ng-cta-icon { width: 60px; height: 60px; object-fit: contain; }
+.ng-cta-title { font-size: 24px; font-weight: 700; color: #023196; letter-spacing: -0.5px; line-height: 1.4; }
+.ng-cta-desc { font-size: 16px; color: rgba(0,0,0,.7); line-height: 1.76; }
+.ng-cta-btn { background: #C90F2E; color: white; border-radius: 7px; height: 40px; width: 160px; font-size: 14px; font-weight: 500; font-family: 'IBM Plex Sans Arabic', sans-serif; cursor: pointer; border: none; box-shadow: 0 1px 3px rgba(0,0,0,.1); transition: background .15s; }
+.ng-cta-btn:hover { background: #a80d25; }
+
+/* ── FREE USER gate ── */
+#freeGate { display: none; position: absolute; inset: 0; z-index: 5; }
+#freeGate.on { display: block; }
+.fg-blur { position: absolute; inset: 0; backdrop-filter: blur(2px); pointer-events: none; }
+body.user-free #t1errsLocked { filter: blur(7px); opacity: .55; pointer-events: none; user-select: none; }
+.fg-cta-wrap {
+  position: absolute; inset: 0;
+  backdrop-filter: blur(7px);
+  background: rgba(255,255,255,.6);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  gap: 0; z-index: 5;
+  overflow: hidden;
+}
+.fg-cta-inner {
+  position: sticky;
+  top: calc(50vh - 120px);
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 48px 20px;
+  width: 100%;
+  text-align: center;
+}
+.fg-cta-title { font-size: 38px; font-weight: 700; color: var(--blue); text-align: center; white-space: nowrap; line-height: 1.3; }
+.fg-cta-sub { font-size: 18px; color: var(--txt-grey); text-align: center; line-height: 1.7; max-width: 586px; }
+.fg-cta-btn { background: var(--red); color: white; border-radius: 6px; padding: 10px 12px; font-size: 14px; font-weight: 500; font-family: 'IBM Plex Sans Arabic', sans-serif; cursor: pointer; border: none; min-width: 170px; transition: background .15s; }
+.fg-cta-btn:hover { background: #a80d25; }
+
+/* ══ FREE USER STATE ══ */
+body.user-free .ann-e,
+body.user-free .ann-w,
+body.user-free .ann-g            { background: #F2F2F2 !important; }
+body.user-free .ann-e:hover,
+body.user-free .ann-w:hover,
+body.user-free .ann-g:hover      { background: #E5E5E5 !important; }
+body.user-free .ann-e .a-l,
+body.user-free .ann-w .a-l,
+body.user-free .ann-g .a-l       { background: #4A4A4A !important; }
+body.user-free .tip              { border-color: #4A4A4A !important; }
+body.user-free .tip::after       { color: #4A4A4A !important; }
+
+body.user-free .ann-e:not(.ann-free-visible) .tip .tip-ico,
+body.user-free .ann-w:not(.ann-free-visible) .tip .tip-ico,
+body.user-free .ann-g:not(.ann-free-visible) .tip .tip-ico,
+body.user-free .ann-e:not(.ann-free-visible) .tip .tip-bd,
+body.user-free .ann-w:not(.ann-free-visible) .tip .tip-bd,
+body.user-free .ann-g:not(.ann-free-visible) .tip .tip-bd {
+  display: none !important;
+}
+
+body.user-free .ann-e:not(.ann-free-visible) .tip.on,
+body.user-free .ann-w:not(.ann-free-visible) .tip.on,
+body.user-free .ann-g:not(.ann-free-visible) .tip.on {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 20px;
+  min-height: 110px;
+  min-width: 360px;
+  max-width: 400px;
+  text-align: center;
+}
+
+.tip-upgrade {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: center;
+  direction: rtl;
+}
+body.user-free .ann-e:not(.ann-free-visible) .tip.on .tip-upgrade,
+body.user-free .ann-w:not(.ann-free-visible) .tip.on .tip-upgrade,
+body.user-free .ann-g:not(.ann-free-visible) .tip.on .tip-upgrade {
+  display: flex;
+}
+.tip-upgrade-txt {
+  font-size: 15px;
+  color: #4A4A4A;
+  line-height: 1.6;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  white-space: normal;
+  max-width: 300px;
+}
+.tip-upgrade-btn {
+  background: #C90F2E;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s;
+}
+.tip-upgrade-btn:hover { background: #a80d25; }
+
+body.user-free .ann-free-visible            { background: #FEE2E2 !important; }
+body.user-free .ann-free-visible:hover      { background: #FCA5A5 !important; }
+body.user-free .ann-free-visible .a-l       { background: var(--red2) !important; }
+body.user-free .ann-free-visible .tip       { border-color: var(--red2) !important; }
+
+body.user-free #free-t2-preview { display: block; }
+
+.ec-lock {
+  display: none;
+  position: absolute;
+  top: 44px;
+  left: 0; right: 0; bottom: 0;
+  cursor: pointer;
+  z-index: 5;
+  border-radius: 0 0 12px 12px;
+}
+body.user-free #t1errs .ec { position: relative; }
+body.user-free #t1errs .ec-lock { display: block; }
+
+.ec-upgrade-pop {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 340px;
+  background: white;
+  border: 2px solid #4A4A4A;
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.14);
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  direction: rtl;
+  z-index: 10;
+  pointer-events: auto;
+}
+.ec-upgrade-pop.on { display: flex; }
+.ec-upgrade-txt {
+  font-size: 15px;
+  color: #4A4A4A;
+  line-height: 1.6;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+}
+.ec-upgrade-btn {
+  background: #C90F2E;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s;
+}
+.ec-upgrade-btn:hover { background: #a80d25; }
+
+/* ── FREE STATE: Overview partial lock ── */
+.ov-free-gate { display: none; position: relative; }
+body.user-free .ov-free-gate { display: block; }
+body.user-free .ov-free-hide { display: none !important; }
+.ov-free-blur { filter: blur(6px); opacity: .55; pointer-events: none; user-select: none; }
+.ov-free-cta {
+  position: absolute; inset: 0;
+  backdrop-filter: blur(7px);
+  background: rgba(255,255,255,.6);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  gap: 0; z-index: 5;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.ov-free-cta-inner {
+  position: sticky;
+  top: calc(50vh - 100px);
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 32px 20px;
+  width: 100%;
+  text-align: center;
+}
+.ov-free-cta-title { font-size: 38px; font-weight: 700; color: var(--blue); text-align: center; white-space: nowrap; line-height: 1.3; }
+.ov-free-cta-sub   { font-size: 18px; color: var(--txt-grey); text-align: center; line-height: 1.7; max-width: 586px; }
+.ov-free-cta-btn   { background: var(--red); color: white; border-radius: 6px; padding: 10px 12px; font-size: 14px; font-weight: 500; font-family: 'IBM Plex Sans Arabic', sans-serif; cursor: pointer; border: none; min-width: 170px; transition: background .15s; }
+
+/* ── FREE STATE: Model Answer partial lock ── */
+.mod-free-col-locked { position: relative; }
+body.user-free .mod-free-col-locked > *:not(.mod-free-cta-overlay) {
+  filter: blur(6px);
+  opacity: .55;
+  pointer-events: none;
+  user-select: none;
+}
+.mod-free-cta-overlay {
+  display: none;
+  position: absolute; inset: 0;
+  backdrop-filter: blur(7px);
+  background: rgba(255,255,255,.6);
+  flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  gap: 0; z-index: 5;
+  border-radius: 12px;
+  overflow: hidden;
+}
+body.user-free .mod-free-cta-overlay { display: flex; }
+.mod-free-cta-inner {
+  position: sticky;
+  top: calc(50vh - 100px);
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 32px 20px;
+  width: 100%;
+  text-align: center;
+}
+.mod-free-cta-title { font-size: 38px; font-weight: 700; color: var(--blue); text-align: center; white-space: nowrap; line-height: 1.3; }
+.mod-free-cta-sub   { font-size: 18px; color: var(--txt-grey); text-align: center; line-height: 1.7; max-width: 480px; }
+.mod-free-cta-btn   { background: var(--red); color: white; border-radius: 6px; padding: 10px 12px; font-size: 14px; font-weight: 500; font-family: 'IBM Plex Sans Arabic', sans-serif; cursor: pointer; border: none; min-width: 170px; transition: background .15s; }
+
+/* ── FREE STATE: Improvement Suggestions full lock ── */
+#t1imp { position: relative; }
+#t1imp-free-gate {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  backdrop-filter: blur(7px);
+  background: rgba(255, 255, 255, 0.6);
+  flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  gap: 0;
+  min-height: 100%;
+  overflow: hidden;
+}
+body.user-free #t1imp-free-gate { display: flex; }
+#t1imp-free-gate-inner {
+  position: sticky;
+  top: calc(50vh - 100px);
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 48px 20px;
+  width: 100%;
+  text-align: center;
+}
+body.user-free #t1imp-inner { filter: blur(4px); opacity: 0.55; pointer-events: none; user-select: none; }
+.imp-free-cta-title { font-size: 38px; font-weight: 700; color: var(--blue); text-align: center; white-space: nowrap; line-height: 1.3; }
+.imp-free-cta-sub   { font-size: 18px; color: var(--txt-grey); text-align: center; line-height: 1.7; max-width: 586px; }
+.imp-free-cta-btn   { background: var(--red); color: white; border-radius: 6px; padding: 10px 12px; font-size: 14px; font-weight: 500; font-family: 'IBM Plex Sans Arabic', sans-serif; cursor: pointer; border: none; min-width: 170px; transition: background .15s; }
+
+/* ── ANSWER TAB ── */
+.tab-content { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+.task-blk { border: 1px solid var(--bdr); border-radius: 16px; overflow: visible; }
+.task-hdr { background: var(--blue); border-radius: 12px 12px 0 0; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; width: 100%; transition: opacity .15s; direction: rtl; }
+.task-hdr:hover { opacity: .92; }
+.th-right { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+.th-name { font-size: 17px; font-weight: 700; color: white; white-space: nowrap; }
+.th-sub { font-size: 12px; color: rgba(255,255,255,.6); white-space: nowrap; }
+.th-left { display: flex; align-items: center; gap: 24px; }
+.th-score { font-size: 20px; font-weight: 700; color: white; white-space: nowrap; }
+.th-arr { font-size: 14px; color: rgba(255,255,255,.7); display: inline-block; transition: transform .2s; }
+.th-arr.open { transform: rotate(180deg); }
+.task-body { background: white; padding: 24px; display: none; flex-direction: column; gap: 20px; border-radius: 0 0 12px 12px; }
+.task-body.open { display: flex; }
+.q-box { background: #F0F9FF; border: 1px solid #BAE6FD; border-radius: 12px; padding: 20px 24px; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.q-lbl { font-size: 15px; font-weight: 700; color: var(--blue); white-space: nowrap; }
+.q-txt { font-size: 14px; font-weight: 500; color: var(--txt); line-height: 1.7; direction: ltr; text-align: left; width: 100%; }
+.sub-tabs { display: flex; border: 1px solid var(--bdr); border-radius: 8px; overflow: hidden; direction: rtl; }
+.sub-btn { flex: 1; padding: 12px 8px; font-size: 13px; font-weight: 600; background: #F9FAFB; color: var(--txt-muted); border-bottom: 2px solid transparent; transition: all .15s; white-space: nowrap; }
+.sub-btn:hover:not(.on) { background: #F3F4F6; }
+.sub-btn.on { background: white; border-bottom-color: var(--blue); color: var(--blue); }
+.sub-pane { display: none; }
+.sub-pane.on { display: block; }
+.ans-hdr { display: flex; align-items: center; justify-content: space-between; direction: rtl; }
+.ans-ttl { font-size: 16px; font-weight: 700; color: var(--txt-dark); white-space: nowrap; }
+.fchips { display: flex; gap: 6px; flex-wrap: wrap; direction: rtl; }
+.fchip { display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 20px; border: 1px solid #D1D5DA; background: white; color: #4A4A4A; font-size: 11px; font-weight: 500; cursor: pointer; transition: all .15s; }
+.fchip.f-all { background: #1B2A4A; color: white; border-color: #1B2A4A; }
+.fchip .cnt { background: rgba(255,255,255,.22); padding: 1px 6px; border-radius: 10px; font-size: 10px; font-weight: 600; }
+.fchip:not(.f-all) .cnt { background: #F3F4F6; color: var(--txt-muted); }
+.fchip .cdot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.ann-text { font-size: 14px; font-weight: 500; color: var(--txt); direction: ltr; text-align: left; display: flex; flex-wrap: wrap; align-items: flex-start; }
+.ann-text > span { white-space: nowrap; }
+.ann-text br { display: block; width: 100%; content: ''; margin: 8px 0 0; }
+.ann { display: inline-flex; flex-direction: column; align-items: flex-start; padding: 0 3px; cursor: pointer; position: relative; }
+.ann .a-t { white-space: nowrap; }
+.ann .a-l { height: 2px; width: calc(100% + 2px); }
+.ann-e .a-l { background: var(--red2); } .ann-e { background: #FEE2E2; } .ann-e:hover { background: #FCA5A5; }
+.ann-w .a-l { background: var(--orange); } .ann-w { background: #FEF3C7; } .ann-w:hover { background: #FDE68A; }
+.ann-g .a-l { background: var(--green); } .ann-g { background: #D1FAE5; } .ann-g:hover { background: #BBF7D0; }
+.ann.dim { opacity: .2; }
+.tip { display: none; position: absolute; bottom: calc(100% + 8px); right: 0; min-width: 280px; max-width: 400px; background: white; border: 2px solid var(--red2); border-radius: 12px; padding: 14px 16px; box-shadow: 0 4px 16px rgba(0,0,0,.12); z-index: 9999; direction: rtl; text-align: right; pointer-events: none; }
+.tip::after { content:'▼'; position: absolute; top: 100%; right: 14px; color: var(--red2); font-size: 16px; line-height: 1; margin-top: -2px; }
+.tip.on { display: flex; gap: 12px; pointer-events: auto; }
+.tip-ico { width: 24px; height: 24px; flex-shrink: 0; }
+.tip-bd .tip-h { font-size: 14px; font-weight: 600; color: var(--txt-dark); margin-bottom: 6px; white-space: nowrap; }
+.tip-bd .tip-p { font-size: 13px; color: var(--txt); line-height: 1.6; white-space: normal; max-width: 330px; }
+.err-hdr { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: 4px; direction: rtl; }
+.err-hdr-l { display: flex; align-items: center; gap: 12px; direction: rtl; }
+.err-hdr-ico { width: 24px; height: 24px; }
+.err-hdr-t { font-size: 15px; font-weight: 500; color: var(--txt-dark); white-space: nowrap; }
+.err-cnt-badge { background: #FEE2E2; color: #991B1B; border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 500; }
+.ec { background: #F9FAFB; border: 1px solid var(--bdr); border-radius: 12px; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+.ec-top { display: flex; align-items: center; gap: 8px; }
+.ec-num { width: 24px; height: 24px; border-radius: 8px; background: var(--txt-dark); color: white; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ec-type { background: #FEE2E2; color: #991B1B; border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 600; }
+.ec-row { display: flex; flex-direction: row-reverse; align-items: flex-start; gap: 12px; }
+.ec-ico { width: 24px; height: 24px; flex-shrink: 0; }
+.ec-b { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.ec-lbl { font-size: 13px; font-weight: 500; color: var(--txt-grey); white-space: nowrap; }
+.ec-orig { background: #FEE2E2; border-radius: 8px; padding: 8px 12px; font-size: 14px; color: var(--txt); direction: ltr; text-align: left; }
+.ec-corr { background: #D1FAE5; border-radius: 8px; padding: 8px 12px; font-size: 14px; color: var(--txt); direction: ltr; text-align: left; }
+.ec-exp { font-size: 14px; color: var(--txt); line-height: 1.5; }
+.model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; direction: rtl; }
+.mg-hdr { font-size: 13px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; direction: rtl; }
+.mg-box { border-radius: 12px; padding: 14px; }
+.mg-box pre { font-family: 'IBM Plex Sans Arabic', sans-serif; font-size: 13px; color: var(--txt); line-height: 1.8; direction: ltr; text-align: left; white-space: pre-wrap; }
+.mg-orig { background: #FFF5F5; border: 1px solid #FEE2E2; }
+.mg-good { background: #FAFFFE; border: 1px solid #D1FAE5; }
+.imp-blk { background: white; border: 1px solid var(--bdr); border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
+.imp-hdr { background: #F9FAFB; border-bottom: 1px solid var(--bdr); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; direction: rtl; }
+.imp-hdr-left { display: flex; align-items: center; gap: 8px; }
+.imp-score-num { font-size: 18px; font-weight: 600; line-height: 1.5; }
+.imp-score-denom { font-size: 12px; color: var(--txt-grey); }
+.imp-hdr-right { text-align: right; }
+.imp-name { font-size: 16px; font-weight: 600; color: var(--txt-dark); line-height: 1.4; }
+.imp-en { font-size: 12px; color: var(--txt-muted); }
+.imp-section { padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+.imp-sec-hdr { display: flex; align-items: center; gap: 8px; direction: rtl; }
+.imp-sec-hdr img { width: 16px; height: 16px; flex-shrink: 0; }
+.imp-sec-hdr-txt { font-size: 13px; }
+.imp-sec-hdr-txt.green { color: #065F46; }
+.imp-sec-hdr-txt.grey  { color: var(--txt-muted); }
+.imp-good-item { background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 12px; padding: 18px 16px 16px; display: flex; flex-direction: column; gap: 0; position: relative; }
+.imp-good-badge { position: absolute; top: 18px; right: 16px; width: 20px; height: 20px; background: #4CAF50; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; flex-shrink: 0; }
+.imp-good-txt { font-size: 13px; color: var(--txt-dark); padding-right: 30px; margin-bottom: 10px; }
+.imp-good-quote { background: #ECFDF5; border: 1px solid #D1FAE5; border-radius: 6px; padding: 8px 12px; font-size: 12px; color: #4B5563; direction: ltr; text-align: left; }
+.imp-tip-card { background: #F9FAFB; border: 1px solid var(--bdr); border-radius: 10px; overflow: hidden; }
+.imp-tip-top { padding: 18px 16px 12px; display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; direction: rtl; }
+.imp-tip-top-right { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; flex: 1; }
+.imp-tip-row { display: flex; align-items: center; gap: 8px; direction: rtl; }
+.imp-prio { height: 24px; border-radius: 999px; padding: 0 10px; display: flex; align-items: center; font-size: 11px; white-space: nowrap; }
+.imp-prio.high { background: #FEE2E2; color: #991B1B; }
+.imp-prio.med  { background: #FEF3C7; color: #92400E; }
+.imp-tip-name { font-size: 14px; font-weight: 600; color: var(--txt-dark); }
+.imp-tip-desc { font-size: 13px; color: var(--txt-muted); }
+.imp-gain { background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 999px; padding: 0 8px; height: 22px; display: flex; align-items: center; font-size: 11px; color: #065F46; white-space: nowrap; flex-shrink: 0; }
+.imp-toggle-row { background: #F3F4F6; border-top: 1px solid var(--bdr); height: 33px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; font-size: 10px; color: var(--txt-muted); }
+.imp-toggle-row svg { width: 14px; height: 14px; flex-shrink: 0; }
+.imp-examples { background: #FFFBEB; border-top: 1px solid #FEF3C7; padding: 8px 16px; display: flex; flex-direction: column; gap: 8px; }
+.imp-ex-from { background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; padding: 8px 12px; }
+.imp-ex-lbl { font-size: 11px; color: #991B1B; margin-bottom: 4px; }
+.imp-ex-lbl.green { color: #065F46; }
+.imp-ex-txt { font-size: 13px; color: var(--txt); line-height: 1.5; direction: ltr; text-align: left; }
+.imp-ex-sug { background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 8px; padding: 8px 12px; }
+.imp-alts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; direction: rtl; }
+.imp-alt-used { background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; padding: 12px 16px; }
+.imp-alt-can  { background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 8px; padding: 12px 16px; }
+.imp-alt-lbl  { font-size: 12px; color: var(--txt-muted); margin-bottom: 6px; }
+.imp-alt-word { font-size: 14px; color: #991B1B; font-weight: 500; }
+.imp-alt-can .imp-alt-word { color: #065F46; }
+
+/* ── OVERVIEW ── */
+.ov-wrap { padding: 24px; display: flex; flex-direction: column; gap: 24px; }
+.ov-chart-crd { background: white; border: 1px solid var(--bdr); border-radius: 12px; padding: 16px 24px; display: flex; flex-direction: column; gap: 16px; align-items: flex-end; }
+.ov-chart-ttl { font-size: 18px; font-weight: 700; color: #1B2A4A; line-height: 1.5; }
+.ov-chart-h { width: 100%; height: 280px; }
+.ov-time-crd { background: white; border: 1px solid var(--bdr); border-radius: 12px; padding: 0; overflow: hidden; }
+.ov-time-hdr { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px 0; direction: rtl; }
+.ov-time-ttl { font-size: 18px; font-weight: 700; color: #1B2A4A; line-height: 1.5; }
+.ov-time-sub { font-size: 11px; color: #4A4A4A; }
+.ov-tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 16px 24px 24px; direction: rtl; }
+.ov-tip { background: white; border: 2px solid #E0E0E0; border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
+.ov-tip-ttl { font-size: 14px; font-weight: 600; color: #012169; line-height: 1.5; }
+.ov-tip-list { font-size: 13px; color: #000; line-height: 1.5; text-align: right; padding-right: 0; list-style-position: inside; list-style-type: disc; }
+.ov-plan-ttl { font-size: 18px; font-weight: 700; color: #1B2A4A; }
+.ov-plan-list { display: flex; flex-direction: column; gap: 24px; }
+.ov-pi { background: #F9FAFB; border: 1px solid var(--bdr); border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; direction: rtl; }
+.ov-pi-num { width: 32px; height: 32px; border-radius: 16px; background: #1B2A4A; color: white; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ov-pi-body { flex: 1; display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+.ov-pi-top { display: flex; align-items: center; gap: 8px; direction: rtl; }
+.ov-pi-name { font-size: 14px; font-weight: 600; color: #1B2A4A; }
+.ov-pi-badge { border-radius: 20px; padding: 2px 8px; font-size: 10px; font-weight: 600; white-space: nowrap; }
+.ov-pi-badge.high { background: #FEE2E2; color: #991B1B; }
+.ov-pi-badge.med  { background: #FEF3C7; color: #92400E; }
+.ov-pi-desc { font-size: 13px; color: #6B7280; white-space: nowrap; }
+.ov-pi-score { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.ov-pi-score-n { font-size: 18px; font-weight: 700; color: #4CAF50; line-height: 1; }
+.ov-pi-score-l { font-size: 10px; color: #6B7280; }
+
+/* ── USER SWITCHER ── */
+.sw-wrap { position: fixed; bottom: 20px; left: 20px; z-index: 300; }
+.sw-panel { background: white; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,.14); border: 1px solid var(--bdr); padding: 12px; width: 200px; margin-bottom: 8px; }
+.sw-ptitle { font-size: 10px; font-weight: 600; color: var(--txt-light); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+.sw-opt { display: block; width: 100%; text-align: right; padding: 8px 10px; border-radius: 8px; font-size: 12px; font-weight: 500; margin-bottom: 2px; transition: all .15s; font-family: 'IBM Plex Sans Arabic', sans-serif; background: #F9FAFB; color: #374151; }
+.sw-opt:hover { background: #F3F4F6; }
+.sw-opt.on { background: var(--blue); color: white; }
+.sw-btn { display: flex; align-items: center; gap: 8px; background: var(--blue); color: white; border-radius: 20px; padding: 8px 16px; font-size: 12px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,.2); font-family: 'IBM Plex Sans Arabic', sans-serif; transition: background .15s; }
+.sw-btn:hover { background: var(--blue-dk); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-in">
+    <div class="hdr-r1">
+      <div class="logo">
+        <img src="https://www.figma.com/api/mcp/asset/2eac9eec-0ea8-4093-acd2-1e080e1ffeec" alt="GoIELTS.ai" onerror="this.style.display='none'">
+      </div>
+      <div class="share-grp">
+        <span class="share-lbl">شارك درجتك</span>
+        <div class="share-pill">
+          <span class="share-pill-url">app.goielts.ai/score/1063</span>
+          <button class="share-copy" onclick="this.textContent='✓'">نسخ</button>
+        </div>
+      </div>
+    </div>
+    <div class="hdr-r2">
+      <div class="page-ttl">
+        <img src="https://www.figma.com/api/mcp/asset/c090fcae-4379-43dc-b3b0-dc538dcefd73" class="page-ttl-icon" onerror="this.style.display='none'" alt="">
+        مبروك! خلّصت الاختبار بنجاح
+        <svg class="page-ttl-check" viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#4CAF50"/><path d="M10 18l6 6 10-12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="nav-row">
+        <button class="btn-back">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M5 12l7-7M5 12l7 7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          رجوع
+        </button>
+        <button class="btn-ghost">إعادة الاختبار</button>
+        <button class="btn-ghost">الاختبارات</button>
+        <button class="btn-skill">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><path d="M6 9l6 6 6-6" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          الكتابة
+        </button>
+      </div>
+    </div>
+    <div class="info-bar">
+      <div class="info-col"><span class="info-lbl">اسم المتدرب</span><span class="info-val">أحمد علي</span></div>
+      <div class="info-col"><span class="info-lbl">اسم الاختبار</span><span class="info-val">Cambridge IELTS Practice Test 17</span></div>
+      <div class="info-col"><span class="info-lbl">نمط الاختبار</span><span class="info-val">التدريب</span></div>
+      <div class="info-col"><span class="info-lbl">نوع الاختبار</span><span class="info-val">أكاديمي</span></div>
+      <div class="info-col"><span class="info-lbl">المهارة</span><span class="info-val">الكتابة</span></div>
+      <div class="info-col"><span class="info-lbl">رقم المحاولة</span><span class="info-val">3</span></div>
+      <div class="info-col"><span class="info-lbl">تاريخ الاختبار</span><span class="info-val" dir="ltr">12/3/2025 - 4:45م</span></div>
+      <div class="info-col"><span class="info-lbl">الوقت المستغرق</span><span class="info-val">60 دقيقة</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- UNVERIFIED gate -->
+  <div id="unverGate">
+    <div class="uv-card">
+      <img class="uv-icon" src="https://www.figma.com/api/mcp/asset/1def7066-a7a7-4ad3-a73f-2f7634d3dfde" alt="" onerror="this.style.display='none'">
+      <h3 class="uv-title">ودّنا نتأكد من حسابك أولاً</h3>
+      <p class="uv-desc">علشان نقدر نوصلك نتيجتك بسهولة، تحتاج تفعّل حسابك سواء عن طريق الإيميل أو رقم الجوال. بنبعث لك كود للتفعيل على الوسيلة اللي تختارها.</p>
+      <button class="uv-btn" onclick="setUser('paid')">فعّل حسابك</button>
+    </div>
+  </div>
+
+  <!-- GOAL CARD -->
+  <div class="goal-card" id="goalCard">
+    <div class="goal-r1">
+      <div class="goal-txt-grp">
+        <img class="goal-ico" src="https://www.figma.com/api/mcp/asset/f7fa232d-785d-4b7c-98a4-68a446d2312a" onerror="this.style.display='none'" alt="">
+        <div class="goal-txts">
+          <div class="goal-title">أداء رهيب! 🔥 باقي 3.5 بس وتوصل لهدفك!</div>
+          <div class="goal-sub">أنت قريب بـ 3.5 درجة فقط من الدرجة 8! جرب باقة التدريب السريع عشان ترفع درجتك</div>
+        </div>
+      </div>
+      <button class="btn-sub">اشترك الآن</button>
+    </div>
+    <div class="prog-grp">
+      <div class="prog-track"><div class="prog-fill" style="width:51.79%"></div></div>
+      <div class="prog-lbls"><span>الدرجة الحالية  4.5</span><span>الدرجة المستهدفة  8.0</span></div>
+    </div>
+  </div>
+
+  <!-- NO GOAL CARD -->
+  <div class="no-goal-card" id="noGoalCard" style="display:none">
+    <img class="ng-ico" src="https://www.figma.com/api/mcp/asset/23fa2114-7aa8-42a2-879c-866b1efb3045" onerror="this.style.display='none'" alt="">
+    <div class="ng-txts">
+      <div class="ng-title">حدد درجتك المستهدفة وموعد اختبارك</div>
+      <div class="ng-sub">حدد درجتك اللي تبيها، واحنا نجهز لك خطة تدريب مخصصة توصلك لها!</div>
+    </div>
+    <button class="ng-btn" onclick="setUser('paid')">حدد هدفك</button>
+  </div>
+
+  <!-- NO-GOAL frosted gate -->
+  <div id="ngGate">
+    <div class="ng-cta-card">
+      <img class="ng-cta-icon" src="https://www.figma.com/api/mcp/asset/9b844ca6-4fc3-4800-a978-736598843e69" alt="" onerror="this.style.display='none'">
+      <h3 class="ng-cta-title">وش الدرجة اللي تبيها؟</h3>
+      <p class="ng-cta-desc">ادخل الدرجة اللي تبيها، وبنجهز لك توصيات وخطة مخصصة توصلك لهدفك</p>
+      <button class="ng-cta-btn" onclick="setUser('paid')">حدد هدفك</button>
+    </div>
+  </div>
+
+  <!-- SCORE CARDS -->
+  <div class="score-row" id="scoreRow">
+    <div class="score-card">
+      <div class="sc-lbl">المهمة 2</div>
+      <div class="sc-gauge">
+        <div class="gauge-wrap" style="width:100px;height:100px">
+          <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+            <path class="gauge-track-small" d="" stroke="#E8E8E8" stroke-width="7" stroke-linecap="round" fill="none"/>
+            <path id="arc-t2" d="" stroke="#FF8C00" stroke-width="7" stroke-linecap="round" fill="none"/>
+          </svg>
+          <div class="gauge-num">4.5</div>
+        </div>
+      </div>
+    </div>
+    <div class="score-card">
+      <div class="sc-lbl">المهمة 1</div>
+      <div class="sc-gauge">
+        <div class="gauge-wrap" style="width:100px;height:100px">
+          <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+            <path class="gauge-track-small" d="" stroke="#E8E8E8" stroke-width="7" stroke-linecap="round" fill="none"/>
+            <path id="arc-t1" d="" stroke="#FF8C00" stroke-width="7" stroke-linecap="round" fill="none"/>
+          </svg>
+          <div class="gauge-num">6.5</div>
+        </div>
+      </div>
+    </div>
+    <div class="score-card overall">
+      <div class="sc-lbl">الدرجة الكلية</div>
+      <div class="sc-gauge">
+        <div class="gauge-wrap" style="width:130px;height:130px">
+          <svg width="130" height="130" viewBox="0 0 130 130" fill="none">
+            <path class="gauge-track-large" d="" stroke="#E8E8E8" stroke-width="9" stroke-linecap="round" fill="none"/>
+            <path id="arc-ov" d="" stroke="#C8102E" stroke-width="9" stroke-linecap="round" fill="none"/>
+          </svg>
+          <div class="gauge-num overall">4.5</div>
+        </div>
+        <div class="sc-sub"><span>الدرجة</span><span>7.0 / 9.0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITERIA -->
+  <div class="crit-row" id="critRow">
+    <div class="crit-card"><span class="crit-lbl">انجاز المهمة</span><div class="crit-score"><span class="crit-n" style="color:#C30020">4</span><span class="crit-d">/9</span></div></div>
+    <div class="crit-card"><span class="crit-lbl">التماسك والترابط</span><div class="crit-score"><span class="crit-n" style="color:#F59E0B">4.5</span><span class="crit-d">/9</span></div></div>
+    <div class="crit-card"><span class="crit-lbl">الثروة اللغوية</span><div class="crit-score"><span class="crit-n" style="color:#FF8C00">5</span><span class="crit-d">/9</span></div></div>
+    <div class="crit-card"><span class="crit-lbl">التنوع والدقة النحوية</span><div class="crit-score"><span class="crit-n" style="color:#C90F2E">4.5</span><span class="crit-d">/9</span></div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs-box" id="tabsBox">
+    <div class="tab-list">
+      <button class="tab-btn" onclick="tabSwitch('ov',this)">نظرة عامة</button>
+      <button class="tab-btn on" onclick="tabSwitch('ans',this)">اجابتك والتصحيح</button>
+    </div>
+    <div>
+
+      <!-- OVERVIEW TAB -->
+      <div class="tab-pane" id="tab-ov">
+        <div class="ov-wrap">
+          <div class="ov-chart-crd">
+            <span class="ov-chart-ttl">تطور الدرجات</span>
+            <div class="ov-chart-h"><canvas id="pgChart"></canvas></div>
+          </div>
+
+          <!-- Time Tips: Free gate wraps blurred version -->
+          <div class="ov-free-gate">
+            <div class="ov-free-blur">
+              <div class="ov-time-crd">
+                <div class="ov-time-hdr"><span class="ov-time-ttl">توصيات إدارة الوقت</span><span class="ov-time-sub">الوقت المستهدف: 40 دقيقة</span></div>
+                <div class="ov-tips-grid">
+                  <div class="ov-tip"><span class="ov-tip-ttl">Task 2 (40 دقيقة)</span><ul class="ov-tip-list"><li>5 دقايق تخطيط قبل ما تكتب</li><li>30 دقيقة كتابة</li><li>5 دقايق مراجعة</li></ul></div>
+                  <div class="ov-tip"><span class="ov-tip-ttl">Task 1 (20 دقيقة)</span><ul class="ov-tip-list"><li>ما تتجاوز 20 دقيقة</li><li>اكتب مباشرة</li></ul></div>
+                  <div class="ov-tip"><span class="ov-tip-ttl">الحد الأدنى للكلمات</span><ul class="ov-tip-list"><li>150 كلمة Task1</li><li>250 كلمة Task2</li></ul></div>
+                  <div class="ov-tip"><span class="ov-tip-ttl">أثناء الاختبار</span><ul class="ov-tip-list"><li>راقب الوقت كل 10 دقايق</li></ul></div>
+                </div>
+              </div>
+            </div>
+            <div class="ov-free-cta">
+              <div class="ov-free-cta-inner">
+                <p class="ov-free-cta-title">حابب تعرف أكثر؟</p>
+                <p class="ov-free-cta-sub">اشترك الحين وشوف تحليلك الكامل مع خطة خاصة فيك تساعدك توصل لهدفك أسرع!</p>
+                <button class="ov-free-cta-btn">اشترك وابدأ خطتك</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Time Tips: visible to non-free users -->
+          <div class="ov-time-crd ov-free-hide">
+            <div class="ov-time-hdr"><span class="ov-time-ttl">توصيات إدارة الوقت</span><span class="ov-time-sub">الوقت المستهدف: 40 دقيقة</span></div>
+            <div class="ov-tips-grid">
+              <div class="ov-tip"><span class="ov-tip-ttl">Task 2 (40 دقيقة)</span><ul class="ov-tip-list"><li>5 دقايق تخطيط قبل ما تكتب</li><li>30 دقيقة كتابة</li><li>5 دقايق مراجعة</li></ul></div>
+              <div class="ov-tip"><span class="ov-tip-ttl">Task 1 (20 دقيقة)</span><ul class="ov-tip-list"><li>ما تتجاوز 20 دقيقة — الـ Task 2 يساوي ضعف الدرجات</li><li>اكتب مباشرة، ما تحتاج مقدمة طويلة</li></ul></div>
+              <div class="ov-tip"><span class="ov-tip-ttl">الحد الأدنى للكلمات</span><ul class="ov-tip-list"><li>150 كلمة Task1</li><li>250 كلمة Task2</li><li>تحتها = خصم تلقائي</li></ul></div>
+              <div class="ov-tip"><span class="ov-tip-ttl">أثناء الاختبار</span><ul class="ov-tip-list"><li>راقب الوقت كل 10 دقايق</li><li>إذا وقفت في فكرة — تجاوزها وارجع</li><li>ما تراجع الجمل وانت تكتب — خلّص أول</li></ul></div>
+            </div>
+          </div>
+
+          <!-- Action Plan -->
+          <span class="ov-plan-ttl">خطة العمل الشخصية</span>
+          <div class="ov-plan-list">
+            <div class="ov-pi">
+              <div class="ov-pi-num">1</div>
+              <div class="ov-pi-body">
+                <div class="ov-pi-top"><span class="ov-pi-name">تصحيح الاخطاء النحوية الاساسية</span><span class="ov-pi-badge high">اولوية عالية</span></div>
+                <span class="ov-pi-desc">راجع subject-verb agreement والازمنة الاساسية</span>
+              </div>
+              <div class="ov-pi-score"><span class="ov-pi-score-n">+1.0</span><span class="ov-pi-score-l">درجة متوقعة</span></div>
+            </div>
+
+            <!-- Items 2-5: Free gate -->
+            <div class="ov-free-gate" style="margin-top:0">
+              <div class="ov-free-blur" style="display:flex;flex-direction:column;gap:24px">
+                <div class="ov-pi"><div class="ov-pi-num">2</div><div class="ov-pi-body"><div class="ov-pi-top"><span class="ov-pi-name">زيادة عدد الكلمات</span><span class="ov-pi-badge high">اولوية عالية</span></div><span class="ov-pi-desc">اكتب 150 كلمة على الاقل ل Task 1</span></div><div class="ov-pi-score"><span class="ov-pi-score-n">+0.5</span><span class="ov-pi-score-l">درجة متوقعة</span></div></div>
+                <div class="ov-pi"><div class="ov-pi-num">3</div><div class="ov-pi-body"><div class="ov-pi-top"><span class="ov-pi-name">تطوير الافكار بشكل كامل</span><span class="ov-pi-badge high">اولوية عالية</span></div><span class="ov-pi-desc">اشرح كل فكرة بجملتين او ثلاث مع امثلة داعمة</span></div><div class="ov-pi-score"><span class="ov-pi-score-n">+1.0</span><span class="ov-pi-score-l">درجة متوقعة</span></div></div>
+                <div class="ov-pi"><div class="ov-pi-num">4</div><div class="ov-pi-body"><div class="ov-pi-top"><span class="ov-pi-name">تحسين التماسك باستخدام الروابط</span><span class="ov-pi-badge high">اولوية عالية</span></div><span class="ov-pi-desc">استخدم روابط مناسبة: However, Moreover, Therefore</span></div><div class="ov-pi-score"><span class="ov-pi-score-n">+0.5</span><span class="ov-pi-score-l">درجة متوقعة</span></div></div>
+                <div class="ov-pi"><div class="ov-pi-num">5</div><div class="ov-pi-body"><div class="ov-pi-top"><span class="ov-pi-name">توسيع الثروة اللغوية</span><span class="ov-pi-badge med">اولوية متوسطة</span></div><span class="ov-pi-desc">تعلم 10 كلمات اكاديمية جديدة يوميا</span></div><div class="ov-pi-score"><span class="ov-pi-score-n">+0.5</span><span class="ov-pi-score-l">درجة متوقعة</span></div></div>
+              </div>
+              <div class="ov-free-cta">
+                <div class="ov-free-cta-inner">
+                  <p class="ov-free-cta-title">حابب تعرف أكثر؟</p>
+                  <p class="ov-free-cta-sub">اشترك الحين وشوف تحليلك الكامل مع خطة خاصة فيك تساعدك توصل لهدفك أسرع!</p>
+                  <button class="ov-free-cta-btn">اشترك وابدأ خطتك</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Items 2-5: non-free users -->
+            <div class="ov-free-hide" style="display:flex;flex-direction:column;gap:24px">
+              <div class="ov-pi"><div class="ov-pi-num">2</div><div class="ov-pi-body"><div class="ov-pi-top"><span class="ov-pi-name">زيادة عدد الكلمات</span><span class="ov-pi-badge high">اولوية عالية</span></div><span class="ov-pi-desc">اكتب 150 كلمة على الاقل ل Task 1</span></div><div class="ov-pi-score"><span class="ov-pi-score-n">+0.5</span><span class="ov-pi-score-l">درجة متوقعة</span></div></div>
+              <div class="ov-pi"><div class="ov-pi-num">3</div><div class="ov-pi-body"><div class="ov-pi-top"><span class="ov-pi-name">تطوير الافكار بشكل كامل</span><span class="ov-pi-badge high">اولوية عالية</span></div><span class="ov-pi-desc">اشرح كل فكرة بجملتين او ثلاث مع امثلة داعمة</span></div><div class="ov-pi-score"><span class="ov-pi-score-n">+1.0</span><span class="ov-pi-score-l">درجة متوقعة</span></div></div>
+              <div class="ov-pi"><div class="ov-pi-num">4</div><div class="ov-pi-body"><div class="ov-pi-top"><span class="ov-pi-name">تحسين التماسك باستخدام الروابط</span><span class="ov-pi-badge high">اولوية عالية</span></div><span class="ov-pi-desc">استخدم روابط مناسبة: However, Moreover, Therefore</span></div><div class="ov-pi-score"><span class="ov-pi-score-n">+0.5</span><span class="ov-pi-score-l">درجة متوقعة</span></div></div>
+              <div class="ov-pi"><div class="ov-pi-num">5</div><div class="ov-pi-body"><div class="ov-pi-top"><span class="ov-pi-name">توسيع الثروة اللغوية</span><span class="ov-pi-badge med">اولوية متوسطة</span></div><span class="ov-pi-desc">تعلم 10 كلمات اكاديمية جديدة يوميا</span></div><div class="ov-pi-score"><span class="ov-pi-score-n">+0.5</span><span class="ov-pi-score-l">درجة متوقعة</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANSWER TAB -->
+      <div class="tab-pane on" id="tab-ans">
+        <div class="tab-content">
+
+          <!-- TASK 1 -->
+          <div class="task-blk">
+            <button class="task-hdr" onclick="taskToggle('tb1','arr1')">
+              <div class="th-right"><span class="th-name">المهمة 1 - General Training Letter</span><span class="th-sub">رسالة شخصية • 150 كلمة • 33%</span></div>
+              <div class="th-left"><span class="th-score">4/9</span><svg id="arr1" class="th-arr open" width="14" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </button>
+            <div class="task-body open" id="tb1">
+              <div class="q-box">
+                <span class="q-lbl">السؤال:</span>
+                <p class="q-txt">You have a friend who is interested in learning to swim. You know of a swimming class in your area.<br><br>Write a letter to your friend. In your letter:<br>- describe the swimming class<br>- explain why you think your friend would enjoy it<br>- suggest when you could go together<br><br>Write at least 150 words.</p>
+              </div>
+              <div class="sub-tabs">
+                <button class="sub-btn on" onclick="subSwitch('t1ori','t1',this,'#012269')">اجابتك الاصلية</button>
+                <button class="sub-btn" onclick="subSwitch('t1mod','t1',this,'#4CAF50')">النسخة المحسنة</button>
+                <button class="sub-btn" onclick="subSwitch('t1imp','t1',this,'#FF8C00')">اقتراحات التحسين</button>
+              </div>
+
+              <!-- T1 ORIGINAL -->
+              <div class="sub-pane on" id="t1ori">
+                <div class="ans-hdr">
+                  <span class="ans-ttl">اجابتك - المهمة 1</span>
+                  <div class="fchips" id="t1chips">
+                    <button class="fchip f-all" onclick="filt('t1','all',this)">الكل</button>
+                    <button class="fchip" onclick="filt('t1','e',this)"><span class="cdot" style="background:#FEE2E2;border:1px solid #C30020"></span>خطأ نحوي<span class="cnt">11</span></button>
+                    <button class="fchip" onclick="filt('t1','w',this)"><span class="cdot" style="background:#DBEAFE;border:1px solid #3B82F6"></span>خطأ إملائي<span class="cnt">3</span></button>
+                    <button class="fchip" onclick="filt('t1','g',this)"><span class="cdot" style="background:#D1FAE5;border:1px solid #4CAF50"></span>استخدام المفردات<span class="cnt">1</span></button>
+                  </div>
+                </div>
+                <div class="ann-text" id="t1txt" style="margin-top:16px;gap:0 2px" onclick="closeTips(event)">
+                  <span class="ann ann-g t1-g" onclick="tip(this,event)"><span class="a-t">Dear Sarah,</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">✅ تحية مناسبة</div><div class="tip-p">بداية صحيحة للرسالة غير الرسمية</div></div></div></span>
+                  <br>
+                  <span>I am writing to you because I </span><span class="ann ann-e t1-e ann-free-visible" onclick="tip(this,event)"><span class="a-t">want tell you</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">خطأ نحوي</div><div class="tip-p">"want to tell" وليس "want tell"</div></div></div></span><span> about </span><span class="ann ann-e t1-e ann-free-visible" onclick="tip(this,event)"><span class="a-t">swimming class in our area</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">خطأ نحوي</div><div class="tip-p">"a swimming class" — ينقص أداة التنكير</div></div></div></span><span>. The </span><span class="ann ann-e t1-e" onclick="tip(this,event)"><span class="a-t">comunity center have new class</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">إملائي + نحوي</div><div class="tip-p">"community"، "has" مع المفرد، وينقص "a"</div></div></div></span><span> for people who </span><span class="ann ann-e t1-e" onclick="tip(this,event)"><span class="a-t">dont know swim</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">خطأ نحوي</div><div class="tip-p">"don't know how to swim" — ينقص "how to"</div></div></div></span><span>.</span>
+                  <br>
+                  <span>The class is </span><span class="ann ann-e t1-e" onclick="tip(this,event)"><span class="a-t">in Tuesday and Thursday</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">خطأ حرف جر</div><div class="tip-p">"on Tuesday" — "on" مع أيام الأسبوع</div></div></div></span><span> </span><span class="ann ann-e t1-e" onclick="tip(this,event)"><span class="a-t">in evening time</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">تعبير خاطئ</div><div class="tip-p">"in the evening" هي الصحيحة</div></div></div></span><span>. </span><span class="ann ann-w t1-w" onclick="tip(this,event)"><span class="a-t">The teacher is good</span><span class="a-l"></span><div class="tip" style="border-color:#FF8C00"><div class="tip-bd"><div class="tip-h" style="color:#FF8C00">💛 مفردات بسيطة</div><div class="tip-p">"experienced" أو "qualified" أفضل من "good"</div></div></div></span><span> and he </span><span class="ann ann-e t1-e" onclick="tip(this,event)"><span class="a-t">teached many peoples before</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">خطأ نحوي</div><div class="tip-p">فعل شاذ: "taught" وليس "teached"، و"people" لا تُجمع</div></div></div></span><span>. </span><span class="ann ann-e t1-e" onclick="tip(this,event)"><span class="a-t">It cost 50 dollar per month</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">خطأ نحوي</div><div class="tip-p">"It costs 50 dollars"</div></div></div></span><span> and they give you </span><span class="ann ann-e t1-e" onclick="tip(this,event)"><span class="a-t">all thing you need</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">خطأ نحوي</div><div class="tip-p">"everything you need"</div></div></div></span><span> like towel and cap.</span>
+                  <br>
+                  <span>I was thinking </span><span class="ann ann-e t1-e" onclick="tip(this,event)"><span class="a-t">maybe me and you can go togather</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">نحوي + إملائي</div><div class="tip-p">"you and I" وليس "me and you"، و"together"</div></div></div></span><span>. You said before you </span><span class="ann ann-e t1-e" onclick="tip(this,event)"><span class="a-t">want learn swimming</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">خطأ نحوي</div><div class="tip-p">"want to learn" — ينقص "to"</div></div></div></span><span>. We can also </span><span class="ann ann-e t1-e" onclick="tip(this,event)"><span class="a-t">do practise in weekend togather</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">أخطاء متعددة</div><div class="tip-p">"practice on the weekend together"</div></div></div></span><span>.</span>
+                  <br>
+                  <span class="ann ann-w t1-w" onclick="tip(this,event)"><span class="a-t">Please tell me what you think about this. I hope you will come with me.</span><span class="a-l"></span><div class="tip" style="border-color:#FF8C00"><div class="tip-bd"><div class="tip-h" style="color:#FF8C00">💛 أسلوب بسيط</div><div class="tip-p">"I would love to hear your thoughts" أفضل</div></div></div></span>
+                  <br>
+                  <span class="ann ann-e t1-e" onclick="tip(this,event)"><span class="a-t">Waiting your reply,</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">خاتمة خاطئة</div><div class="tip-p">"Awaiting your reply," هي الصحيحة</div></div></div></span>
+                  <br>
+                  <span class="ann ann-g t1-g" onclick="tip(this,event)"><span class="a-t">Alex</span><span class="a-l"></span><div class="tip" style="border-color:#4CAF50"><div class="tip-bd"><div class="tip-h" style="color:#4CAF50">✅ توقيع صحيح</div><div class="tip-p">التوقيع مناسب للرسالة غير الرسمية</div></div></div></span>
+                </div>
+
+                <div class="err-hdr" style="margin-top:20px">
+                  <div class="err-hdr-l">
+                    <img class="err-hdr-ico" src="https://www.figma.com/api/mcp/asset/ef343312-e685-4c78-8cdf-48188ac8439f" onerror="this.style.display='none'" alt="">
+                    <span class="err-hdr-t">الاخطاء وتصحيحها - المهمة 1</span>
+                    <span class="err-cnt-badge">14 اخطاء</span>
+                  </div>
+                  <div class="fchips">
+                    <div class="fchip f-all"><span>الكل</span><span class="cnt">14</span></div>
+                    <div class="fchip"><span class="cdot" style="background:#FEE2E2;border:1px solid #C30020"></span>خطأ نحوي<span class="cnt">11</span></div>
+                    <div class="fchip"><span class="cdot" style="background:#DBEAFE;border:1px solid #3B82F6"></span>خطأ إملائي<span class="cnt">3</span></div>
+                    <div class="fchip"><span class="cdot" style="background:#FEF3C7;border:1px solid #FF8C00"></span>استخدام المفردات<span class="cnt">1</span></div>
+                  </div>
+                </div>
+                <div id="t1errs" style="margin-top:12px;display:flex;flex-direction:column;gap:12px"></div>
+                <div id="t1errsRemaining" style="display:flex;flex-direction:column;gap:12px;position:relative;margin-top:12px">
+                  <div id="t1errsLocked" style="display:flex;flex-direction:column;gap:12px"></div>
+                  <div id="freeGate">
+                    <div class="fg-blur"></div>
+                    <div class="fg-cta-wrap">
+                      <div class="fg-cta-inner">
+                        <p class="fg-cta-title">حابب تعرف أكثر؟</p>
+                        <p class="fg-cta-sub">اشترك الحين وشوف تحليلك الكامل مع خطة خاصة فيك تساعدك توصل لهدفك أسرع!</p>
+                        <button class="fg-cta-btn">اشترك وابدأ خطتك</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- T1 MODEL -->
+              <div class="sub-pane" id="t1mod">
+                <div style="display:flex;gap:16px;align-items:flex-start;margin-top:4px;direction:rtl">
+                  <div class="mod-free-col-locked" style="flex:1;display:flex;flex-direction:column;gap:12px;align-items:flex-end;position:relative">
+                    <div style="display:flex;gap:8px;align-items:center">
+                      <span style="font-size:14px;font-weight:600;color:#4CAF50">اجابة نموذجية — Band 7.0</span>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#4CAF50" stroke-width="1.5"/><path d="M8 12l3 3 5-5" stroke="#4CAF50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div style="background:#FAFFFE;border:1px solid #D1FAE5;border-radius:12px;padding:20px;width:100%">
+                      <p style="font-family:'IBM Plex Sans Arabic',sans-serif;font-size:14px;color:#374151;line-height:1.8;direction:ltr;text-align:left;white-space:pre-wrap">Dear Sarah,
+
+I hope this letter finds you well. I am writing to let you know about an exciting new swimming class that has recently started at our local community centre.
+
+The classes are held every Tuesday and Thursday evening, from 6:00 to 7:30 PM. The instructor, Mr. Ahmed, is highly experienced and has been teaching swimming for over ten years.
+
+The monthly fee is quite reasonable at just 50 dollars, which includes all the necessary equipment such as towels and swimming caps.
+
+I remember you mentioned that you have always wanted to learn how to swim. I think this would be an excellent opportunity for both of us. We could attend the classes together and even practise at the weekends.
+
+Please let me know what you think. I would love for us to join together.
+
+Warm regards,
+Alex</p>
+                    </div>
+                    <div class="mod-free-cta-overlay">
+                      <div class="mod-free-cta-inner">
+                        <p class="mod-free-cta-title">حابب تعرف أكثر؟</p>
+                        <p class="mod-free-cta-sub">اشترك الحين وشوف تحليلك الكامل مع خطة خاصة فيك تساعدك توصل لهدفك أسرع!</p>
+                        <button class="mod-free-cta-btn">اشترك وابدأ خطتك</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="flex:1;display:flex;flex-direction:column;gap:12px;align-items:flex-end">
+                    <div style="display:flex;gap:8px;align-items:center">
+                      <span style="font-size:14px;font-weight:600;color:#C30020">اجابتك الاصلية</span>
+                    </div>
+                    <div style="background:#FFF5F5;border:1px solid #FEE2E2;border-radius:12px;padding:20px;width:100%">
+                      <p style="font-family:'IBM Plex Sans Arabic',sans-serif;font-size:14px;color:#374151;line-height:1.8;direction:ltr;text-align:left;white-space:pre-wrap">Dear Sarah,
+
+I am writing to you because I want tell you about swimming class in our area. The comunity center have new class for people who dont know swim.
+
+The class is in Tuesday and Thursday in evening time. The teacher is good and he teached many peoples before. It cost 50 dollar per month and they give you all thing you need like towel and cap.
+
+I was thinking maybe me and you can go togather. You said before you want learn swimming.
+
+Waiting your reply,
+Alex</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- T1 IMPROVEMENTS -->
+              <div class="sub-pane" id="t1imp">
+                <div id="t1imp-free-gate">
+                  <div id="t1imp-free-gate-inner">
+                    <p class="imp-free-cta-title">حابب تعرف أكثر؟</p>
+                    <p class="imp-free-cta-sub">اشترك الحين وشوف تحليلك الكامل مع خطة خاصة فيك تساعدك توصل لهدفك أسرع!</p>
+                    <button class="imp-free-cta-btn">اشترك وابدأ خطتك</button>
+                  </div>
+                </div>
+                <div id="t1imp-inner" style="margin-top:4px;display:flex;flex-direction:column;gap:16px">
+                  <div class="imp-blk">
+                    <div class="imp-hdr"><div class="imp-hdr-left"><span class="imp-score-num" style="color:#EF4444">4</span><span class="imp-score-denom">/ 9.0</span></div><div class="imp-hdr-right"><div class="imp-name">إنجاز المهمة</div><div class="imp-en">Task Achievement</div></div></div>
+                    <div class="imp-section">
+                      <div class="imp-sec-hdr"><svg viewBox="0 0 16 16" fill="none" style="width:16px;height:16px"><circle cx="8" cy="8" r="7.5" stroke="#4CAF50"/><path d="M5 8l2.5 2.5L11 5.5" stroke="#4CAF50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="imp-sec-hdr-txt green">ما أجدته</span></div>
+                      <div class="imp-good-item"><div class="imp-good-badge">✓</div><div class="imp-good-txt">ذكرت اسم الرياضة (Swimming) بشكل واضح</div><div class="imp-good-quote">"I am writing to you because I want tell you about swimming class in our area"</div></div>
+                    </div>
+                    <div class="imp-section" style="border-top:1px solid var(--bdr)">
+                      <div class="imp-sec-hdr"><svg viewBox="0 0 16 16" fill="none" style="width:16px;height:16px"><circle cx="8" cy="8" r="7.5" stroke="#6B7280"/><path d="M8 5v3.5M8 11h.01" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/></svg><span class="imp-sec-hdr-txt grey">نصائح للتحسين</span></div>
+                      <div class="imp-tip-card">
+                        <div class="imp-tip-top"><div class="imp-gain">+0.5 درجة</div><div class="imp-tip-top-right"><div class="imp-tip-row"><span class="imp-tip-name">زيادة عدد الكلمات</span><span class="imp-prio high">عالية</span></div><div class="imp-tip-desc">اكتب 150 كلمة على الأقل لـ Task 1</div></div></div>
+                        <div class="imp-toggle-row" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'flex':'none'"><svg viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/></svg>إخفاء الأمثلة<svg viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+                        <div class="imp-examples"><div class="imp-ex-from"><div class="imp-ex-lbl">من إجابتك:</div><div class="imp-ex-txt">الإجابة بأكملها 155 كلمة فقط</div></div><div class="imp-ex-sug"><div class="imp-ex-lbl green">الاقتراح:</div><div class="imp-ex-txt">أضف جملتين عن فوائد السباحة الصحية</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="imp-blk">
+                    <div class="imp-hdr"><div class="imp-hdr-left"><span class="imp-score-num" style="color:#F59E0B">4.5</span><span class="imp-score-denom">/ 9.0</span></div><div class="imp-hdr-right"><div class="imp-name">التماسك والترابط</div><div class="imp-en">Coherence &amp; Cohesion</div></div></div>
+                    <div class="imp-section">
+                      <div class="imp-sec-hdr"><svg viewBox="0 0 16 16" fill="none" style="width:16px;height:16px"><circle cx="8" cy="8" r="7.5" stroke="#4CAF50"/><path d="M5 8l2.5 2.5L11 5.5" stroke="#4CAF50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="imp-sec-hdr-txt green">ما أجدته</span></div>
+                      <div class="imp-good-item"><div class="imp-good-badge">✓</div><div class="imp-good-txt">بنية الرسالة موجودة</div><div class="imp-good-quote">"Dear Sarah," ... "Waiting your reply, Alex"</div></div>
+                    </div>
+                    <div class="imp-section" style="border-top:1px solid var(--bdr)">
+                      <div class="imp-sec-hdr"><svg viewBox="0 0 16 16" fill="none" style="width:16px;height:16px"><circle cx="8" cy="8" r="7.5" stroke="#6B7280"/><path d="M8 5v3.5M8 11h.01" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/></svg><span class="imp-sec-hdr-txt grey">نصائح للتحسين</span></div>
+                      <div class="imp-tip-card">
+                        <div class="imp-tip-top"><div class="imp-gain">+0.5 درجة</div><div class="imp-tip-top-right"><div class="imp-tip-row"><span class="imp-tip-name">تحسين التماسك باستخدام الروابط</span><span class="imp-prio high">عالية</span></div><div class="imp-tip-desc">استخدم: Moreover, Furthermore, In contrast</div></div></div>
+                        <div class="imp-toggle-row" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'flex':'none'"><svg viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/></svg>إخفاء الأمثلة<svg viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+                        <div class="imp-examples"><div class="imp-ex-from"><div class="imp-ex-lbl">من إجابتك:</div><div class="imp-ex-txt">"The class is in Tuesday and Thursday in evening time. The teacher is good"</div></div><div class="imp-ex-sug"><div class="imp-ex-lbl green">الاقتراح:</div><div class="imp-ex-txt">"The classes are held on Tuesdays and Thursdays. Moreover, the teacher is highly experienced."</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FREE STATE: Task 2 locked preview -->
+          <div id="free-t2-preview" style="display:none">
+            <div style="background:#0F1D3E;border-radius:12px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;direction:rtl;filter:blur(4px);opacity:0.7;pointer-events:none;user-select:none;">
+              <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+                <span style="font-size:17px;font-weight:700;color:white">المهمة 2 - Essay</span>
+                <span style="font-size:12px;color:rgba(255,255,255,0.6)">مقال اكاديمي • 250 كلمة • 67%</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:24px">
+                <span style="font-size:20px;font-weight:700;color:white">4.5/9</span>
+                <svg width="14" height="9" viewBox="0 0 14 9" fill="none"><path d="M1 1l6 6 6-6" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- TASK 2 -->
+          <div class="task-blk">
+            <button class="task-hdr" style="background:#0F1D3E;border-radius:12px" onclick="taskToggle('tb2','arr2')">
+              <div class="th-right"><span class="th-name">المهمة 2 - Essay</span><span class="th-sub">مقال اكاديمي • 250 كلمة • 67%</span></div>
+              <div class="th-left"><span class="th-score">4.5/9</span><svg id="arr2" class="th-arr" width="14" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1l6 6 6-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </button>
+            <div class="task-body" id="tb2">
+              <div class="q-box">
+                <span class="q-lbl">السؤال:</span>
+                <p class="q-txt">Some people believe that technology has made our lives more complicated, while others think it has made life easier.<br><br>Discuss both views and give your own opinion.<br><br>Write at least 250 words.</p>
+              </div>
+              <div class="sub-tabs">
+                <button class="sub-btn on" onclick="subSwitch('t2ori','t2',this,'#012269')">اجابتك الاصلية</button>
+                <button class="sub-btn" onclick="subSwitch('t2mod','t2',this,'#4CAF50')">النسخة المحسنة</button>
+                <button class="sub-btn" onclick="subSwitch('t2imp','t2',this,'#FF8C00')">اقتراحات التحسين</button>
+              </div>
+              <div class="sub-pane on" id="t2ori">
+                <div class="ann-text" id="t2txt" style="margin-top:16px;gap:0 2px" onclick="closeTips(event)">
+                  <span>In today's world, technology </span><span class="ann ann-e t2-e" onclick="tip(this,event)"><span class="a-t">have become very importent part</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">أخطاء متعددة</div><div class="tip-p">"has become a very important part"</div></div></div></span><span> of our life.</span>
+                  <br>
+                  <span class="ann ann-g t2-g" onclick="tip(this,event)"><span class="a-t">On the other hand,</span><span class="a-l"></span><div class="tip" style="border-color:#4CAF50"><div class="tip-bd"><div class="tip-h" style="color:#4CAF50">✅ رابط ممتاز</div><div class="tip-p">استخدام جيد لرابط المقارنة</div></div></div></span><span> technology is also very </span><span class="ann ann-e t2-e" onclick="tip(this,event)"><span class="a-t">usefull</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">خطأ إملائي</div><div class="tip-p">"useful" بحرف l واحد</div></div></div></span><span>.</span>
+                  <br>
+                  <span>In my </span><span class="ann ann-e t2-e" onclick="tip(this,event)"><span class="a-t">openion, technology brung more good thing than bad thing</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">أخطاء متعددة</div><div class="tip-p">"opinion"، "brought"، "things" جمع</div></div></div></span><span>. We need to be </span><span class="ann ann-e t2-e" onclick="tip(this,event)"><span class="a-t">carefull</span><span class="a-l"></span><div class="tip"><div class="tip-bd"><div class="tip-h">خطأ إملائي</div><div class="tip-p">"careful" بحرف l واحد</div></div></div></span><span> and use it wisely.</span>
+                </div>
+                <div id="t2errs" style="margin-top:16px;display:flex;flex-direction:column;gap:12px"></div>
+              </div>
+              <div class="sub-pane" id="t2mod">
+                <div class="model-grid" style="margin-top:4px">
+                  <div><div class="mg-hdr" style="color:#4CAF50">✅ إجابة نموذجية — Band 7.5</div><div class="mg-box mg-good"><pre>In recent years, the impact of technology on daily life has become a topic of considerable debate. While some argue that it has introduced complexity, others contend it has simplified living. In my view, the benefits considerably outweigh the drawbacks.
+
+Those who believe technology complicates life point to digital addiction. However, it has undeniably transformed how we communicate and access information.
+
+In conclusion, while potential downsides exist, its overall contribution to progress is immense.</pre></div></div>
+                  <div><div class="mg-hdr" style="color:#C30020">❌ إجابتك الأصلية</div><div class="mg-box mg-orig"><pre>In today days, technology have become very importent part. Some peoples think technology make life hard. On the other hand, technology is also very usefull. In my openion, technology brung more good thing. We need to be carefull.</pre></div></div>
+                </div>
+              </div>
+              <div class="sub-pane" id="t2imp">
+                <div style="margin-top:4px;display:flex;flex-direction:column;gap:16px">
+                  <div class="imp-blk">
+                    <div class="imp-hdr"><div class="imp-hdr-left"><span class="imp-score-num" style="color:#EF4444">4.5</span><span class="imp-score-denom">/ 9.0</span></div><div class="imp-hdr-right"><div class="imp-name">الاستجابة للمهمة</div><div class="imp-en">Task Response</div></div></div>
+                    <div class="imp-section">
+                      <div class="imp-sec-hdr"><svg viewBox="0 0 16 16" fill="none" style="width:16px;height:16px"><circle cx="8" cy="8" r="7.5" stroke="#6B7280"/><path d="M8 5v3.5M8 11h.01" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/></svg><span class="imp-sec-hdr-txt grey">نصائح للتحسين</span></div>
+                      <div class="imp-tip-card">
+                        <div class="imp-tip-top"><div class="imp-gain">+1.0 درجة</div><div class="imp-tip-top-right"><div class="imp-tip-row"><span class="imp-tip-name">تطوير الأفكار بشكل كامل</span><span class="imp-prio high">عالية</span></div><div class="imp-tip-desc">اشرح كل فكرة بجملتين مع أمثلة داعمة</div></div></div>
+                        <div class="imp-toggle-row" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'flex':'none'"><svg viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/></svg>إخفاء الأمثلة<svg viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+                        <div class="imp-examples"><div class="imp-ex-from"><div class="imp-ex-lbl">من إجابتك:</div><div class="imp-ex-txt">"In my openion, technology brung more good thing than bad thing." — فكرة غير مطوّرة</div></div><div class="imp-ex-sug"><div class="imp-ex-lbl green">الاقتراح:</div><div class="imp-ex-txt">"Technology has revolutionized communication, enabling people to connect instantly across borders."</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- SWITCHER -->
+<div class="sw-wrap">
+  <div class="sw-panel" id="swPanel" style="display:none">
+    <div class="sw-ptitle">Preview as user</div>
+    <button class="sw-opt on" onclick="setUser('paid',this)">✅ Paid User</button>
+    <button class="sw-opt" onclick="setUser('free',this)">🔒 Free User</button>
+    <button class="sw-opt" onclick="setUser('unverified',this)">📧 Unverified</button>
+    <button class="sw-opt" onclick="setUser('no-goal',this)">🎯 No Goal</button>
+  </div>
+  <button class="sw-btn" onclick="swToggle()">👤 <span id="swLbl">Paid User</span> <span id="swArrow">▲</span></button>
+</div>
+
+<script>
+const LABELS = { paid:'✅ Paid User', free:'🔒 Free User', unverified:'📧 Unverified', 'no-goal':'🎯 No Goal' };
+
+function tabSwitch(id, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('tab-'+id).classList.add('on');
+}
+
+function taskToggle(bodyId, arrId) {
+  const body = document.getElementById(bodyId);
+  const arr = document.getElementById(arrId);
+  body.classList.toggle('open');
+  arr.classList.toggle('open', body.classList.contains('open'));
+}
+
+function subSwitch(panelId, prefix, btn, color) {
+  const tb = btn.closest('.task-body');
+  tb.querySelectorAll('.sub-btn').forEach(b=>{b.classList.remove('on');b.style.color='';b.style.borderBottomColor='';});
+  tb.querySelectorAll('.sub-pane').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on'); btn.style.color=color; btn.style.borderBottomColor=color;
+  document.getElementById(panelId).classList.add('on');
+}
+
+let openTip = null;
+function tip(el, e) {
+  e.stopPropagation();
+  const t = el.querySelector('.tip');
+  if (!t) return;
+  if (openTip && openTip !== t) openTip.classList.remove('on');
+  t.classList.toggle('on');
+  openTip = t.classList.contains('on') ? t : null;
+}
+function closeTips(e) { if(openTip){openTip.classList.remove('on');openTip=null;} }
+document.addEventListener('click', closeTips);
+
+function filt(pfx, type, btn) {
+  const chips = document.getElementById(pfx+'chips');
+  chips.querySelectorAll('.fchip').forEach(c=>c.className='fchip');
+  btn.classList.add(type==='all'?'f-all':'fchip');
+  if(type!=='all') btn.classList.add('fchip');
+  const anns = document.getElementById(pfx+'txt').querySelectorAll('.ann');
+  anns.forEach(a=>{
+    if(type==='all'){a.classList.remove('dim');return;}
+    const isE=a.classList.contains(pfx+'-e'), isW=a.classList.contains(pfx+'-w'), isG=a.classList.contains(pfx+'-g');
+    const m=(type==='e'&&isE)||(type==='w'&&isW)||(type==='g'&&isG);
+    a.classList.toggle('dim',!m);
+  });
+}
+
+let swOpen = false;
+function swToggle() {
+  swOpen = !swOpen;
+  document.getElementById('swPanel').style.display = swOpen?'block':'none';
+  document.getElementById('swArrow').textContent = swOpen?'▼':'▲';
+}
+function setUser(state, btn) {
+  document.querySelectorAll('.sw-opt').forEach(b=>b.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  document.getElementById('swLbl').textContent = LABELS[state]||LABELS['paid'];
+  if(swOpen) swToggle();
+
+  const ug  = document.getElementById('unverGate');
+  const ng  = document.getElementById('ngGate');
+  const gc  = document.getElementById('goalCard');
+  const ngc = document.getElementById('noGoalCard');
+  const fg  = document.getElementById('freeGate');
+  const scoreRow = document.getElementById('scoreRow');
+  const critRow  = document.getElementById('critRow');
+  const tabsBox  = document.getElementById('tabsBox');
+
+  document.body.classList.remove('no-goal-active');
+  document.body.classList.remove('user-free');
+  ug.classList.remove('on');
+  ng.classList.remove('on');
+  gc.style.display     = 'flex';
+  ngc.style.display    = 'none';
+  fg.classList.remove('on');
+  scoreRow.style.display = '';
+  critRow.style.display  = '';
+  tabsBox.style.display  = '';
+
+  if (state === 'free') {
+    document.body.classList.add('user-free');
+    fg.classList.add('on');
+  } else if (state === 'unverified') {
+    ug.classList.add('on');
+  } else if (state === 'no-goal') {
+    document.body.classList.add('no-goal-active');
+    gc.style.display        = 'none';
+    ngc.style.display       = 'flex';
+    scoreRow.style.display  = 'none';
+    critRow.style.display   = 'none';
+    tabsBox.style.display   = 'none';
+    ng.classList.add('on');
+  }
+}
+
+const ICO = {
+  orig:'https://www.figma.com/api/mcp/asset/ef343312-e685-4c78-8cdf-48188ac8439f',
+  corr:'https://www.figma.com/api/mcp/asset/15d62c21-58e2-4074-96c5-655abac4dcde',
+  exp: 'https://www.figma.com/api/mcp/asset/0a96b99a-e20e-4bdd-a8d0-50d6e4042932'
+};
+function buildErrs(arr, id) {
+  const c=document.getElementById(id);
+  arr.forEach((e,i)=>{ c.innerHTML+=`<div class="ec"><div class="ec-top"><div class="ec-num">${i+1}</div><span class="ec-type">${e.t}</span></div><div class="ec-row"><img class="ec-ico" src="${ICO.orig}" onerror="this.style.display='none'" alt=""><div class="ec-b"><span class="ec-lbl">جملتك:</span><div class="ec-orig">${e.o}</div></div></div><div class="ec-row"><img class="ec-ico" src="${ICO.corr}" onerror="this.style.display='none'" alt=""><div class="ec-b"><span class="ec-lbl">التصحيح:</span><div class="ec-corr">${e.c}</div></div></div><div class="ec-row"><img class="ec-ico" src="${ICO.exp}" onerror="this.style.display='none'" alt=""><div class="ec-b"><span class="ec-lbl">الشرح:</span><span class="ec-exp">${e.e}</span></div></div></div>`; });
+}
+
+const T1E=[
+  {t:'خطأ نحوي',o:'I want tell you about swimming class',c:'I want to tell you about a swimming class',e:'"want to tell" وليس "want tell"'},
+  {t:'خطأ إملائي',o:'The comunity center',c:'The community center',e:'"community" وليس "comunity"'},
+  {t:'خطأ نحوي',o:'center have new class',c:'center has a new class',e:'"has" مع المفرد، وينقص "a"'},
+  {t:'خطأ نحوي',o:'dont know swim',c:"don't know how to swim",e:'ينقص "how to"'},
+  {t:'خطأ نحوي',o:'class is in Tuesday',c:'class is on Tuesday',e:'"on" مع أيام الأسبوع'},
+  {t:'خطأ نحوي',o:'in evening time',c:'in the evening',e:'"in the evening" هي الصحيحة'},
+  {t:'خطأ نحوي',o:'teached many peoples',c:'taught many people',e:'فعل شاذ: "taught"، و"people" لا تُجمع'},
+  {t:'خطأ نحوي',o:'It cost 50 dollar',c:'It costs 50 dollars',e:'"costs" مع المفرد، و"dollars" جمع'},
+  {t:'خطأ نحوي',o:'all thing you need',c:'everything you need',e:'"everything" للعموم'},
+  {t:'خطأ نحوي',o:'me and you can go togather',c:'you and I can go together',e:'"you and I" و"together"'},
+  {t:'خطأ نحوي',o:'want learn swimming',c:'want to learn swimming',e:'ينقص "to"'},
+  {t:'خطأ إملائي',o:'togather',c:'together',e:'إملائي بسيط'},
+  {t:'خطأ نحوي',o:'do practise in weekend',c:'practice on the weekend',e:'"on the weekend"'},
+  {t:'خطأ نحوي',o:'Waiting your reply',c:'Awaiting your reply',e:'"Awaiting" الصحيحة'},
+];
+const T2E=[
+  {t:'خطأ نحوي',o:'technology have become very importent part',c:'technology has become a very important part',e:'"has"، ينقص "a"، "important"'},
+  {t:'خطأ نحوي',o:'Some peoples think technology make life hard',c:'Some people think technology makes life hard',e:'"people" لا تُجمع، "makes" مع المفرد'},
+  {t:'خطأ إملائي',o:'usefull',c:'useful',e:'"useful" بحرف l واحد'},
+  {t:'خطأ نحوي',o:'It help people to communecate',c:'It helps people communicate',e:'"helps"، "communicate"'},
+  {t:'خطأ إملائي',o:'openion',c:'opinion',e:'"opinion" وليس "openion"'},
+  {t:'خطأ نحوي',o:'brung more good thing',c:'brought more benefits',e:'"brought" (شاذ)، "things" جمع'},
+  {t:'خطأ إملائي',o:'carefull',c:'careful',e:'"careful" بحرف l واحد'},
+];
+
+window.addEventListener('load',()=>{
+  const START_DEG = 315;
+  const SWEEP_DEG = 270;
+  function toRad(deg) { return deg * Math.PI / 180; }
+  function arcPoint(cx, cy, r, deg) {
+    return { x: cx + r * Math.cos(toRad(deg)), y: cy + r * Math.sin(toRad(deg)) };
+  }
+  function buildArc(cx, cy, r, startDeg, sweepDeg) {
+    if (sweepDeg <= 0) return '';
+    const clamped = Math.min(sweepDeg, 359.9999);
+    const s = arcPoint(cx, cy, r, startDeg);
+    const e = arcPoint(cx, cy, r, startDeg + clamped);
+    const large = clamped > 180 ? 1 : 0;
+    return `M${s.x.toFixed(4)},${s.y.toFixed(4)} A${r},${r} 0 ${large},1 ${e.x.toFixed(4)},${e.y.toFixed(4)}`;
+  }
+  const SM = { cx: 50, cy: 50, r: 40 };
+  const LG = { cx: 65, cy: 65, r: 52 };
+  document.querySelectorAll('.gauge-track-small').forEach(el => el.setAttribute('d', buildArc(SM.cx, SM.cy, SM.r, START_DEG, SWEEP_DEG)));
+  document.querySelectorAll('.gauge-track-large').forEach(el => el.setAttribute('d', buildArc(LG.cx, LG.cy, LG.r, START_DEG, SWEEP_DEG)));
+  function drawGauge(id, g, score, max) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const pct = Math.min(Math.max(score / max, 0), 1);
+    el.setAttribute('d', buildArc(g.cx, g.cy, g.r, START_DEG, pct * SWEEP_DEG));
+  }
+  drawGauge('arc-t2', SM, 4.5, 9);
+  drawGauge('arc-t1', SM, 6.5, 9);
+  drawGauge('arc-ov', LG, 4.5, 9);
+
+  buildErrs(T1E.slice(0,2), 't1errs');
+  buildErrs(T1E.slice(2),   't1errsLocked');
+  buildErrs(T2E,'t2errs');
+
+  (function injectUpgradeTips() {
+    const upgradeHTML = `<div class="tip-upgrade" onclick="event.stopPropagation()"><p class="tip-upgrade-txt">اشترك الحين وشوف تحليلك الكامل<br>مع خطة خاصة فيك.</p><button class="tip-upgrade-btn">اشترك وابدأ خطتك</button></div>`;
+    document.querySelectorAll('#t1txt .tip').forEach(t => { t.insertAdjacentHTML('beforeend', upgradeHTML); });
+  })();
+
+  (function injectErrLocks() {
+    let openPop = null;
+    document.addEventListener('click', function(e) {
+      if (openPop && !openPop.contains(e.target)) { openPop.classList.remove('on'); openPop = null; }
+    });
+    document.querySelectorAll('#t1errs .ec').forEach(card => {
+      const lock = document.createElement('div');
+      lock.className = 'ec-lock';
+      const pop = document.createElement('div');
+      pop.className = 'ec-upgrade-pop';
+      pop.innerHTML = `<p class="ec-upgrade-txt">اشترك الآن وشوف تصحيحاتك الكاملة<br>مع شرح مفصل لكل خطأ</p><button class="ec-upgrade-btn" onclick="event.stopPropagation()">اشترك وابدأ خطتك</button>`;
+      lock.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (openPop && openPop !== pop) { openPop.classList.remove('on'); }
+        pop.classList.toggle('on');
+        openPop = pop.classList.contains('on') ? pop : null;
+      });
+      card.appendChild(lock);
+      card.appendChild(pop);
+    });
+  })();
+
+  const ctx=document.getElementById('pgChart').getContext('2d');
+  new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:['المحاولة 1\n2025/01/15','المحاولة 2\n2025/02/20','المحاولة 3\n2025/03/25'],
+      datasets:[{
+        data:[3.5,4.0,4.5],
+        backgroundColor:['#F1F5F9','#F1F5F9','#012169'],
+        borderRadius:8,
+        borderSkipped:false,
+        barThickness:64,
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{enabled:false} },
+      scales:{
+        y:{ min:0, max:9, ticks:{stepSize:1, color:'#94A3B8', font:{size:14}, padding:8}, grid:{color:'#F1F5F9'}, border:{display:false} },
+        x:{ ticks:{color:'#012169', font:{weight:'bold',size:13}, padding:8, maxRotation:0, callback:function(val){ return this.getLabelForValue(val).split('\n'); }}, grid:{display:false}, border:{display:false} }
+      },
+      layout:{padding:{top:32, bottom:8, left:8, right:8}}
+    },
+    plugins:[{id:'scoreLabels',afterDatasetsDraw(chart){
+      const {ctx:c, data} = chart;
+      data.datasets[0].data.forEach((val,i)=>{
+        const meta=chart.getDatasetMeta(0);
+        const bar=meta.data[i];
+        const isLast=(i===2);
+        c.save(); c.font='bold 12px sans-serif'; c.fillStyle=isLast?'#fff':'#64748B'; c.textAlign='center'; c.textBaseline=isLast?'top':'bottom';
+        c.fillText(val.toFixed(1), bar.x, bar.y + (isLast?8:-8)); c.restore();
+      });
+    }}]
+  });
+});
+</script>
+
+</body>
+</html>
